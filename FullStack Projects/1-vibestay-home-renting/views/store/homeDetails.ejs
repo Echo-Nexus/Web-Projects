@@ -1,0 +1,404 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>
+    <%= home.homeName %> | VIBESTAY Details
+  </title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Nunito+Sans:wght@400;600;700;800;900&display=swap"
+    rel="stylesheet" />
+  <script>
+    tailwind.config = {
+      darkMode: "class",
+      theme: {
+        extend: {
+          fontFamily: { sans: ['"Nunito Sans"', "sans-serif"] },
+          colors: {
+            brand: {
+              DEFAULT: "#FF385C",
+              hover: "#E31C5F",
+              light: "#FFF0F2",
+              dark: "#2D1217",
+            },
+            dark: "#121212",
+          },
+        },
+      },
+    };
+  </script>
+  <!-- Inline script to apply dark class instantly to avoid white flash -->
+  <script>
+    if (
+      localStorage.getItem("color-theme") === "dark" ||
+      (!("color-theme" in localStorage) &&
+        window.matchMedia("(prefers-color-scheme: dark)").matches)
+    ) {
+      document.documentElement.classList.add("dark");
+    } else {
+      document.documentElement.classList.remove("dark");
+    }
+  </script>
+  <style>
+    /* Custom clean scrollbar */
+    ::-webkit-scrollbar {
+      width: 8px;
+    }
+
+    ::-webkit-scrollbar-track {
+      background: transparent;
+    }
+
+    .dark ::-webkit-scrollbar-thumb {
+      background: #2d2d30;
+      border-radius: 9999px;
+    }
+
+    ::-webkit-scrollbar-thumb {
+      background: #e4e4e7;
+      border-radius: 9999px;
+    }
+  </style>
+</head>
+
+<body
+  class="bg-gray-50 text-zinc-800 dark:bg-[#0C0C0E] dark:text-zinc-200 antialiased transition-colors duration-300 min-h-screen flex flex-col">
+  <!-- Header Section -->
+  <header
+    class="sticky top-0 z-50 bg-white/80 dark:bg-[#121214]/80 backdrop-blur-md border-b border-gray-200/60 dark:border-zinc-800/60 transition-colors duration-300">
+    <nav class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-3.5 flex justify-between items-center gap-4">
+      <!-- Brand Logo -->
+      <a href="/" class="focus:outline-none focus:ring-2 focus:ring-brand/40 rounded-lg p-1">
+        <div
+          class="text-brand font-black text-xl sm:text-2xl tracking-tighter flex items-center gap-1.5 sm:gap-2 cursor-pointer select-none shrink-0">
+          <svg class="h-7 w-7 sm:h-8 sm:w-8 text-brand shrink-0" viewBox="0 0 100 100" fill="none"
+            xmlns="http://www.w3.org/2000/svg">
+            <path d="M15 25L50 85L85 25" stroke="currentColor" stroke-width="13" stroke-linecap="round"
+              stroke-linejoin="round" />
+            <path d="M35 25L50 55L65 25" stroke="currentColor" stroke-width="9" stroke-linecap="round"
+              stroke-linejoin="round" />
+          </svg>
+          <span class="font-extrabold text-xl sm:text-2xl tracking-tight text-zinc-900 dark:text-white">vibestay</span>
+        </div>
+      </a>
+
+      <!-- Compact Search Bar Context -->
+      <div
+        class="hidden md:flex items-center border border-gray-200/80 dark:border-zinc-800 rounded-full shadow-sm hover:shadow-md transition duration-200 cursor-pointer p-1.5 pl-6 gap-3 bg-white dark:bg-[#161619] shrink-0">
+        <span class="font-bold text-xs tracking-wide text-zinc-800 dark:text-zinc-200">Start your search</span>
+        <div class="bg-brand text-white p-2.5 rounded-full shadow-sm">
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-3.5 w-3.5" fill="none" viewBox="0 0 24 24"
+            stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="3"
+              d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+          </svg>
+        </div>
+      </div>
+
+      <!-- Controls -->
+      <div class="flex items-center gap-2 sm:gap-4 shrink-0">
+        <button id="theme-toggle"
+          class="p-2.5 rounded-full border border-gray-200 dark:border-zinc-800 hover:bg-gray-100 dark:hover:bg-zinc-800/80 text-zinc-500 dark:text-zinc-400 transition-all">
+          <svg id="theme-toggle-sun" class="hidden h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"
+            stroke-width="2.2">
+            <path stroke-linecap="round" stroke-linejoin="round"
+              d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364-6.364l-.707.707M6.343 17.657l-.707.707m12.728 0l-.707-.707M6.343 6.343l-.707-.707M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+          </svg>
+          <svg id="theme-toggle-moon" class="hidden h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"
+            stroke-width="2.2">
+            <path stroke-linecap="round" stroke-linejoin="round"
+              d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z" />
+          </svg>
+        </button>
+
+        <!-- Dropdown Menu -->
+        <div class="relative">
+          <button id="menu-button"
+            class="border border-gray-200 dark:border-zinc-800 bg-white dark:bg-[#161619] rounded-full py-1.5 px-2 sm:py-2 sm:px-3 hover:shadow-md transition flex items-center gap-2.5">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-zinc-500" fill="none" viewBox="0 0 24 24"
+              stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
+            </svg>
+            <div
+              class="bg-zinc-800 rounded-full w-6 h-6 flex items-center justify-center text-white text-[10px] font-bold">
+              U
+            </div>
+          </button>
+
+          <div id="menu-dropdown"
+            class="hidden absolute right-0 mt-2.5 w-52 bg-white dark:bg-[#161619] border border-gray-100 dark:border-zinc-800/80 rounded-2xl shadow-xl py-2 z-50">
+            <a href="/host"
+              class="block px-4 py-3 text-sm font-semibold text-gray-700 dark:text-gray-200 hover:bg-gray-50 dark:hover:bg-zinc-700 transition">Become
+              a host</a>
+            <hr class="border-gray-100 dark:border-zinc-700 my-1" />
+            <a href="/home-list"
+              class="block px-4 py-2.5 text-sm text-gray-600 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-zinc-700 transition">Home
+              Lists</a>
+            <a href="/host/host-home-list"
+              class="block px-4 py-2.5 text-sm text-gray-600 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-zinc-700 transition">Host
+              Home Lists</a>
+            <a href="/bookings"
+              class="block px-4 py-2.5 text-sm text-gray-600 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-zinc-700 transition">Booking</a>
+            <a href="/favourite-list"
+              class="block px-4 py-2.5 text-sm text-gray-600 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-zinc-700 transition">Favourite
+              List</a>
+            <a href="/reserve"
+              class="block px-4 py-2.5 text-sm text-gray-600 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-zinc-700 transition">Reserve</a>
+            <hr class="border-gray-100 dark:border-zinc-700 my-1" />
+            <a href="/sign-up"
+              class="block px-4 py-2.5 text-sm text-gray-600 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-zinc-700 transition">Sign
+              up</a>
+            <a href="/log-in"
+              class="block px-4 py-2.5 text-sm text-gray-600 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-zinc-700 transition">Log
+              in</a>
+            <hr class="border-gray-100 dark:border-zinc-700 my-1" />
+            <a href="/help-center"
+              class="block px-4 py-2.5 text-sm text-gray-600 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-zinc-700 transition">Help
+              Center</a>
+          </div>
+        </div>
+      </div>
+    </nav>
+  </header>
+
+  <!-- Main Content Body -->
+  <main class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-6 sm:py-10 flex-1">
+    <!-- Navigation Breadcrumbs -->
+    <nav class="flex text-xs sm:text-sm text-zinc-400 dark:text-zinc-500 mb-4 font-semibold gap-1.5 items-center">
+      <a href="/home-list" class="hover:text-brand transition">Stays</a>
+      <span>/</span>
+      <span class="truncate">
+        <%= home.location %>
+      </span>
+      <span>/</span>
+      <span class="text-zinc-800 dark:text-zinc-200 truncate font-bold">
+        <%= home.homeName %>
+      </span>
+    </nav>
+
+    <!-- Title Block Header -->
+    <div class="mb-6 flex flex-col md:flex-row md:items-end justify-between gap-4">
+      <div>
+        <h1
+          class="text-xl sm:text-2xl md:text-3xl font-black text-zinc-900 dark:text-white tracking-tight flex items-center gap-3">
+          <%= home.homeName %>
+        </h1>
+        <div
+          class="flex flex-wrap items-center gap-x-4 gap-y-1.5 mt-2 text-xs sm:text-sm font-bold text-zinc-600 dark:text-zinc-400">
+          <div class="flex items-center gap-1 text-zinc-950 dark:text-white">
+            <svg class="h-4 w-4 text-amber-400 fill-current" viewBox="0 0 24 24">
+              <path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z" />
+            </svg>
+            <span>4.95</span>
+            <span class="text-zinc-400 dark:text-zinc-500 font-medium">(128 reviews)</span>
+          </div>
+          <span>•</span>
+          <span class="flex items-center gap-1">
+            <svg class="h-4 w-4 text-zinc-400 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor"
+              stroke-width="2.5">
+              <path stroke-linecap="round" stroke-linejoin="round"
+                d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
+            </svg>
+            <%= home.location %>
+          </span>
+        </div>
+      </div>
+
+      <!-- Action Buttons -->
+      <div class="flex items-center gap-3">
+        <!-- Share -->
+        <button
+          class="flex items-center gap-2 border border-zinc-200 dark:border-zinc-800 px-3.5 py-2 rounded-xl text-xs sm:text-sm font-bold hover:bg-zinc-100 dark:hover:bg-zinc-800 transition">
+          <svg class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+            <path stroke-linecap="round" stroke-linejoin="round"
+              d="M8.684 10.742l4.136-1.93M15.514 6.025a2.5 2.5 0 11-4.708-1.222l4.708 1.222zm-7.65 6.025a2.5 2.5 0 11-3.238 2.392 2.5 2.5 0 013.238-2.392zm8.56 1.93l-4.137-1.93a2.5 2.5 0 112.518 1.93zm-2.518-1.93a2.5 2.5 0 010 3.86l4.137-1.93" />
+          </svg>
+          Share
+        </button>
+      </div>
+    </div>
+
+    <!-- Clean Dynamic Single Photo Container (Strictly formatted to show the complete image without cutoffs) -->
+    <div
+      class="w-full h-[300px] sm:h-[450px] md:h-[550px] lg:h-[600px] overflow-hidden rounded-3xl bg-zinc-100 dark:bg-zinc-900 border border-gray-200/50 dark:border-zinc-900/60 shadow-md mb-8 relative flex items-center justify-center">
+      <!-- Soft blurred background representation of the actual stay underneath to avoid empty blank columns on screens -->
+      <div class="absolute inset-0 bg-cover bg-center filter blur-xl opacity-30 dark:opacity-20 scale-105"
+        style="background-image: url(&quot;<%= home.image %>&quot;)"></div>
+
+      <img src="<%= home.image %>" alt="<%= home.homeName %>" onerror="
+            this.src =
+              'https://images.unsplash.com/photo-1512917774080-9991f1c4c750?auto=format&fit=crop&w=1200&q=80'
+          " class="relative max-w-full max-h-full object-contain z-10 transition-transform duration-300" />
+    </div>
+
+    <!-- Details and Sticky reservation panel layout split -->
+    <div class="space-y-8">
+      <!-- Details Panel Card -->
+      <div
+        class="bg-white dark:bg-[#141416]/50 border border-gray-200/80 dark:border-zinc-900/80 rounded-3xl p-6 sm:p-8 shadow-sm">
+        <!-- Host Profile Card Header -->
+        <div class="border-b border-gray-100 dark:border-zinc-800 pb-6 flex items-center justify-between gap-4">
+          <div>
+            <h2 class="text-lg sm:text-xl font-extrabold text-zinc-900 dark:text-white leading-tight">
+              Entire luxury home hosted by VibeStay Premier
+            </h2>
+            <p class="text-xs sm:text-sm font-semibold text-zinc-500 mt-1">
+              Dedicated workspace · High-speed Wi-Fi · Professional sanitizing
+            </p>
+          </div>
+          <div
+            class="bg-gradient-to-tr from-brand to-pink-500 rounded-full w-12 h-12 flex items-center justify-center text-white text-base font-black ring-4 ring-brand/10 shrink-0">
+            VP
+          </div>
+        </div>
+
+        <!-- Description Box -->
+        <div class="py-6">
+          <h2 class="text-base sm:text-lg font-black text-zinc-900 dark:text-white mb-3">
+            About this space
+          </h2>
+          <p
+            class="text-zinc-600 dark:text-zinc-400 text-sm sm:text-base leading-relaxed whitespace-pre-line font-medium">
+            <%= home.description %>
+          </p>
+        </div>
+
+        <!-- Action Board Widget: Combined Pricing, Booking, Reservation, and Stateless Favorite -->
+        <div
+          class="border-t border-gray-100 dark:border-zinc-800 pt-8 flex flex-col md:flex-row md:items-center justify-between gap-6">
+          <!-- Price Tag Details -->
+          <div>
+            <span class="text-2xl sm:text-3xl font-black text-zinc-900 dark:text-white tracking-tight">
+              NRs <%= home.price %>
+            </span>
+            <span class="text-sm font-bold text-zinc-400">/ night</span>
+          </div>
+
+          <!-- Triple Action Triggers Block (Book, Reserve, Favorite) -->
+          <div class="flex flex-wrap items-center gap-3">
+            <!-- Favorite Toggle (Stateless EJS/DB design setup) -->
+            <form action="/favourite-list" method="POST">
+              <input type="hidden" name="id" value="<%= home._id %>" />
+              <button type="submit"
+                class="flex items-center gap-2 border border-zinc-200 dark:border-zinc-800 px-4 py-3 rounded-2xl text-xs sm:text-sm font-black hover:bg-zinc-100 dark:hover:bg-zinc-800 transition text-zinc-400 dark:text-zinc-500 hover:text-brand dark:hover:text-brand focus:outline-none focus:ring-2 focus:ring-brand/40 select-none">
+                <svg xmlns="http://www.w3.org/2000/svg"
+                  class="h-5 w-5 transition-colors duration-200 fill-none stroke-current" viewBox="0 0 24 24"
+                  stroke-width="2.5">
+                  <path stroke-linecap="round" stroke-linejoin="round"
+                    d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" />
+                </svg>
+                <span class="fav-label">Save</span>
+              </button>
+            </form>
+            <!-- Reserve Button (Glassmorphic look) -->
+            <button onclick="window.location.href = '/reserve?id=<%= home._id %>'"
+              class="border-2 border-zinc-900 dark:border-zinc-100 text-zinc-900 dark:text-zinc-100 font-extrabold py-3 px-5 sm:px-6 rounded-2xl flex items-center justify-center gap-2 hover:bg-zinc-900 hover:text-white dark:hover:bg-white dark:hover:text-zinc-950 transition-all duration-150 active:scale-[0.98] text-xs sm:text-sm select-none">
+              <svg xmlns="http://www.w3.org/2000/svg" class="h-4.5 w-4.5" fill="none" viewBox="0 0 24 24"
+                stroke="currentColor" stroke-width="2.5">
+                <path stroke-linecap="round" stroke-linejoin="round"
+                  d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
+              </svg>
+              <span>Reserve Stay</span>
+            </button>
+
+            <!-- Book Button (Primary call to action) -->
+            <button onclick="window.location.href = '/checkout?id=<%= home._id %>'"
+              class="bg-brand hover:bg-brand-hover text-white font-black py-3 px-6 sm:px-8 rounded-2xl flex items-center justify-center gap-2 hover:shadow-xl hover:shadow-brand/20 dark:hover:shadow-none transition-all duration-150 active:scale-[0.98] text-xs sm:text-sm select-none">
+              <svg xmlns="http://www.w3.org/2000/svg" class="h-4.5 w-4.5" fill="none" viewBox="0 0 24 24"
+                stroke="currentColor" stroke-width="2.5">
+                <path stroke-linecap="round" stroke-linejoin="round"
+                  d="M9 12l2 2 4-4M7.835 4.697a3.42 3.42 0 001.946-.806 3.42 3.42 0 014.438 0 3.42 3.42 0 001.946.806 3.42 3.42 0 013.138 3.138 3.42 3.42 0 00.806 1.946 3.42 3.42 0 010 4.438 3.42 3.42 0 00-.806 1.946 3.42 3.42 0 01-3.138 3.138 3.42 3.42 0 00-1.946.806 3.42 3.42 0 01-4.438 0 3.42 3.42 0 00-1.946-.806 3.42 3.42 0 01-3.138-3.138 3.42 3.42 0 00-.806-1.946 3.42 3.42 0 010-4.438 3.42 3.42 0 00.806-1.946 3.42 3.42 0 013.138-3.138z" />
+              </svg>
+              <span>Book Now</span>
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <!-- Clean Footer Section -->
+  <footer
+    class="bg-white dark:bg-[#121214] border-t border-gray-200/60 dark:border-zinc-900/60 py-6 sm:py-8 mt-12 transition-colors duration-300">
+    <div
+      class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col md:flex-row items-center justify-between gap-4 text-xs sm:text-sm text-zinc-500 dark:text-zinc-400">
+      <div class="flex flex-wrap items-center justify-center gap-x-4 gap-y-2">
+        <span class="font-bold text-zinc-800 dark:text-zinc-200">© 2026 VibeStay, Inc.</span>
+        <span>•</span>
+        <a href="/privacy" class="hover:underline">Privacy</a>
+        <span>•</span>
+        <a href="/terms" class="hover:underline">Terms</a>
+        <span>•</span>
+        <a href="/sitemap" class="hover:underline">Sitemap</a>
+      </div>
+      <div class="flex items-center gap-4">
+        <button class="hover:underline font-bold text-zinc-700 dark:text-zinc-300">
+          $ USD
+        </button>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Page Interactivity Scripts -->
+  <script>
+    // Menu Dropdown Logic
+    const menuButton = document.getElementById("menu-button");
+    const menuDropdown = document.getElementById("menu-dropdown");
+    menuButton.addEventListener("click", (e) => {
+      e.stopPropagation();
+      menuDropdown.classList.toggle("hidden");
+    });
+    document.addEventListener("click", () => {
+      menuDropdown.classList.add("hidden");
+    });
+
+    // Dark Theme Switcher Logic
+    const themeToggleBtn = document.getElementById("theme-toggle");
+    const sunIcon = document.getElementById("theme-toggle-sun");
+    const moonIcon = document.getElementById("theme-toggle-moon");
+
+    if (document.documentElement.classList.contains("dark")) {
+      sunIcon.classList.remove("hidden");
+    } else {
+      moonIcon.classList.remove("hidden");
+    }
+
+    themeToggleBtn.addEventListener("click", function () {
+      sunIcon.classList.toggle("hidden");
+      moonIcon.classList.toggle("hidden");
+
+      if (document.documentElement.classList.contains("dark")) {
+        document.documentElement.classList.remove("dark");
+        localStorage.setItem("color-theme", "light");
+      } else {
+        document.documentElement.classList.add("dark");
+        localStorage.setItem("color-theme", "dark");
+      }
+    });
+
+    // Dynamic Favorite Button Status Toggle (No database storing logic, purely visual callback UI ready)
+    function toggleFavoriteDetail(btn, id) {
+      const svg = btn.querySelector("svg");
+      const label = btn.querySelector(".fav-label");
+      const isCurrentlyFav = svg.classList.contains("fill-brand");
+
+      if (isCurrentlyFav) {
+        svg.classList.remove("fill-brand", "text-brand");
+        svg.classList.add("fill-none", "text-zinc-400");
+        btn.classList.add("text-zinc-400", "dark:text-zinc-500");
+        btn.classList.remove("text-brand", "border-brand/30", "bg-brand/5");
+        label.textContent = "Save";
+      } else {
+        svg.classList.add("fill-brand", "text-brand");
+        svg.classList.remove("fill-none", "text-zinc-400");
+        btn.classList.remove("text-zinc-400", "dark:text-zinc-500");
+        btn.classList.add("text-brand", "border-brand/30", "bg-brand/5");
+        label.textContent = "Saved";
+      }
+    }
+  </script>
+</body>
+
+</html>

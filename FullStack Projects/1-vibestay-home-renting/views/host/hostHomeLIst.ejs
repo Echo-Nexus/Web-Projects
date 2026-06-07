@@ -1,0 +1,208 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>VIBESTAY | Host Your Homes</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Nunito+Sans:wght@400;600;700;800&display=swap" rel="stylesheet" />
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          fontFamily: { sans: ['"Nunito Sans"', "sans-serif"] },
+          colors: { brand: "#FF385C", dark: "#1A1A1A" },
+          screens: {
+            'xs': '375px',
+          }
+        },
+      },
+    };
+  </script>
+  <!-- Inline script to apply dark class instantly to avoid white flash -->
+  <script>
+    if (localStorage.getItem('color-theme') === 'dark' || (!('color-theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+      document.documentElement.classList.add('dark');
+    } else {
+      document.documentElement.classList.remove('dark');
+    }
+  </script>
+</head>
+
+<body class="bg-white text-dark dark:bg-[#121212] dark:text-gray-100 antialiased transition-colors duration-300">
+
+  <!-- Enhanced Header -->
+  <header class="sticky top-0 z-50 bg-white/95 dark:bg-[#1A1A1A]/95 backdrop-blur-sm border-b border-gray-100 dark:border-zinc-800 transition-colors duration-300">
+    <nav class="max-w-7xl mx-auto px-4 sm:px-6 py-4 flex justify-between items-center gap-4">
+
+      <!-- Custom Brand Logo (VibeStay - Completely Geometric Abstract Monogram) -->
+      <a href="/">
+        <div class="text-brand font-extrabold text-xl sm:text-2xl tracking-tighter flex items-center gap-1.5 sm:gap-2 cursor-pointer select-none shrink-0">
+          <svg class="h-6 w-6 sm:h-8 sm:w-8 text-brand shrink-0" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M15 25L50 85L85 25" stroke="currentColor" stroke-width="12" stroke-linecap="round" stroke-linejoin="round" />
+            <path d="M35 25L50 55L65 25" stroke="currentColor" stroke-width="8" stroke-linecap="round" stroke-linejoin="round" />
+          </svg>
+          <span class="font-extrabold text-xl sm:text-2xl tracking-tight">vibestay</span>
+        </div>
+      </a>
+
+      <!-- Search Bar Concept -->
+      <div class="hidden md:flex items-center border border-gray-200 dark:border-zinc-700 rounded-full shadow-sm hover:shadow-md transition cursor-pointer px-4 py-2 gap-4 bg-white dark:bg-zinc-800 shrink-0">
+        <span class="font-semibold text-sm px-2">Anywhere</span>
+        <span class="text-gray-300 dark:text-zinc-600">|</span>
+        <span class="font-semibold text-sm px-2">Any week</span>
+        <span class="text-gray-300 dark:text-zinc-600">|</span>
+        <span class="text-gray-500 dark:text-gray-400 text-sm px-2">Add guests</span>
+        <div class="bg-brand text-white p-2 rounded-full">
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+          </svg>
+        </div>
+      </div>
+
+      <div class="flex items-center gap-2 sm:gap-4 shrink-0">
+        <!-- Day/Light Mode Toggle Switch -->
+        <button id="theme-toggle" class="p-2 sm:p-2.5 rounded-full border border-gray-200 dark:border-zinc-700 hover:bg-gray-50 dark:hover:bg-zinc-800 text-gray-500 dark:text-gray-400 transition" aria-label="Toggle Theme">
+          <svg id="theme-toggle-sun" class="hidden h-4.5 w-4.5 sm:h-5 sm:w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364-6.364l-.707.707M6.343 17.657l-.707.707m12.728 0l-.707-.707M6.343 6.343l-.707-.707M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+          </svg>
+          <svg id="theme-toggle-moon" class="hidden h-4.5 w-4.5 sm:h-5 sm:w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z" />
+          </svg>
+        </button>
+
+        <!-- Interactive Hamburger Dropdown Container -->
+        <div class="relative">
+          <button id="menu-button" class="border border-gray-200 dark:border-zinc-700 bg-white dark:bg-zinc-800 rounded-full py-1.5 px-2 sm:py-2 sm:px-3 hover:shadow-md transition flex items-center gap-2 sm:gap-3">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-4.5 w-4.5 sm:h-5 sm:w-5 text-gray-600 dark:text-gray-300" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
+            </svg>
+            <div class="bg-gray-400 dark:bg-zinc-600 rounded-full w-5 h-5 sm:w-6 sm:h-6 flex items-center justify-center text-white text-[10px] sm:text-xs font-bold">U</div>
+          </button>
+
+          <!-- Dropdown Menu -->
+          <div id="menu-dropdown" class="hidden absolute right-0 mt-2 w-52 sm:w-60 bg-white dark:bg-zinc-800 border border-gray-100 dark:border-zinc-700 rounded-xl shadow-xl py-2 z-50 transition-all">
+            <a href="/host" class="block px-4 py-3 text-sm font-semibold text-gray-700 dark:text-gray-200 hover:bg-gray-50 dark:hover:bg-zinc-700 transition font-bold text-brand">Become a host</a>
+            <hr class="border-gray-100 dark:border-zinc-700 my-1" />
+            <a href="/" class="block px-4 py-2.5 text-sm text-gray-600 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-zinc-700 transition">Home</a>
+            <a href="/home-list" class="block px-4 py-2.5 text-sm text-gray-600 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-zinc-700 transition">Home List</a>
+            <a href="/bookings" class="block px-4 py-2.5 text-sm text-gray-600 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-zinc-700 transition">Booking</a>
+            <a href="/favourite-list" class="block px-4 py-2.5 text-sm text-gray-600 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-zinc-700 transition">Favourite List</a>
+            <a href="/reserve" class="block px-4 py-2.5 text-sm text-gray-600 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-zinc-700 transition">Reserve</a>
+            <hr class="border-gray-100 dark:border-zinc-700 my-1" />
+            <a href="/sign-up" class="block px-4 py-2.5 text-sm text-gray-600 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-zinc-700 transition">Sign up</a>
+            <a href="/log-in" class="block px-4 py-2.5 text-sm text-gray-600 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-zinc-700 transition">Log in</a>
+            <hr class="border-gray-100 dark:border-zinc-700 my-1" />
+            <a href="/help-center" class="block px-4 py-2.5 text-sm text-gray-600 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-zinc-700 transition">Help Center</a>
+          </div>
+        </div>
+      </div>
+    </nav>
+  </header>
+
+  <main class="py-8 sm:py-12 px-4 sm:px-6">
+    <div class="max-w-7xl mx-auto">
+      <div class="mb-8 sm:mb-10 text-left">
+        <h1 class="text-2xl sm:text-3xl font-extrabold text-dark dark:text-white">Your Listed Homes</h1>
+        <p class="text-gray-500 dark:text-gray-400 mt-1 text-sm sm:text-base">Manage and keep your premium property listings up to date.</p>
+      </div>
+
+      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-x-4 sm:gap-x-6 gap-y-10">
+        <% homes.forEach(home=> { %>
+          <div class="group cursor-pointer flex flex-col justify-between h-full bg-transparent">
+            <div>
+              <div class="relative w-full aspect-[4/3] overflow-hidden rounded-2xl mb-3 bg-gray-100 dark:bg-zinc-800 shadow-sm border border-gray-100 dark:border-zinc-800">
+                <img src="<%= home.image %>" alt="<%= home.name %>" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500 ease-out" />
+              </div>
+              <div class="px-1">
+                <h2 class="text-sm sm:text-base font-bold text-dark dark:text-white truncate">
+                  <%= home.homeName %>
+                </h2>
+                <p class="text-gray-500 dark:text-gray-400 text-xs sm:text-sm">
+                  <%= home.location %>
+                </p>
+
+                <!-- Expanded Description Box: Supporting line-clamp-3 for longer description lengths beautifully -->
+                <p class="text-gray-400 dark:text-zinc-500 text-xs mt-1.5 line-clamp-3 leading-relaxed min-h-[3.3rem]">
+                  <%= home.description %>
+                </p>
+
+                <p class="font-bold text-dark dark:text-white mt-2 text-sm">
+                  NRs <%= home.price %> <span class="font-normal text-gray-500 dark:text-gray-400">/ night</span>
+                </p>
+              </div>
+            </div>
+
+            <!-- Host Controls: Edit and Delete Buttons -->
+            <div class="px-1 mt-3.5 flex items-center gap-2">
+              
+              <!-- Premium Edit Button -->
+              <a href="/host/edit-home/<%= home._id || home._id %>?editing=true" class="flex-1 bg-gray-100 hover:bg-gray-200 dark:bg-zinc-800 dark:hover:bg-zinc-700 text-dark dark:text-white font-extrabold py-2.5 px-3 rounded-xl flex items-center justify-center gap-1.5 transition-all active:scale-[0.98] select-none text-xs sm:text-sm border border-gray-200 dark:border-zinc-700">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 text-gray-500 dark:text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
+                  <path stroke-linecap="round" stroke-linejoin="round" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z" />
+                </svg>
+                <span>Edit</span>
+              </a>
+
+              <!-- Premium Delete Button -->
+               <form action="/host/delete-home/<%= home._id %>" method="POST">
+                <button type="submit" class="bg-brand/10 hover:bg-brand text-brand hover:text-white font-extrabold py-2.5 px-3 rounded-xl flex items-center justify-center gap-1.5 transition-all active:scale-[0.98] select-none text-xs sm:text-sm border border-brand/20 hover:border-brand">
+                  <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
+                  </svg>
+                  <span>Delete</span>
+                </button>
+              </form>
+
+            </div>
+          </div>
+        <% }) %>
+      </div>
+    </div>
+  </main>
+
+  <!-- JavaScript Module for Dark/Light Mode & Hamburger Dropdown Interactions -->
+  <script>
+    // Menu Toggle Logic
+    const menuButton = document.getElementById('menu-button');
+    const menuDropdown = document.getElementById('menu-dropdown');
+
+    menuButton.addEventListener('click', (e) => {
+      e.stopPropagation();
+      menuDropdown.classList.toggle('hidden');
+    });
+
+    document.addEventListener('click', () => {
+      menuDropdown.classList.add('hidden');
+    });
+
+    // Dark Mode Toggle Switch & Local Storage State Management
+    const themeToggleBtn = document.getElementById('theme-toggle');
+    const sunIcon = document.getElementById('theme-toggle-sun');
+    const moonIcon = document.getElementById('theme-toggle-moon');
+
+    // Sync toggle icons to current theme on load
+    if (document.documentElement.classList.contains('dark')) {
+      sunIcon.classList.remove('hidden');
+    } else {
+      moonIcon.classList.remove('hidden');
+    }
+
+    themeToggleBtn.addEventListener('click', function () {
+      sunIcon.classList.toggle('hidden');
+      moonIcon.classList.toggle('hidden');
+
+      if (document.documentElement.classList.contains('dark')) {
+        document.documentElement.classList.remove('dark');
+        localStorage.setItem('color-theme', 'light');
+      } else {
+        document.documentElement.classList.add('dark');
+        localStorage.setItem('color-theme', 'dark');
+      }
+    });
+  </script>
+</body>
+
+</html>

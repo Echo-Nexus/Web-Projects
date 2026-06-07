@@ -1,0 +1,62 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Home Added Successfully</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Nunito+Sans:wght@400;600;700;800&display=swap" rel="stylesheet" />
+    <script>
+      tailwind.config = {
+        theme: {
+          extend: {
+            fontFamily: { sans: ['"Nunito Sans"', "sans-serif"] },
+            colors: { brand: "#FF385C", dark: "#222222" },
+          },
+        },
+      };
+    </script>
+    <style>
+      @keyframes popIn {
+        0% { opacity: 0; transform: scale(0.95); }
+        100% { opacity: 1; transform: scale(1); }
+      }
+      .animate-popIn { animation: popIn 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275); }
+
+      /* Animation for the drawing checkmark */
+      @keyframes draw {
+        to { stroke-dashoffset: 0; }
+      }
+      .checkmark-draw {
+        stroke-dasharray: 20;
+        stroke-dashoffset: 20;
+        animation: draw 0.5s ease-out forwards;
+        animation-delay: 0.3s;
+      }
+    </style>
+  </head>
+  <body class="bg-white text-dark antialiased min-h-screen flex items-center justify-center p-6">
+    <div class="max-w-md w-full bg-white border border-gray-100 rounded-3xl p-8 shadow-xl animate-popIn text-center">
+      <!-- Success Icon -->
+      <div class="w-20 h-20 bg-green-50 rounded-full flex items-center justify-center mx-auto mb-6">
+        <svg class="w-10 h-10 text-green-500" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="3">
+          <path class="checkmark-draw" stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7" />
+        </svg>
+      </div>
+
+      <h1 class="text-3xl font-extrabold text-dark mb-3">Listing Published!</h1>
+      <p class="text-gray-500 mb-8 leading-relaxed">
+        Congratulations! Your beautiful home is now live and ready for guests from around the world to discover.
+      </p>
+
+      <div class="space-y-3">
+        <a href="/host/host-home-list" class="block w-full bg-brand text-white font-semibold py-3.5 rounded-xl hover:bg-rose-600 transition duration-200">
+          View all listings
+        </a>
+        <a href="/host" class="block w-full border border-gray-200 text-dark font-semibold py-3.5 rounded-xl hover:bg-gray-50 transition duration-200">
+          List another home
+        </a>
+      </div>
+    </div>
+  </body>
+</html>

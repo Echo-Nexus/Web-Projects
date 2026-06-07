@@ -1,0 +1,377 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>VIBESTAY - RESERVE</title>
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            /* VibeStay Brand Tokens */
+            --primary-gradient: linear-gradient(135deg, #FF385C 0%, #FF8A65 100%);
+            --brand-color: #FF385C;
+            --text-dark: #1A1A1A;
+            --text-muted: #64748b;
+            --bg-color: #f8fafc;
+            --card-bg: rgba(255, 255, 255, 0.85);
+            --border-color: rgba(226, 232, 240, 0.8);
+            --input-bg: #ffffff;
+        }
+
+        /* Dark Mode configurations */
+        @media (prefers-color-scheme: dark) {
+            :root {
+                --text-dark: #f1f5f9;
+                --text-muted: #94a3b8;
+                --bg-color: #121212;
+                --card-bg: rgba(26, 26, 26, 0.85);
+                --border-color: rgba(63, 63, 70, 0.5);
+                --input-bg: #27272a;
+            }
+        }
+
+        .dark {
+            --text-dark: #f1f5f9;
+            --text-muted: #94a3b8;
+            --bg-color: #121212;
+            --card-bg: rgba(26, 26, 26, 0.85);
+            --border-color: rgba(63, 63, 70, 0.5);
+            --input-bg: #27272a;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-dark);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow-x: hidden;
+            position: relative;
+            padding: 24px;
+            transition: background-color 0.3s ease, color 0.3s ease;
+        }
+
+        /* Glowing backdrops */
+        body::before {
+            content: '';
+            position: absolute;
+            width: 350px;
+            height: 350px;
+            background: rgba(255, 56, 92, 0.12);
+            filter: blur(90px);
+            border-radius: 50%;
+            top: 5%;
+            left: 5%;
+            z-index: -1;
+        }
+
+        body::after {
+            content: '';
+            position: absolute;
+            width: 450px;
+            height: 450px;
+            background: rgba(255, 138, 101, 0.12);
+            filter: blur(120px);
+            border-radius: 50%;
+            bottom: 5%;
+            right: 5%;
+            z-index: -1;
+        }
+
+        .container {
+            max-width: 480px;
+            width: 100%;
+            animation: slideUp 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+            text-align: center;
+        }
+
+        @keyframes slideUp {
+            from { opacity: 0; transform: translateY(32px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Monogram header */
+        .brand-logo {
+            color: var(--brand-color);
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 2rem;
+            text-decoration: none;
+            user-select: none;
+        }
+
+        .brand-logo svg {
+            height: 36px;
+            width: 36px;
+        }
+
+        .brand-name {
+            font-size: 1.65rem;
+            font-weight: 800;
+            letter-spacing: -0.05em;
+        }
+
+        /* Interactive Booking glass card */
+        .booking-card {
+            background: var(--card-bg);
+            border: 1px solid var(--border-color);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border-radius: 28px;
+            padding: 32px;
+            text-align: left;
+            box-shadow: 0 20px 40px -15px rgba(0, 0, 0, 0.08);
+            margin-bottom: 1.5rem;
+        }
+
+        h1 {
+            font-size: 1.75rem;
+            font-weight: 800;
+            margin-bottom: 0.5rem;
+            letter-spacing: -0.03em;
+        }
+
+        .subtitle {
+            font-size: 0.95rem;
+            color: var(--text-muted);
+            margin-bottom: 2rem;
+            line-height: 1.5;
+        }
+
+        /* Form styling */
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        label {
+            display: block;
+            font-size: 0.75rem;
+            font-weight: 800;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            color: var(--text-muted);
+            margin-bottom: 0.5rem;
+        }
+
+        .input-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+        }
+
+        input, select {
+            width: 100%;
+            background-color: var(--input-bg);
+            border: 1px solid var(--border-color);
+            color: var(--text-dark);
+            font-family: inherit;
+            font-size: 0.95rem;
+            font-weight: 600;
+            padding: 14px 16px;
+            border-radius: 14px;
+            outline: none;
+            transition: all 0.2s ease;
+        }
+
+        input:focus, select:focus {
+            border-color: var(--brand-color);
+            box-shadow: 0 0 0 4px rgba(255, 56, 92, 0.12);
+        }
+
+        /* Summary lines */
+        .summary-box {
+            background: rgba(100, 116, 139, 0.04);
+            border-radius: 16px;
+            padding: 16px;
+            margin-top: 2rem;
+            border: 1px dashed var(--border-color);
+        }
+
+        .summary-row {
+            display: flex;
+            justify-content: space-between;
+            font-size: 0.9rem;
+            font-weight: 600;
+            margin-bottom: 8px;
+        }
+
+        .summary-row:last-child {
+            margin-bottom: 0;
+            padding-top: 8px;
+            border-top: 1px solid var(--border-color);
+            font-size: 1rem;
+            font-weight: 800;
+        }
+
+        .btn {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            background: var(--primary-gradient);
+            color: white;
+            text-decoration: none;
+            width: 100%;
+            padding: 16px;
+            border-radius: 16px;
+            font-weight: 700;
+            font-size: 1rem;
+            border: none;
+            cursor: pointer;
+            transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+            box-shadow: 0 10px 25px -5px rgba(255, 56, 92, 0.3);
+            margin-top: 1.5rem;
+        }
+
+        .btn:hover {
+            transform: scale(1.02) translateY(-2px);
+            box-shadow: 0 20px 30px -5px rgba(255, 56, 92, 0.4);
+        }
+
+        .btn:active {
+            transform: scale(0.98) translateY(0);
+        }
+
+        .cancel-link {
+            display: inline-block;
+            color: var(--text-muted);
+            text-decoration: none;
+            font-size: 0.9rem;
+            font-weight: 700;
+            transition: color 0.2s ease;
+        }
+
+        .cancel-link:hover {
+            color: var(--brand-color);
+        }
+
+        /* Responsive layout */
+        @media (max-width: 480px) {
+            .booking-card {
+                padding: 24px;
+                border-radius: 20px;
+            }
+            h1 { font-size: 1.5rem; }
+            .btn { padding: 14px; }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- VibeStay Geometric Logo -->
+        <a href="/" class="brand-logo">
+            <svg viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M15 25L50 85L85 25" stroke="currentColor" stroke-width="12" stroke-linecap="round" stroke-linejoin="round"/>
+                <path d="M35 25L50 55L65 25" stroke="currentColor" stroke-width="8" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+            <span class="brand-name">vibestay</span>
+        </a>
+
+        <!-- Booking Box -->
+        <div class="booking-card">
+            <h1>Reserve your stay</h1>
+            <p class="subtitle">Complete the details below to secure your architectural escape.</p>
+
+            <form onsubmit="event.preventDefault();">
+                <!-- Check-in & checkout row -->
+                <div class="form-group">
+                    <div class="input-row">
+                        <div>
+                            <label for="checkin">Check-in</label>
+                            <input type="date" id="checkin" required>
+                        </div>
+                        <div>
+                            <label for="checkout">Checkout</label>
+                            <input type="date" id="checkout" required>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Guests selection -->
+                <div class="form-group">
+                    <label for="guests">Guests</label>
+                    <select id="guests">
+                        <option value="1">1 Guest</option>
+                        <option value="2" selected>2 Guests</option>
+                        <option value="3">3 Guests</option>
+                        <option value="4">4 Guests</option>
+                    </select>
+                </div>
+
+                <!-- Live-simulated breakdown box -->
+                <div class="summary-box">
+                    <div class="summary-row">
+                        <span>Aura Glass Dome (3 nights)</span>
+                        <span>$870.00</span>
+                    </div>
+                    <div class="summary-row">
+                        <span>Service Fee</span>
+                        <span>$69.60</span>
+                    </div>
+                    <div class="summary-row">
+                        <span>Total (USD)</span>
+                        <span>$939.60</span>
+                    </div>
+                </div>
+
+                <!-- Reserve CTA button -->
+                <button type="submit" class="btn" onclick="simulateBooking()">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path>
+                        <polyline points="22 4 12 14.01 9 11.01"></polyline>
+                    </svg>
+                    Confirm Reservation
+                </button>
+            </form>
+        </div>
+
+        <a href="/" class="cancel-link">Cancel and return</a>
+    </div>
+
+    <script>
+        // Sync light/dark class on initialization
+        if (localStorage.getItem('color-theme') === 'dark' || (!('color-theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+            document.documentElement.classList.add('dark');
+        } else {
+            document.documentElement.classList.remove('dark');
+        }
+
+        // Set default dummy checkin dates (Today & Checkout 3 days later)
+        const today = new Date();
+        const checkoutDate = new Date();
+        checkoutDate.setDate(today.getDate() + 3);
+
+        document.getElementById('checkin').value = today.toISOString().split('T')[0];
+        document.getElementById('checkout').value = checkoutDate.toISOString().split('T')[0];
+
+        function simulateBooking() {
+            // Simulated transaction indicator
+            const btn = document.querySelector('.btn');
+            btn.innerHTML = 'Securing Space...';
+            btn.style.opacity = '0.7';
+            btn.style.pointerEvents = 'none';
+
+            setTimeout(() => {
+                btn.innerHTML = 'Confirmed! ✓';
+                btn.style.background = 'linear-gradient(135deg, #10b981 0%, #059669 100%)';
+                btn.style.boxShadow = '0 10px 25px -5px rgba(16, 185, 129, 0.3)';
+                setTimeout(() => {
+                    window.location.href = "/";
+                }, 1200);
+            }, 1500);
+        }
+    </script>
+</body>
+</html>

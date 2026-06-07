@@ -1,0 +1,998 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>VIBESTAY - PREMIUM STAYS</title>
+  <!-- Tailwind CSS and Nunito Sans Google Font -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Nunito+Sans:wght@400;600;700;800&display=swap"
+    rel="stylesheet" />
+  <script>
+    tailwind.config = {
+      darkMode: "class",
+      theme: {
+        extend: {
+          fontFamily: { sans: ['"Nunito Sans"', "sans-serif"] },
+          colors: { brand: "#FF385C", dark: "#1A1A1A" },
+          screens: {
+            xs: "375px",
+          },
+        },
+      },
+    };
+  </script>
+  <!-- Custom CSS animations for smooth UI transitions -->
+  <style>
+    .fade-in {
+      animation: fadeIn 0.4s ease-out forwards;
+    }
+
+    .slide-up {
+      animation: slideUp 0.5s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+    }
+
+    @keyframes fadeIn {
+      from {
+        opacity: 0;
+      }
+
+      to {
+        opacity: 1;
+      }
+    }
+
+    @keyframes slideUp {
+      from {
+        opacity: 0;
+        transform: translateY(24px);
+      }
+
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+  </style>
+  <!-- Inline script to apply dark class instantly to avoid white flash -->
+  <script>
+    if (
+      localStorage.getItem("color-theme") === "dark" ||
+      (!("color-theme" in localStorage) &&
+        window.matchMedia("(prefers-color-scheme: dark)").matches)
+    ) {
+      document.documentElement.classList.add("dark");
+    } else {
+      document.documentElement.classList.remove("dark");
+    }
+  </script>
+</head>
+
+<body class="bg-white text-dark dark:bg-[#121212] dark:text-gray-100 antialiased transition-colors duration-300">
+  <!-- Header Navigation -->
+  <header
+    class="sticky top-0 z-50 bg-white/95 dark:bg-[#1A1A1A]/95 backdrop-blur-sm border-b border-gray-100 dark:border-zinc-800 transition-colors duration-300">
+    <nav class="max-w-7xl mx-auto px-4 sm:px-6 py-4 flex justify-between items-center gap-4">
+      <!-- Left Side: Brand Logo & Dynamic Back Navigation -->
+      <div class="flex items-center gap-4">
+        <!-- Back Button (shown on Reserve/Success views) -->
+        <button id="back-to-home"
+          class="hidden p-2 rounded-full border border-gray-200 dark:border-zinc-700 hover:bg-gray-50 dark:hover:bg-zinc-800 text-gray-500 dark:text-gray-400 transition"
+          aria-label="Go Back">
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"
+            stroke-width="2.5">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M10 19l-7-7m0 0l7-7m-7 7h18" />
+          </svg>
+        </button>
+
+        <!-- Brand Logo -->
+        <div onclick="navigateTo('home')"
+          class="text-brand font-extrabold text-xl sm:text-2xl tracking-tighter flex items-center gap-1.5 sm:gap-2 cursor-pointer select-none shrink-0">
+          <svg class="h-6 w-6 sm:h-8 sm:w-8 text-brand shrink-0" viewBox="0 0 100 100" fill="none"
+            xmlns="http://www.w3.org/2000/svg">
+            <path d="M15 25L50 85L85 25" stroke="currentColor" stroke-width="12" stroke-linecap="round"
+              stroke-linejoin="round" />
+            <path d="M35 25L50 55L65 25" stroke="currentColor" stroke-width="8" stroke-linecap="round"
+              stroke-linejoin="round" />
+          </svg>
+          <span class="font-extrabold text-xl sm:text-2xl tracking-tight">vibestay</span>
+        </div>
+      </div>
+
+      <!-- Search Bar -->
+      <div
+        class="hidden md:flex items-center border border-gray-200 dark:border-zinc-700 rounded-full shadow-sm hover:shadow-md transition cursor-pointer px-4 py-2 gap-4 bg-white dark:bg-zinc-800 shrink-0">
+        <span class="font-semibold text-sm px-2">Anywhere</span>
+        <span class="text-gray-300 dark:text-zinc-600">|</span>
+        <span class="font-semibold text-sm px-2">Any week</span>
+        <span class="text-gray-300 dark:text-zinc-600">|</span>
+        <span class="text-gray-500 dark:text-gray-400 text-sm px-2">Add guests</span>
+        <div class="bg-brand text-white p-2 rounded-full">
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5"
+              d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+          </svg>
+        </div>
+      </div>
+
+      <!-- Right Side Nav: Theme Toggle & Profile Dropdown -->
+      <div class="flex items-center gap-2 sm:gap-4 shrink-0">
+        <button id="theme-toggle"
+          class="p-2 sm:p-2.5 rounded-full border border-gray-200 dark:border-zinc-700 hover:bg-gray-50 dark:hover:bg-zinc-800 text-gray-500 dark:text-gray-400 transition animate-pulse"
+          aria-label="Toggle Theme">
+          <svg id="theme-toggle-sun" class="hidden h-4.5 w-4.5 sm:h-5 sm:w-5" fill="none" viewBox="0 0 24 24"
+            stroke="currentColor" stroke-width="2">
+            <path stroke-linecap="round" stroke-linejoin="round"
+              d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364-6.364l-.707.707M6.343 17.657l-.707.707m12.728 0l-.707-.707M6.343 6.343l-.707-.707M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+          </svg>
+          <svg id="theme-toggle-moon" class="hidden h-4.5 w-4.5 sm:h-5 sm:w-5" fill="none" viewBox="0 0 24 24"
+            stroke="currentColor" stroke-width="2">
+            <path stroke-linecap="round" stroke-linejoin="round"
+              d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z" />
+          </svg>
+        </button>
+
+        <!-- Hamburger Button / Menu Dropdown -->
+        <div class="relative">
+          <button id="menu-button"
+            class="border border-gray-200 dark:border-zinc-700 bg-white dark:bg-zinc-800 rounded-full py-1.5 px-2 sm:py-2 sm:px-3 hover:shadow-md transition flex items-center gap-2 sm:gap-3">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-4.5 w-4.5 sm:h-5 sm:w-5 text-gray-600 dark:text-gray-300"
+              fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
+            </svg>
+            <div
+              class="bg-gray-400 dark:bg-zinc-600 rounded-full w-5 h-5 sm:w-6 sm:h-6 flex items-center justify-center text-white text-[10px] sm:text-xs font-bold">
+              U
+            </div>
+          </button>
+
+          <!-- Dropdown Menu with relative routes -->
+          <div id="menu-dropdown"
+            class="hidden absolute right-0 mt-2 w-52 sm:w-60 bg-white dark:bg-zinc-800 border border-gray-100 dark:border-zinc-700 rounded-2xl shadow-xl py-2.5 z-50 transition-all">
+            <a href="/host"
+              class="block px-4 py-3 text-sm font-semibold text-gray-700 dark:text-gray-200 hover:bg-gray-50 dark:hover:bg-zinc-700 transition">Become
+              a host</a>
+            <hr class="border-gray-100 dark:border-zinc-700 my-1" />
+            <a href="/home-list"
+              class="block px-4 py-2.5 text-sm text-gray-600 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-zinc-700 transition">Home
+              Lists</a>
+            <a href="/host/host-home-list"
+              class="block px-4 py-2.5 text-sm text-gray-600 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-zinc-700 transition">Host
+              Home Lists</a>
+            <a href="/bookings"
+              class="block px-4 py-2.5 text-sm text-gray-600 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-zinc-700 transition">Booking</a>
+            <a href="/favourite-list"
+              class="block px-4 py-2.5 text-sm text-gray-600 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-zinc-700 transition">Favourite
+              List</a>
+            <a href="/reserve"
+              class="block px-4 py-2.5 text-sm text-gray-600 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-zinc-700 transition">Reserve</a>
+            <hr class="border-gray-100 dark:border-zinc-700 my-1" />
+            <a href="/sign-up"
+              class="block px-4 py-2.5 text-sm text-gray-600 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-zinc-700 transition">Sign
+              up</a>
+            <a href="/log-in"
+              class="block px-4 py-2.5 text-sm text-gray-600 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-zinc-700 transition">Log
+              in</a>
+            <hr class="border-gray-100 dark:border-zinc-700 my-1" />
+            <a href="/help-center"
+              class="block px-4 py-2.5 text-sm text-gray-600 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-zinc-700 transition">Help
+              Center</a>
+          </div>
+        </div>
+      </div>
+    </nav>
+  </header>
+
+  <!-- SECTION 1: Welcome Hero Section -->
+  <section id="hero-banner" class="relative overflow-hidden bg-zinc-900 text-white min-h-[460px] flex items-center">
+    <div class="absolute inset-0 z-0">
+      <!-- Premium hero wallpaper with deep contrast overlay -->
+      <img src="https://images.unsplash.com/photo-1470770841072-f978cf4d019e?auto=format&fit=crop&q=80&w=1600"
+        class="w-full h-full object-cover opacity-45 scale-105" alt="Adventure backdrop" />
+      <div class="absolute inset-0 bg-gradient-to-t from-zinc-950 via-zinc-950/60 to-transparent"></div>
+    </div>
+
+    <div class="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 py-16 w-full text-left">
+      <span
+        class="inline-flex items-center gap-1.5 px-3.5 py-1 rounded-full bg-brand text-xs font-extrabold uppercase tracking-widest mb-6">
+        ✨ Premium Selection 2026
+      </span>
+      <h1 class="text-4xl sm:text-5xl lg:text-6xl font-black tracking-tight leading-none mb-4">
+        Discover places<br />that match
+        <span class="text-brand">your vibe</span>
+      </h1>
+      <p class="text-gray-300 max-w-lg text-base sm:text-lg font-medium mb-8 leading-relaxed">
+        Escape standard accommodations. Stay in handpicked architect-designed
+        domes, nature-woven lofts, and luxurious historic villas.
+      </p>
+      <div class="flex flex-wrap gap-4">
+        <a href="/home-list"
+          class="bg-brand hover:bg-[#E31C5F] text-white font-extrabold py-3.5 px-7 rounded-2xl text-sm transition-all shadow-lg shadow-brand/20 flex items-center gap-2">
+          Explore Collection
+          <svg class="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2.5">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M14 5l7 7m0 0l-7 7m7-7H3" />
+          </svg>
+        </a>
+        <a href="/host"
+          class="bg-white/15 hover:bg-white/25 border border-white/20 text-white backdrop-blur-sm font-extrabold py-3.5 px-7 rounded-2xl text-sm transition-all">
+          List Your Space
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- MAIN PLATFORM CATALOG VIEW -->
+  <main id="view-home" class="py-12 sm:py-16 px-4 sm:px-6 fade-in">
+    <div class="max-w-7xl mx-auto">
+      <!-- Category Navigation Row -->
+      <div
+        class="flex flex-col sm:flex-row sm:items-end justify-between gap-6 mb-12 border-b border-gray-100 dark:border-zinc-800 pb-6">
+        <div class="text-left">
+          <h2 class="text-2xl sm:text-3xl font-extrabold tracking-tight text-dark dark:text-white">
+            Featured Spaces
+          </h2>
+          <p class="text-gray-500 dark:text-gray-400 mt-1 text-sm sm:text-base">
+            Curated architectural masterpiece stays worldwide
+          </p>
+        </div>
+        <!-- Category Quicklinks Filter Pills -->
+        <div class="flex flex-wrap gap-2.5">
+          <a href="/trending"
+            class="px-4.5 py-2 rounded-full border border-gray-200 dark:border-zinc-700 hover:border-brand dark:hover:border-brand text-xs font-bold transition flex items-center gap-1.5">
+            <span class="h-2 w-2 rounded-full bg-brand"></span> Trending Stays
+          </a>
+          <a href="/classic-dorms"
+            class="px-4.5 py-2 rounded-full border border-gray-200 dark:border-zinc-700 hover:border-brand dark:hover:border-brand text-xs font-bold transition flex items-center gap-1.5">
+            <span class="h-2 w-2 rounded-full bg-teal-500"></span> Classic
+            Dorms
+          </a>
+          <a href="/villas"
+            class="px-4.5 py-2 rounded-full border border-gray-200 dark:border-zinc-700 hover:border-brand dark:hover:border-brand text-xs font-bold transition flex items-center gap-1.5">
+            <span class="h-2 w-2 rounded-full bg-amber-500"></span> Luxury
+            Villas
+          </a>
+        </div>
+      </div>
+
+      <!-- Catalog Stays Grid - strictly displaying 3 specific category homes -->
+      <div id="stays-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-x-6 gap-y-12">
+        <!-- Dynamically populated stays from script populate here -->
+      </div>
+    </div>
+  </main>
+
+  <!-- RESERVATION INTERFACE VIEW -->
+  <main id="view-reserve" class="hidden py-12 sm:py-16 px-4 sm:px-6 fade-in">
+    <div class="max-w-5xl mx-auto">
+      <!-- Back Arrow/Title Nav Bar -->
+      <div class="flex items-center gap-3.5 mb-10">
+        <button id="reserve-back-arrow"
+          class="p-2.5 bg-gray-50 dark:bg-zinc-800 rounded-full hover:bg-gray-100 dark:hover:bg-zinc-700 transition shadow-sm border border-gray-100 dark:border-zinc-700/50">
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-dark dark:text-white" fill="none"
+            viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M15 19l-7-7 7-7" />
+          </svg>
+        </button>
+        <h1 class="text-2xl sm:text-3xl font-extrabold text-dark dark:text-white tracking-tight">
+          Confirm and pay
+        </h1>
+      </div>
+
+      <!-- Layout Grid -->
+      <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-start">
+        <!-- Left Column: Checkout Inputs Form -->
+        <div class="lg:col-span-7 space-y-8">
+          <!-- Reservation Segment 1: Trip dates and guests details -->
+          <div class="border-b border-gray-100 dark:border-zinc-800 pb-8 space-y-6">
+            <h2 class="text-xl font-extrabold">Your trip details</h2>
+
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+              <!-- Check-in input dates -->
+              <div class="flex flex-col gap-1.5">
+                <label for="check-in"
+                  class="text-xs font-extrabold text-gray-500 dark:text-gray-400 uppercase tracking-wider">Check-in</label>
+                <input type="date" id="check-in"
+                  class="bg-gray-50 dark:bg-zinc-800 border border-gray-200 dark:border-zinc-700 rounded-2xl px-4 py-3.5 text-sm focus:ring-2 focus:ring-brand focus:border-transparent outline-none font-bold transition" />
+              </div>
+              <!-- Check-out input dates -->
+              <div class="flex flex-col gap-1.5">
+                <label for="check-out"
+                  class="text-xs font-extrabold text-gray-500 dark:text-gray-400 uppercase tracking-wider">Checkout</label>
+                <input type="date" id="check-out"
+                  class="bg-gray-50 dark:bg-zinc-800 border border-gray-200 dark:border-zinc-700 rounded-2xl px-4 py-3.5 text-sm focus:ring-2 focus:ring-brand focus:border-transparent outline-none font-bold transition" />
+              </div>
+            </div>
+
+            <!-- Interactive Guest Counter Selector -->
+            <div
+              class="bg-gray-50 dark:bg-zinc-800/50 p-4 sm:p-5 rounded-2xl border border-gray-100 dark:border-zinc-800 flex justify-between items-center gap-4">
+              <div>
+                <h3 class="font-extrabold text-sm sm:text-base">Guests</h3>
+                <p id="guest-count-summary" class="text-xs sm:text-sm text-gray-500 dark:text-gray-400">
+                  1 guest
+                </p>
+              </div>
+              <!-- Interactive increment widget -->
+              <div
+                class="flex items-center gap-3.5 bg-white dark:bg-zinc-800 rounded-xl px-3 py-2 border border-gray-200 dark:border-zinc-700 shadow-sm select-none">
+                <button id="guest-dec"
+                  class="text-gray-500 dark:text-gray-300 hover:text-brand font-black text-lg w-6 h-6 flex items-center justify-center disabled:opacity-30 disabled:pointer-events-none"
+                  disabled>
+                  -
+                </button>
+                <span id="guest-val" class="font-extrabold text-sm w-4 text-center">1</span>
+                <button id="guest-inc"
+                  class="text-gray-500 dark:text-gray-300 hover:text-brand font-black text-lg w-6 h-6 flex items-center justify-center">
+                  +
+                </button>
+              </div>
+            </div>
+          </div>
+
+          <!-- Reservation Segment 2: Interactive payment interface details -->
+          <div class="border-b border-gray-100 dark:border-zinc-800 pb-8 space-y-6">
+            <div class="flex items-center justify-between">
+              <h2 class="text-xl font-extrabold">Pay with</h2>
+              <!-- Visa / MasterCard branding -->
+              <div class="flex items-center gap-1.5 text-gray-300 dark:text-zinc-600">
+                <span
+                  class="text-[10px] font-black px-2 py-0.5 border border-gray-200 dark:border-zinc-700 rounded text-gray-400">VISA</span>
+                <span
+                  class="text-[10px] font-black px-2 py-0.5 border border-gray-200 dark:border-zinc-700 rounded text-gray-400">MC</span>
+              </div>
+            </div>
+
+            <!-- Input Payment Form -->
+            <div class="space-y-4">
+              <div class="relative">
+                <input type="text" id="card-holder" placeholder="Name on card" required
+                  class="w-full bg-gray-50 dark:bg-zinc-800 border border-gray-200 dark:border-zinc-700 rounded-2xl px-4 py-3.5 text-sm focus:ring-2 focus:ring-brand focus:border-transparent outline-none transition" />
+              </div>
+              <div class="relative">
+                <input type="text" id="card-number" placeholder="Card number" maxlength="19" required
+                  class="w-full bg-gray-50 dark:bg-zinc-800 border border-gray-200 dark:border-zinc-700 rounded-2xl px-4 py-3.5 text-sm focus:ring-2 focus:ring-brand focus:border-transparent outline-none transition" />
+              </div>
+              <div class="grid grid-cols-2 gap-4">
+                <input type="text" id="card-exp" placeholder="Expiration (MM/YY)" maxlength="5" required
+                  class="bg-gray-50 dark:bg-zinc-800 border border-gray-200 dark:border-zinc-700 rounded-2xl px-4 py-3.5 text-sm focus:ring-2 focus:ring-brand focus:border-transparent outline-none transition" />
+                <input type="password" id="card-cvv" placeholder="CVV" maxlength="3" required
+                  class="bg-gray-50 dark:bg-zinc-800 border border-gray-200 dark:border-zinc-700 rounded-2xl px-4 py-3.5 text-sm focus:ring-2 focus:ring-brand focus:border-transparent outline-none transition" />
+              </div>
+            </div>
+          </div>
+
+          <!-- Reservation Segment 3: Premium cancellation policy information -->
+          <div class="space-y-6">
+            <div>
+              <h2 class="text-xl font-extrabold mb-2">Cancellation policy</h2>
+              <p class="text-sm text-gray-500 dark:text-gray-400 leading-relaxed">
+                Free cancellation for 48 hours. After that, cancel before
+                check-in to get a full refund of the stay price minus the
+                service fee.
+              </p>
+            </div>
+            <button id="confirm-booking-btn"
+              class="w-full bg-brand hover:bg-[#E31C5F] text-white font-extrabold py-4 px-6 rounded-2xl flex items-center justify-center gap-2.5 transition-all shadow-lg shadow-brand/20 active:scale-[0.98] focus:outline-none focus:ring-2 focus:ring-brand focus:ring-offset-2 dark:focus:ring-offset-[#121212] select-none text-base">
+              <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24"
+                stroke="currentColor" stroke-width="2.5">
+                <path stroke-linecap="round" stroke-linejoin="round"
+                  d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
+              </svg>
+              <span>Confirm and Pay</span>
+            </button>
+          </div>
+        </div>
+
+        <!-- Right Column: Interactive Sticky Receipt Summary Card -->
+        <div class="lg:col-span-5 lg:sticky lg:top-28">
+          <div
+            class="border border-gray-200 dark:border-zinc-800 bg-white dark:bg-zinc-800/80 rounded-3xl p-6 shadow-xl space-y-6">
+            <!-- Selected Home Premium Highlight Header -->
+            <div class="flex gap-4 items-center border-b border-gray-100 dark:border-zinc-800/80 pb-6">
+              <div class="w-24 h-20 overflow-hidden rounded-xl bg-gray-100 dark:bg-zinc-700 flex-shrink-0">
+                <img id="summary-img" src="" alt="" class="w-full h-full object-cover" />
+              </div>
+              <div class="min-w-0 flex-1">
+                <span id="summary-cat"
+                  class="text-[10px] uppercase font-extrabold tracking-wider bg-brand/10 text-brand px-2.5 py-0.5 rounded-full inline-block mb-1"></span>
+                <h3 id="summary-name" class="font-extrabold text-dark dark:text-white text-base truncate"></h3>
+                <p id="summary-loc" class="text-xs text-gray-500 dark:text-gray-400 mt-0.5 truncate"></p>
+                <div class="flex items-center gap-1 mt-1">
+                  <svg class="h-3.5 w-3.5 text-amber-400 fill-current" viewBox="0 0 20 20">
+                    <path
+                      d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
+                  </svg>
+                  <span class="text-xs font-bold">4.92</span>
+                  <span class="text-xs text-gray-400">(48 reviews)</span>
+                </div>
+              </div>
+            </div>
+
+            <!-- Price breakdown details calculations -->
+            <div class="space-y-4">
+              <h4 class="font-extrabold text-xs uppercase tracking-wider text-gray-400 dark:text-zinc-500">
+                Price Details
+              </h4>
+
+              <div class="flex justify-between items-center text-sm">
+                <span id="label-nights" class="text-gray-600 dark:text-gray-400"></span>
+                <span id="calc-nights" class="font-semibold text-dark dark:text-white"></span>
+              </div>
+
+              <div class="flex justify-between items-center text-sm">
+                <span class="text-gray-600 dark:text-gray-400">VibeStay service fee</span>
+                <span id="calc-service" class="font-semibold text-dark dark:text-white"></span>
+              </div>
+
+              <div class="flex justify-between items-center text-sm">
+                <span class="text-gray-600 dark:text-gray-400">Occupancy taxes</span>
+                <span id="calc-tax" class="font-semibold text-dark dark:text-white"></span>
+              </div>
+
+              <hr class="border-gray-100 dark:border-zinc-700/80 my-2" />
+
+              <!-- Grand Total Pricing -->
+              <div class="flex justify-between items-center">
+                <span class="font-extrabold text-base text-dark dark:text-white">Total (USD)</span>
+                <span id="calc-total" class="font-black text-2xl text-brand"></span>
+              </div>
+            </div>
+
+            <!-- Extra value props -->
+            <div
+              class="bg-gray-50 dark:bg-zinc-800/40 p-4 rounded-xl border border-gray-100 dark:border-zinc-800/80 flex gap-3.5 items-start">
+              <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-emerald-500 shrink-0 mt-0.5" fill="none"
+                viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
+                <path stroke-linecap="round" stroke-linejoin="round"
+                  d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
+              </svg>
+              <div class="text-xs space-y-0.5">
+                <p class="font-extrabold text-emerald-600 dark:text-emerald-400">
+                  VibeStay Protection Included
+                </p>
+                <p class="text-gray-400 dark:text-zinc-500 leading-relaxed">
+                  Every booking includes premium protection from host
+                  cancellations, listing inaccuracies, and travel emergencies.
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <!-- SECTION 3: Confirmation Success Page View -->
+  <main id="view-success" class="hidden py-20 px-4 sm:px-6 slide-up">
+    <div
+      class="max-w-md mx-auto bg-white dark:bg-zinc-900 border border-gray-100 dark:border-zinc-800 rounded-3xl p-8 shadow-2xl text-center space-y-6">
+      <!-- Animated success checkmark -->
+      <div
+        class="inline-flex items-center justify-center h-20 w-20 rounded-full bg-emerald-50 dark:bg-emerald-950/50 text-emerald-500 mb-2">
+        <svg xmlns="http://www.w3.org/2000/svg" class="h-10 w-10" fill="none" viewBox="0 0 24 24" stroke="currentColor"
+          stroke-width="3">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7" />
+        </svg>
+      </div>
+
+      <div class="space-y-2">
+        <h1 class="text-3xl font-extrabold text-dark dark:text-white">
+          Pack your bags!
+        </h1>
+        <p class="text-emerald-600 dark:text-emerald-400 font-extrabold text-sm uppercase tracking-wider">
+          Stay Confirmed
+        </p>
+      </div>
+
+      <p class="text-gray-500 dark:text-gray-400 text-sm leading-relaxed">
+        Your reservation has been completed successfully. Check-in guidelines
+        and secure door unlock codes will be emailed shortly.
+      </p>
+
+      <!-- Dynamic Invoice Reference Info -->
+      <div
+        class="bg-gray-50 dark:bg-zinc-800/60 rounded-2xl p-5 text-left divide-y divide-gray-100 dark:divide-zinc-700/80 text-xs">
+        <div class="flex justify-between py-3">
+          <span class="text-gray-400 font-medium">Booking Reference</span>
+          <span id="receipt-ref" class="font-black text-dark dark:text-white"></span>
+        </div>
+        <div class="flex justify-between py-3">
+          <span class="text-gray-400 font-medium">Property Name</span>
+          <span id="receipt-name"
+            class="font-extrabold text-dark dark:text-white text-right truncate max-w-[200px]"></span>
+        </div>
+        <div class="flex justify-between py-3">
+          <span class="text-gray-400 font-medium">Reservation Dates</span>
+          <span id="receipt-dates" class="font-extrabold text-dark dark:text-white"></span>
+        </div>
+        <div class="flex justify-between py-3">
+          <span class="text-gray-400 font-medium">Payment Total</span>
+          <span id="receipt-total" class="font-black text-brand text-sm"></span>
+        </div>
+      </div>
+
+      <div class="pt-4">
+        <button onclick="navigateTo('home')"
+          class="w-full bg-dark dark:bg-white text-white dark:text-dark font-extrabold py-3.5 rounded-2xl transition hover:opacity-95 text-sm select-none shadow-md">
+          Discover more stays
+        </button>
+      </div>
+    </div>
+  </main>
+
+  <!-- PREMIUM PLATFORM FOOTER -->
+  <footer
+    class="border-t border-gray-100 dark:border-zinc-800 bg-gray-50 dark:bg-zinc-900/50 mt-16 py-12 sm:py-16 transition-colors duration-300">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6">
+      <!-- Grid layout for footer columns -->
+      <div class="grid grid-cols-1 md:grid-cols-4 gap-8 md:gap-12 mb-12">
+        <!-- Column 1: Brand Pitch -->
+        <div class="space-y-4">
+          <div
+            class="text-brand font-extrabold text-xl tracking-tighter flex items-center gap-1.5 cursor-pointer select-none">
+            <svg class="h-6 w-6 text-brand" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M15 25L50 85L85 25" stroke="currentColor" stroke-width="12" stroke-linecap="round"
+                stroke-linejoin="round" />
+              <path d="M35 25L50 55L65 25" stroke="currentColor" stroke-width="8" stroke-linecap="round"
+                stroke-linejoin="round" />
+            </svg>
+            <span class="font-extrabold tracking-tight">vibestay</span>
+          </div>
+          <p class="text-xs sm:text-sm text-gray-500 dark:text-gray-400 leading-relaxed">
+            Curating exceptional architectural masterpieces, luxury lofts, and
+            classic escapes across the globe. Elevate your destination
+            experience.
+          </p>
+        </div>
+
+        <!-- Column 2: Explore Relative links -->
+        <div class="space-y-3.5 text-left">
+          <h4 class="text-xs font-black uppercase tracking-widest text-dark dark:text-white">
+            Explore
+          </h4>
+          <ul class="space-y-2 text-xs sm:text-sm">
+            <li>
+              <a href="/home-list"
+                class="text-gray-500 dark:text-gray-400 hover:text-brand dark:hover:text-white transition">All Stay
+                Listings</a>
+            </li>
+            <li>
+              <a href="/trending"
+                class="text-gray-500 dark:text-gray-400 hover:text-brand dark:hover:text-white transition">Trending
+                Escapes</a>
+            </li>
+            <li>
+              <a href="/classic-dorms"
+                class="text-gray-500 dark:text-gray-400 hover:text-brand dark:hover:text-white transition">Comfort
+                Dormitories</a>
+            </li>
+            <li>
+              <a href="/villas"
+                class="text-gray-500 dark:text-gray-400 hover:text-brand dark:hover:text-white transition">Luxury Villas
+                Portfolio</a>
+            </li>
+          </ul>
+        </div>
+
+        <!-- Column 3: Legal / Compliance Relative links -->
+        <div class="space-y-3.5 text-left">
+          <h4 class="text-xs font-black uppercase tracking-widest text-dark dark:text-white">
+            Hosting
+          </h4>
+          <ul class="space-y-2 text-xs sm:text-sm">
+            <li>
+              <a href="/host"
+                class="text-gray-500 dark:text-gray-400 hover:text-brand dark:hover:text-white transition">List your
+                Space</a>
+            </li>
+            <li>
+              <a href="/community-guidelines"
+                class="text-gray-500 dark:text-gray-400 hover:text-brand dark:hover:text-white transition">Community
+                Guidelines</a>
+            </li>
+            <li>
+              <a href="/trust-and-safety"
+                class="text-gray-500 dark:text-gray-400 hover:text-brand dark:hover:text-white transition">Trust &
+                Safety</a>
+            </li>
+            <li>
+              <a href="/help-center"
+                class="text-gray-500 dark:text-gray-400 hover:text-brand dark:hover:text-white transition">Help Center
+                FAQ</a>
+            </li>
+          </ul>
+        </div>
+
+        <!-- Column 4: Newsletter widget -->
+        <div class="space-y-4 text-left">
+          <h4 class="text-xs font-black uppercase tracking-widest text-dark dark:text-white">
+            Subscribe for Deals
+          </h4>
+          <p class="text-xs text-gray-500 dark:text-gray-400">
+            Join our club to get secret discounts up to 40% off.
+          </p>
+          <form action="/newsletter-signup" method="POST" class="flex gap-2">
+            <input type="email" placeholder="Your email address" required
+              class="w-full text-xs px-3.5 py-2.5 rounded-xl bg-white dark:bg-zinc-800 border border-gray-200 dark:border-zinc-700 outline-none focus:border-brand dark:focus:border-brand" />
+            <button type="submit" class="bg-brand hover:bg-[#E31C5F] text-white p-2.5 rounded-xl transition">
+              <svg class="h-4.5 w-4.5 transform rotate-45" fill="none" stroke="currentColor" viewBox="0 0 24 24"
+                stroke-width="2.5">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8" />
+              </svg>
+            </button>
+          </form>
+        </div>
+      </div>
+
+      <hr class="border-gray-200 dark:border-zinc-800 my-8" />
+
+      <!-- Bottom bar -->
+      <div
+        class="flex flex-col sm:flex-row justify-between items-center gap-4 text-xs text-gray-500 dark:text-gray-400">
+        <p>
+          © <span id="current-year">2026</span> VibeStay Inc. All premium
+          rights reserved.
+        </p>
+        <div class="flex flex-wrap gap-4">
+          <a href="/privacy-policy" class="hover:text-brand transition">Privacy Policy</a>
+          <span>•</span>
+          <a href="/terms-of-service" class="hover:text-brand transition">Terms of Service</a>
+          <span>•</span>
+          <a href="/site-map" class="hover:text-brand transition">Sitemap</a>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <!-- JavaScript Navigation, Database & Component Interaction Modules -->
+  <script>
+    // Strictly limited to 3 stays representing Trending, Classic Dorm, and Villa categories
+    const propertiesDb = [
+      {
+        id: "stay-trending",
+        category: "Trending",
+        categoryClass: "bg-brand/10 text-brand",
+        name: "Aura Glass Dome Resort",
+        location: "Reykjavik, Iceland",
+        description:
+          "Sleep under the spectacular dancing Aurora Borealis inside this luxury custom geometric glass dome. Fully climate-controlled with natural hot geothermal springs flowing directly inside.",
+        price: 290,
+        image:
+          "https://images.unsplash.com/photo-1510312305653-8ed496efae75?auto=format&fit=crop&q=80&w=600",
+      },
+      {
+        id: "stay-classic",
+        category: "Classic Dorm",
+        categoryClass: "bg-teal-500/10 text-teal-600 dark:text-teal-400",
+        name: "Minimalist Forest Loft",
+        location: "Kyoto, Japan",
+        description:
+          "Tucked inside a tranquil bamboo forest. This classic architectural dormitory-style loft features shared workspace rooms, authentic cedar wood accents, and tatami floor social areas.",
+        price: 185,
+        image:
+          "https://images.unsplash.com/photo-1508333706533-1ab43ecb1606?auto=format&fit=crop&q=80&w=600",
+      },
+      {
+        id: "stay-villa",
+        category: "Villa",
+        categoryClass: "bg-amber-500/10 text-amber-600 dark:text-amber-400",
+        name: "Sienna Terracotta Villa",
+        location: "Tuscany, Italy",
+        description:
+          "Escape to historic Italian hillsides in this private classical villa, outfitted with terracotta tile roofs, original fireplace brickwork, vineyard terraces, and an infinity overlook pool.",
+        price: 340,
+        image:
+          "https://images.unsplash.com/photo-1512917774080-9991f1c4c750?auto=format&fit=crop&q=80&w=600",
+      },
+    ];
+
+    // Session Management Elements
+    let selectedProperty = null;
+    let numberOfGuests = 1;
+
+    // Platform View Outlets
+    const homeView = document.getElementById("view-home");
+    const heroBanner = document.getElementById("hero-banner");
+    const reserveView = document.getElementById("view-reserve");
+    const successView = document.getElementById("view-success");
+    const staysGrid = document.getElementById("stays-grid");
+    const backToHomeBtn = document.getElementById("back-to-home");
+
+    // Form Elements Outlets
+    const checkInInput = document.getElementById("check-in");
+    const checkOutInput = document.getElementById("check-out");
+
+    // Guest Picker Outlets
+    const guestVal = document.getElementById("guest-val");
+    const guestInc = document.getElementById("guest-inc");
+    const guestDec = document.getElementById("guest-dec");
+    const guestSummaryLabel = document.getElementById("guest-count-summary");
+
+    // Receipt Calculator Outlets
+    const summaryImg = document.getElementById("summary-img");
+    const summaryName = document.getElementById("summary-name");
+    const summaryLoc = document.getElementById("summary-loc");
+    const summaryCat = document.getElementById("summary-cat");
+    const labelNights = document.getElementById("label-nights");
+    const calcNights = document.getElementById("calc-nights");
+    const calcService = document.getElementById("calc-service");
+    const calcTax = document.getElementById("calc-tax");
+    const calcTotal = document.getElementById("calc-total");
+
+    // Transaction Action Outlet
+    const confirmBookingBtn = document.getElementById("confirm-booking-btn");
+
+    // Invoice Confirmation Outlets
+    const receiptRef = document.getElementById("receipt-ref");
+    const receiptName = document.getElementById("receipt-name");
+    const receiptDates = document.getElementById("receipt-dates");
+    const receiptTotal = document.getElementById("receipt-total");
+
+    // Setting date pickers values range to Today and Day After tomorrow
+    const today = new Date();
+    const inTwoDays = new Date();
+    inTwoDays.setDate(today.getDate() + 2);
+
+    checkInInput.value = today.toISOString().split("T")[0];
+    checkOutInput.value = inTwoDays.toISOString().split("T")[0];
+
+    // Render catalog grid containing exactly the three customized categorised items
+    function renderCuratedCatalog() {
+      staysGrid.innerHTML = "";
+      propertiesDb.forEach((property) => {
+        const card = document.createElement("div");
+        card.className =
+          "group cursor-pointer flex flex-col justify-between h-full bg-white dark:bg-zinc-800/20 border border-gray-100 dark:border-zinc-800/40 p-4 rounded-3xl shadow-sm hover:shadow-md transition-all duration-300 transform hover:-translate-y-1";
+        card.innerHTML = `
+            <div>
+              <div class="relative w-full aspect-[4/3] overflow-hidden rounded-2xl mb-4 bg-gray-100 dark:bg-zinc-800">
+                <img 
+                  src="${property.image}" 
+                  alt="${property.name}" 
+                  class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500 ease-out" 
+                /> 
+                <span class="absolute top-3 left-3 text-[10px] uppercase font-black tracking-widest px-3 py-1 rounded-full ${property.categoryClass} backdrop-blur-md shadow-sm">
+                  ${property.category}
+                </span>
+                <div class="absolute top-3 right-3 bg-white/90 dark:bg-[#1A1A1A]/90 backdrop-blur-sm px-2 py-0.5 rounded-full flex items-center gap-1 shadow-sm">
+                  <span class="text-amber-500 text-xs">★</span>
+                  <span class="text-[10px] font-black text-dark dark:text-white">4.92</span>
+                </div>
+              </div>
+              <div class="px-1 space-y-1">
+                <h3 class="text-base sm:text-lg font-black text-dark dark:text-white truncate">${property.name}</h3>
+                <p class="text-gray-500 dark:text-gray-400 text-xs sm:text-sm flex items-center gap-1">
+                  <svg class="h-3 w-3 text-brand" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"/></svg>
+                  ${property.location}
+                </p>
+                <p class="text-gray-400 dark:text-zinc-500 text-xs line-clamp-3 leading-relaxed pt-1.5 min-h-[3.30rem]">${property.description}</p>
+                <p class="font-black text-dark dark:text-white pt-2 text-sm">NRs ${property.price} <span class="font-normal text-gray-500 dark:text-gray-400">/ night</span></p>
+              </div>
+            </div>
+            <div class="px-1 mt-4">
+              <button onclick="initiateBooking('${property.id}')" class="w-full bg-brand hover:bg-[#E31C5F] text-white font-extrabold py-3 px-4 rounded-xl flex items-center justify-center gap-2 transition-all active:scale-[0.98] focus:outline-none focus:ring-2 focus:ring-brand focus:ring-offset-2 dark:focus:ring-offset-[#121212] select-none text-xs sm:text-sm shadow-md">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
+                  <path stroke-linecap="round" stroke-linejoin="round" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                </svg>
+                <span>Book Stay</span>
+              </button>
+            </div>
+          `;
+        staysGrid.appendChild(card);
+      });
+    }
+
+    // Router state navigator
+    function navigateTo(viewName) {
+      window.scrollTo({ top: 0, behavior: "smooth" });
+
+      homeView.classList.add("hidden");
+      heroBanner.classList.add("hidden");
+      reserveView.classList.add("hidden");
+      successView.classList.add("hidden");
+      backToHomeBtn.classList.add("hidden");
+
+      if (viewName === "home") {
+        homeView.classList.remove("hidden");
+        heroBanner.classList.remove("hidden");
+      } else if (viewName === "reserve") {
+        reserveView.classList.remove("hidden");
+        backToHomeBtn.classList.remove("hidden");
+      } else if (viewName === "success") {
+        successView.classList.remove("hidden");
+      }
+    }
+
+    // Populate card parameters into Checkout modules
+    function initiateBooking(propertyId) {
+      selectedProperty = propertiesDb.find((item) => item.id === propertyId);
+      if (!selectedProperty) return;
+
+      summaryImg.src = selectedProperty.image;
+      summaryImg.alt = selectedProperty.name;
+      summaryName.textContent = selectedProperty.name;
+      summaryLoc.textContent = selectedProperty.location;
+      summaryCat.textContent = selectedProperty.category;
+
+      // Apply visual category highlights dynamically on checkout page
+      summaryCat.className = `text-[10px] uppercase font-extrabold tracking-wider px-2.5 py-0.5 rounded-full inline-block mb-1 ${selectedProperty.categoryClass}`;
+
+      updateBookingPricingCalculation();
+      navigateTo("reserve");
+    }
+
+    // Realtime Checkout Invoice Calculations
+    function updateBookingPricingCalculation() {
+      if (!selectedProperty) return;
+
+      const checkInDate = new Date(checkInInput.value);
+      const checkOutDate = new Date(checkOutInput.value);
+
+      // Calculate delta nights difference (minimum fallback 1 night)
+      let deltaNights = Math.round(
+        (checkOutDate - checkInDate) / (1000 * 60 * 60 * 24),
+      );
+      if (isNaN(deltaNights) || deltaNights <= 0) {
+        deltaNights = 1;
+      }
+
+      const baselinePriceSum = selectedProperty.price * deltaNights;
+      const serviceFee = Math.round(baselinePriceSum * 0.08); // 8% standard service fee
+      const taxContribution = Math.round(baselinePriceSum * 0.12); // 12% baseline tourism tax
+      const absoluteGrandTotal =
+        baselinePriceSum + serviceFee + taxContribution;
+
+      // Populate receipt content elements
+      labelNights.textContent = `$${selectedProperty.price} x ${deltaNights} night${deltaNights > 1 ? "s" : ""}`;
+      calcNights.textContent = `$${baselinePriceSum}`;
+      calcService.textContent = `$${serviceFee}`;
+      calcTax.textContent = `$${taxContribution}`;
+      calcTotal.textContent = `$${absoluteGrandTotal}`;
+    }
+
+    // Live updates upon date alterations
+    checkInInput.addEventListener("change", () => {
+      const checkInDate = new Date(checkInInput.value);
+      const minCheckoutLimit = new Date(checkInDate);
+      minCheckoutLimit.setDate(minCheckoutLimit.getDate() + 1);
+      checkOutInput.min = minCheckoutLimit.toISOString().split("T")[0];
+
+      if (new Date(checkOutInput.value) <= checkInDate) {
+        checkOutInput.value = minCheckoutLimit.toISOString().split("T")[0];
+      }
+      updateBookingPricingCalculation();
+    });
+
+    checkOutInput.addEventListener("change", updateBookingPricingCalculation);
+
+    // Guests Selector triggers
+    guestInc.addEventListener("click", () => {
+      if (numberOfGuests < 8) {
+        numberOfGuests++;
+        updateGuestsUI();
+      }
+    });
+
+    guestDec.addEventListener("click", () => {
+      if (numberOfGuests > 1) {
+        numberOfGuests--;
+        updateGuestsUI();
+      }
+    });
+
+    function updateGuestsUI() {
+      guestVal.textContent = numberOfGuests;
+      guestSummaryLabel.textContent = `${numberOfGuests} guest${numberOfGuests > 1 ? "s" : ""}`;
+      guestDec.disabled = numberOfGuests === 1;
+      guestInc.disabled = numberOfGuests === 8;
+    }
+
+    // Credit Card layout auto formatting space loops
+    const cardNumberInput = document.getElementById("card-number");
+    cardNumberInput.addEventListener("input", (e) => {
+      let rawDigitsVal = e.target.value
+        .replace(/\s+/g, "")
+        .replace(/[^0-9]/gi, "");
+      let groupedCardVal = "";
+      for (let idx = 0; idx < rawDigitsVal.length; idx++) {
+        if (idx > 0 && idx % 4 === 0) {
+          groupedCardVal += " ";
+        }
+        groupedCardVal += rawDigitsVal[idx];
+      }
+      e.target.value = groupedCardVal;
+    });
+
+    // Submit Confirm & Pay Transaction triggers success screen
+    confirmBookingBtn.addEventListener("click", () => {
+      const cardHolder = document.getElementById("card-holder").value.trim();
+      const cardNum = cardNumberInput.value.trim();
+      const cardExp = document.getElementById("card-exp").value.trim();
+      const cardCVV = document.getElementById("card-cvv").value.trim();
+
+      // Highlighting error borders on unfilled payment fields
+      if (!cardHolder || cardNum.length < 15 || !cardExp || !cardCVV) {
+        confirmBookingBtn.classList.add("border-2", "border-brand");
+        setTimeout(
+          () =>
+            confirmBookingBtn.classList.remove("border-2", "border-brand"),
+          2000,
+        );
+        return;
+      }
+
+      // Generate customized confirmation transaction reference code
+      const randomBookingRef =
+        "VIBE-" + Math.floor(100000 + Math.random() * 900000);
+      const nightsText = labelNights.textContent.split("x")[1].trim();
+
+      receiptRef.textContent = randomBookingRef;
+      receiptName.textContent = selectedProperty.name;
+      receiptDates.textContent = `${checkInInput.value} to ${checkOutInput.value} (${nightsText})`;
+      receiptTotal.textContent = calcTotal.textContent;
+
+      navigateTo("success");
+    });
+
+    // Platform View navigation controls
+    backToHomeBtn.addEventListener("click", () => navigateTo("home"));
+    document
+      .getElementById("reserve-back-arrow")
+      .addEventListener("click", () => navigateTo("home"));
+
+    // Hamburger dropdown controls
+    const menuButton = document.getElementById("menu-button");
+    const menuDropdown = document.getElementById("menu-dropdown");
+
+    menuButton.addEventListener("click", (e) => {
+      e.stopPropagation();
+      menuDropdown.classList.toggle("hidden");
+    });
+
+    document.addEventListener("click", () => {
+      menuDropdown.classList.add("hidden");
+    });
+
+    // Dark Mode toggle scripting logic
+    const themeToggleBtn = document.getElementById("theme-toggle");
+    const sunIcon = document.getElementById("theme-toggle-sun");
+    const moonIcon = document.getElementById("theme-toggle-moon");
+
+    if (document.documentElement.classList.contains("dark")) {
+      sunIcon.classList.remove("hidden");
+    } else {
+      moonIcon.classList.remove("hidden");
+    }
+
+    themeToggleBtn.addEventListener("click", function () {
+      sunIcon.classList.toggle("hidden");
+      moonIcon.classList.toggle("hidden");
+
+      if (document.documentElement.classList.contains("dark")) {
+        document.documentElement.classList.remove("dark");
+        localStorage.setItem("color-theme", "light");
+      } else {
+        document.documentElement.classList.add("dark");
+        localStorage.setItem("color-theme", "dark");
+      }
+    });
+
+    // Update copyright footer year dynamically to match 2026
+    document.getElementById("current-year").textContent =
+      new Date().getFullYear() || "2026";
+
+    // Application initialization
+    window.onload = function () {
+      renderCuratedCatalog();
+
+      // Setting up standard checkout limits to block yesterday's dates
+      const tomorrow = new Date(today);
+      tomorrow.setDate(tomorrow.getDate() + 1);
+      checkInInput.min = today.toISOString().split("T")[0];
+      checkOutInput.min = tomorrow.toISOString().split("T")[0];
+    };
+  </script>
+</body>
+
+</html>

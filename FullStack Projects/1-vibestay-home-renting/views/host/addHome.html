@@ -1,0 +1,362 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>VIBESTAY - ADD HOME</title>
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    
+    <style>
+        :root {
+            /* VibeStay Brand Tokens */
+            --primary-gradient: linear-gradient(135deg, #FF385C 0%, #FF8A65 100%);
+            --primary-color: #FF385C;
+            --primary-hover: #E31C5F;
+            --text-main: #1A1A1A;
+            --text-muted: #64748b;
+            --bg-color: #f8fafc;
+            --card-bg: rgba(255, 255, 255, 0.85);
+            --border-color: rgba(226, 232, 240, 0.8);
+            --card-shadow: 0 20px 40px -15px rgba(0, 0, 0, 0.05);
+            --input-bg: #ffffff;
+            --focus-ring: rgba(255, 56, 92, 0.15);
+        }
+
+        /* Dark Mode variables mapping */
+        @media (prefers-color-scheme: dark) {
+            :root {
+                --text-main: #f1f5f9;
+                --text-muted: #94a3b8;
+                --bg-color: #121212;
+                --card-bg: rgba(26, 26, 26, 0.85);
+                --border-color: rgba(63, 63, 70, 0.5);
+                --card-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+                --input-bg: #27272a;
+            }
+        }
+
+        /* Manual class switch support matching the home page */
+        .dark {
+            --text-main: #f1f5f9;
+            --text-muted: #94a3b8;
+            --bg-color: #121212;
+            --card-bg: rgba(26, 26, 26, 0.85);
+            --border-color: rgba(63, 63, 70, 0.5);
+            --card-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+            --input-bg: #27272a;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-main);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            padding: 40px 24px;
+            overflow-x: hidden;
+            position: relative;
+            transition: background-color 0.3s ease, color 0.3s ease;
+        }
+
+        /* Decorative glowing background elements */
+        body::before {
+            content: '';
+            position: absolute;
+            width: 350px;
+            height: 350px;
+            background: rgba(255, 56, 92, 0.12);
+            filter: blur(90px);
+            border-radius: 50%;
+            top: 5%;
+            left: 5%;
+            z-index: -1;
+        }
+
+        body::after {
+            content: '';
+            position: absolute;
+            width: 450px;
+            height: 450px;
+            background: rgba(255, 138, 101, 0.12);
+            filter: blur(120px);
+            border-radius: 50%;
+            bottom: 5%;
+            right: 5%;
+            z-index: -1;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 580px;
+            background: var(--card-bg);
+            border: 1px solid var(--border-color);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border-radius: 28px;
+            padding: 40px;
+            box-shadow: var(--card-shadow);
+            animation: slideUp 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        @keyframes slideUp {
+            from { opacity: 0; transform: translateY(32px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .header {
+            margin-bottom: 32px;
+            text-align: left;
+        }
+
+        /* Exclusive VibeStay Abstract Geometric Monogram */
+        .logo-small {
+            color: var(--primary-color);
+            margin-bottom: 20px;
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            text-decoration: none;
+            user-select: none;
+        }
+
+        .logo-small svg {
+            height: 36px;
+            width: 36px;
+        }
+
+        .brand-name {
+            font-size: 1.65rem;
+            font-weight: 800;
+            letter-spacing: -0.05em;
+        }
+
+        h1 {
+            font-size: 1.85rem;
+            font-weight: 800;
+            letter-spacing: -0.03em;
+            color: var(--text-main);
+        }
+
+        p.subtitle {
+            color: var(--text-muted);
+            margin-top: 6px;
+            font-size: 0.95rem;
+            line-height: 1.5;
+        }
+
+        form {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .form-section {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            text-align: left;
+        }
+
+        label {
+            font-size: 0.75rem;
+            font-weight: 800;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            color: var(--text-muted);
+        }
+
+        input, textarea {
+            width: 100%;
+            background-color: var(--input-bg);
+            border: 1px solid var(--border-color);
+            color: var(--text-main);
+            padding: 14px 18px;
+            font-size: 0.95rem;
+            font-weight: 600;
+            font-family: inherit;
+            border-radius: 14px;
+            outline: none;
+            transition: all 0.25s ease;
+        }
+
+        textarea {
+            resize: vertical;
+            min-height: 100px;
+        }
+
+
+        input::placeholder {
+            color: var(--text-muted);
+            opacity: 0.6;
+        }
+
+        input:focus {
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 4px var(--focus-ring);
+        }
+
+        .price-input-wrapper {
+            position: relative;
+        }
+
+        .price-input-wrapper::before {
+            content: 'NRs';
+            position: absolute;
+            left: 18px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--text-main);
+            font-weight: 700;
+            font-size: 1rem;
+        }
+
+        .price-input-wrapper input {
+            padding-left: 62px;
+        }
+
+        button {
+            margin-top: 12px;
+            background: var(--primary-gradient);
+            color: white;
+            border: none;
+            padding: 16px;
+            font-size: 0.95rem;
+            font-weight: 700;
+            border-radius: 16px;
+            cursor: pointer;
+            transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+            box-shadow: 0 10px 25px -5px rgba(255, 56, 92, 0.3);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+
+        button:hover {
+            transform: scale(1.02) translateY(-2px);
+            box-shadow: 0 20px 30px -5px rgba(255, 56, 92, 0.4);
+        }
+
+        button:active {
+            transform: scale(0.98) translateY(0);
+        }
+
+        .cancel-link {
+            display: inline-block;
+            text-align: center;
+            margin-top: 24px;
+            color: var(--text-muted);
+            text-decoration: none;
+            font-size: 0.9rem;
+            font-weight: 700;
+            transition: color 0.2s ease;
+        }
+
+        .cancel-link:hover {
+            color: var(--primary-color);
+        }
+
+        /* Responsiveness adaptations */
+        @media (max-width: 480px) {
+            body {
+                padding: 24px 16px;
+            }
+            .container {
+                padding: 24px 20px;
+                border-radius: 20px;
+            }
+            h1 {
+                font-size: 1.5rem;
+            }
+            input {
+                padding: 12px 16px;
+            }
+            .price-input-wrapper::before {
+                left: 16px;
+            }
+            .price-input-wrapper input {
+                padding-left: 58px;
+            }
+            button {
+                padding: 14px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Header Monogram -->
+        <div class="header">
+            <a href="/" class="logo-small">
+                <svg viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M15 25L50 85L85 25" stroke="currentColor" stroke-width="12" stroke-linecap="round" stroke-linejoin="round"/>
+                    <path d="M35 25L50 55L65 25" stroke="currentColor" stroke-width="8" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+                <span class="brand-name">vibestay</span>
+            </a>
+            <h1>Add Your Home</h1>
+            <p class="subtitle">Tell us about your place to get started.</p>
+        </div>
+
+        <!-- FORM PATHS & LOGICS RETAINED EXACTLY FROM THE HOST BASE -->
+        <form action="/host/homeAdded" method="POST">
+            <div class="form-section">
+                <label for="homeName">Home Name</label>
+                <input type="text" id="homeName" name="homeName" placeholder="e.g. Cozy Beachside Cottage" required>
+            </div>
+
+            <div class="form-section">
+                <label for="image">Image URL</label>
+                <input type="url" id="image" name="image" placeholder="e.g. https://example.com/image.jpg" required>
+            </div>
+
+            
+            <div class="form-section">
+                <label for="location">Location</label>
+                <input type="text" id="location" name="location" placeholder="e.g. Malibu, California" required>
+            </div>
+            
+            <div class="form-section">
+                <label for="price">Price per night</label>
+                <div class="price-input-wrapper">
+                    <input type="number" id="price" name="price" placeholder="0.00" required>
+                </div>
+            </div>
+            <div class="form-section">
+                <label for="description">Description</label>
+                <textarea type="text" id="description" name="description" placeholder="e.g. A beautiful beachfront property with stunning ocean views." required></textarea>
+            </div>
+            
+            <button type="submit">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                    <line x1="12" y1="5" x2="12" y2="19"></line>
+                    <line x1="5" y1="12" x2="19" y2="12"></line>
+                </svg>
+                List your property
+            </button>
+        </form>
+
+        <a href="#" class="cancel-link" onclick="window.history.back()">Cancel and go back</a>
+    </div>
+
+    <script>
+        // Real-time synchronization of system dark/light theme options
+        if (localStorage.getItem('color-theme') === 'dark' || (!('color-theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+            document.documentElement.classList.add('dark');
+        } else {
+            document.documentElement.classList.remove('dark');
+        }
+    </script>
+</body>
+</html>

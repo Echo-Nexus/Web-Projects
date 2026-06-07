@@ -1,0 +1,328 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>VIBE STAY | MY WISHLIST</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        // Configure Tailwind to support dark mode selector strategy
+        tailwind.config = {
+            darkMode: 'class',
+        }
+    </script>
+    <!-- FontAwesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Google Fonts: Inter -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap"
+        rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+
+        .text-brand {
+            color: #f43f5e;
+            /* Rose 500 */
+        }
+
+        .scrollbar-hide::-webkit-scrollbar {
+            display: none;
+        }
+
+        .scrollbar-hide {
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+        }
+    </style>
+</head>
+
+<body
+    class="bg-slate-50 dark:bg-zinc-950 text-slate-800 dark:text-zinc-100 min-h-screen flex flex-col antialiased transition-colors duration-300">
+
+    <!-- Premium Navbar -->
+    <header
+        class="sticky top-0 z-40 bg-white/80 dark:bg-zinc-900/80 backdrop-blur-md border-b border-slate-100 dark:border-zinc-800 transition-all duration-300">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-20 flex items-center justify-between">
+
+            <!-- Brand Logo -->
+            <div onclick="window.location.href='/'"
+                class="text-brand font-extrabold text-xl sm:text-2xl tracking-tighter flex items-center gap-1.5 sm:gap-2 cursor-pointer select-none shrink-0">
+                <svg class="h-6 w-6 sm:h-8 sm:w-8 text-brand shrink-0" viewBox="0 0 100 100" fill="none"
+                    xmlns="http://www.w3.org/2000/svg">
+                    <path d="M15 25L50 85L85 25" stroke="currentColor" stroke-width="12" stroke-linecap="round"
+                        stroke-linejoin="round" />
+                    <path d="M35 25L50 55L65 25" stroke="currentColor" stroke-width="8" stroke-linecap="round"
+                        stroke-linejoin="round" />
+                </svg>
+                <span
+                    class="font-extrabold text-xl sm:text-2xl tracking-tight text-slate-900 dark:text-zinc-50">vibestay</span>
+            </div>
+
+            <!-- Central Nav Search Info -->
+            <div
+                class="hidden md:flex items-center space-x-1 bg-white dark:bg-zinc-800 border border-slate-200/80 dark:border-zinc-700 rounded-full py-2 px-4 shadow-sm hover:shadow-md dark:shadow-zinc-900/10 transition-all cursor-pointer">
+                <span class="text-xs font-semibold px-3 border-r border-slate-200 dark:border-zinc-700">Anywhere</span>
+                <span class="text-xs font-semibold px-3 border-r border-slate-200 dark:border-zinc-700">Any week</span>
+                <span class="text-xs font-medium text-slate-500 dark:text-zinc-400 px-3 flex items-center gap-2">
+                    Add guests <i
+                        class="fa-solid fa-magnifying-glass text-rose-500 bg-rose-50 dark:bg-rose-950/30 p-1.5 rounded-full text-[10px]"></i>
+                </span>
+            </div>
+
+            <!-- Profile & Menu Actions Dropdown Container -->
+            <div class="relative flex items-center space-x-3 sm:space-x-4">
+
+                <!-- Modern Theme Toggle Button -->
+                <button id="theme-toggle"
+                    class="p-2.5 rounded-full border border-gray-200 dark:border-zinc-800 hover:bg-gray-100 dark:hover:bg-zinc-800/80 text-zinc-500 dark:text-zinc-400 transition-all active:scale-95"
+                    aria-label="Toggle Theme">
+                    <svg id="theme-toggle-sun" class="hidden h-5 w-5" fill="none" viewBox="0 0 24 24"
+                        stroke="currentColor" stroke-width="2.2">
+                        <path stroke-linecap="round" stroke-linejoin="round"
+                            d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364-6.364l-.707.707M6.343 17.657l-.707.707m12.728 0l-.707-.707M6.343 6.343l-.707-.707M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                    </svg>
+                    <svg id="theme-toggle-moon" class="hidden h-5 w-5" fill="none" viewBox="0 0 24 24"
+                        stroke="currentColor" stroke-width="2.2">
+                        <path stroke-linecap="round" stroke-linejoin="round"
+                            d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z" />
+                    </svg>
+                </button>
+
+                <!-- Dropdown Menu Trigger -->
+                <button id="menu-trigger" onclick="toggleMenuDropdown(event)"
+                    class="flex items-center space-x-3 border border-slate-200 dark:border-zinc-800 rounded-full p-2 bg-white dark:bg-zinc-900 cursor-pointer hover:shadow-md transition-all">
+                    <i class="fa-solid fa-bars text-slate-500 dark:text-zinc-400 text-sm pl-1.5"></i>
+
+                    <div
+                        class="bg-zinc-800 dark:bg-zinc-700 rounded-full w-6 h-6 flex items-center justify-center text-white text-[10px] sm:text-xs font-bold ring-2 ring-gray-100 dark:ring-zinc-800">
+                        U
+                    </div>
+                </button>
+
+                <!-- Navigation Dropdown Menu -->
+                <div id="menu-dropdown"
+                    class="hidden absolute right-0 top-14 w-52 sm:w-60 bg-white dark:bg-zinc-900 border border-gray-100 dark:border-zinc-850 rounded-2xl shadow-xl py-2.5 z-50 transition-all">
+                    <a href="/host"
+                        class="block px-4 py-3 text-sm font-semibold text-gray-700 dark:text-zinc-200 hover:bg-gray-50 dark:hover:bg-zinc-800/60 transition">Become
+                        a host</a>
+                    <hr class="border-gray-100 dark:border-zinc-800 my-1" />
+                    <a href="/home-list"
+                        class="block px-4 py-2.5 text-sm text-gray-600 dark:text-zinc-300 hover:bg-gray-50 dark:hover:bg-zinc-800/60 transition">Home
+                        Lists</a>
+                    <a href="/host/host-home-list"
+                        class="block px-4 py-2.5 text-sm text-gray-600 dark:text-zinc-300 hover:bg-gray-50 dark:hover:bg-zinc-800/60 transition">Host
+                        Home Lists</a>
+                    <a href="/bookings"
+                        class="block px-4 py-2.5 text-sm text-gray-600 dark:text-zinc-300 hover:bg-gray-50 dark:hover:bg-zinc-800/60 transition">Booking</a>
+                    <a href="/reserve"
+                        class="block px-4 py-2.5 text-sm text-gray-600 dark:text-zinc-300 hover:bg-gray-50 dark:hover:bg-zinc-800/60 transition">Reserve</a>
+                    <hr class="border-gray-100 dark:border-zinc-800 my-1" />
+                    <a href="/sign-up"
+                        class="block px-4 py-2.5 text-sm text-gray-600 dark:text-zinc-300 hover:bg-gray-50 dark:hover:bg-zinc-800/60 transition">Sign
+                        up</a>
+                    <a href="/log-in"
+                        class="block px-4 py-2.5 text-sm text-gray-600 dark:text-zinc-300 hover:bg-gray-50 dark:hover:bg-zinc-800/60 transition">Log
+                        in</a>
+                    <hr class="border-gray-100 dark:border-zinc-800 my-1" />
+                    <a href="/help-center"
+                        class="block px-4 py-2.5 text-sm text-gray-600 dark:text-zinc-300 hover:bg-gray-50 dark:hover:bg-zinc-800/60 transition">Help
+                        Center</a>
+                </div>
+            </div>
+
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="flex-grow max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-10">
+
+        <!-- Header Section -->
+        <div class="md:flex md:items-center md:justify-between mb-10">
+            <div class="flex-1 min-w-0">
+                <nav class="flex mb-3" aria-label="Breadcrumb">
+                    <ol
+                        class="inline-flex items-center space-x-1 md:space-x-2 text-xs font-medium text-slate-400 dark:text-zinc-500">
+                        <a href="/home-list"
+                            class="hover:text-slate-600 dark:hover:text-zinc-300 transition-colors">Home List</a>
+                        <li><i class="fa-solid fa-chevron-right text-[10px] mx-1"></i></li>
+                        <li class="text-slate-600 dark:text-zinc-300 font-semibold">My Wishlist</li>
+                    </ol>
+                </nav>
+                <div class="flex items-center gap-3">
+                    <h2 class="text-3xl font-extrabold tracking-tight text-slate-900 dark:text-zinc-50 sm:truncate">
+                        Here are your favourites:
+                    </h2>
+                    <span
+                        class="bg-rose-100 dark:bg-rose-950/40 text-rose-600 dark:text-rose-400 text-xs font-bold px-2.5 py-1 rounded-full">
+                        <%= (typeof favouritesHome !=='undefined' && favouritesHome) ? favouritesHome.length : 0 %>
+                            saved
+                    </span>
+                </div>
+                <p class="mt-1 text-sm text-slate-500 dark:text-zinc-400">Your curated selection of beautiful stays and
+                    dream escapes.</p>
+            </div>
+        </div>
+
+        <!-- Safe Check for Wishlist Database Properties (aligned with favouritesHome) -->
+        <% if (typeof favouritesHome !=='undefined' && favouritesHome && favouritesHome.length> 0) { %>
+
+            <!-- Wishlist Grid using your exact properties: home.homeName, home.location, home.price, home.image, home.description -->
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
+                <% favouritesHome.forEach(home=> { %>
+                    <div
+                        class="group bg-white dark:bg-zinc-900 rounded-3xl border border-slate-200/60 dark:border-zinc-800 overflow-hidden shadow-sm hover:shadow-xl hover:-translate-y-1 transition-all duration-300 flex flex-col h-full">
+
+                        <!-- Image Container -->
+                        <div class="relative aspect-[4/3] w-full overflow-hidden bg-slate-100 dark:bg-zinc-800">
+                            <img src="<%= home.image %>" alt="<%= home.homeName %>"
+                                onerror="this.onerror=null; this.src='https://images.unsplash.com/photo-1564013799919-ab600027ffc6?auto=format&fit=crop&w=800&q=80'"
+                                class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500">
+
+                            <!-- Static Elegant Rating Badge on Image -->
+                            <div
+                                class="absolute top-4 left-4 bg-white/95 dark:bg-zinc-900/95 backdrop-blur-md text-slate-800 dark:text-zinc-200 text-[11px] font-bold tracking-wide px-2.5 py-1 rounded-full shadow-sm flex items-center gap-1">
+                                <i class="fa-solid fa-star text-amber-500"></i>
+                                <span>4.9</span>
+                            </div>
+
+                            <!-- Heart Button -->
+                            <form action="/favourites/<%= home._id %>" method="POST">
+                                <button
+                                    class="absolute top-4 right-4 h-9 w-9 rounded-full bg-white/95 dark:bg-zinc-900/95 backdrop-blur-md text-rose-500 hover:text-rose-600 hover:scale-110 flex items-center justify-center shadow-sm transition-all">
+                                    <i class="fa-solid fa-heart text-sm"></i>
+                                </button>
+                            </form>
+                        </div>
+
+                        <!-- Content Details -->
+                        <div class="p-6 flex flex-col flex-grow justify-between">
+                            <div>
+                                <!-- Location Badge -->
+                                <p
+                                    class="text-xs font-bold tracking-wider text-rose-500 uppercase mb-1 flex items-center gap-1">
+                                    <i class="fa-solid fa-location-dot text-[10px]"></i>
+                                    <%= home.location %>
+                                </p>
+
+                                <!-- Home Name -->
+                                <h2
+                                    class="text-lg font-bold text-slate-900 dark:text-zinc-50 group-hover:text-rose-500 line-clamp-1 transition-colors">
+                                    <%= home.homeName %>
+                                </h2>
+
+                                <!-- Description Text laid out beautifully under the title -->
+                                <p class="text-sm text-slate-500 dark:text-zinc-400 mt-2 line-clamp-2 leading-relaxed">
+                                    <%= home.description %>
+                                </p>
+                            </div>
+
+                            <!-- Price Breakdown -->
+                            <div
+                                class="mt-4 pt-4 border-t border-slate-100 dark:border-zinc-800 flex items-center justify-between">
+                                <span class="text-slate-400 dark:text-zinc-500 text-xs font-semibold">Price per
+                                    night</span>
+                                <p class="text-base font-extrabold text-slate-950 dark:text-zinc-50">
+                                    NRs <%= home.price %> <span
+                                            class="text-xs font-normal text-slate-500 dark:text-zinc-400">/ night</span>
+                                </p>
+                            </div>
+                        </div>
+
+                    </div>
+                    <% }) %>
+            </div>
+
+            <% } else { %>
+
+                <!-- Beautiful Empty State Fallback -->
+                <div
+                    class="flex flex-col items-center justify-center text-center py-20 bg-white dark:bg-zinc-900 border border-dashed border-slate-200 dark:border-zinc-800 rounded-3xl p-8 max-w-xl mx-auto shadow-sm">
+                    <div
+                        class="w-16 h-16 rounded-2xl bg-rose-50 dark:bg-rose-950/30 flex items-center justify-center text-rose-500 text-2xl mb-4">
+                        <i class="fa-regular fa-heart"></i>
+                    </div>
+                    <h3 class="text-lg font-bold text-slate-900 dark:text-zinc-50">Your wishlist is empty</h3>
+                    <p class="text-sm text-slate-500 dark:text-zinc-400 mt-1 mb-6 max-w-xs">Properties you save as
+                        favourites will show up
+                        right here!</p>
+                    <a href="/home-list"
+                        class="px-5 py-2.5 bg-rose-500 hover:bg-rose-600 text-white text-xs font-bold rounded-xl shadow-md shadow-rose-500/10 transition-all transform active:scale-95">
+                        Explore Properties
+                    </a>
+                </div>
+
+                <% } %>
+
+    </main>
+
+    <!-- Beautiful Footer -->
+    <footer class="bg-white dark:bg-zinc-900 border-t border-slate-100 dark:border-zinc-800 mt-16 py-8">
+        <div
+            class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center sm:text-left sm:flex sm:items-center sm:justify-between text-slate-400 dark:text-zinc-550 text-xs gap-4">
+            <p>&copy; 2026 Vibe Stay, Inc. All rights reserved.</p>
+            <div class="flex items-center justify-center gap-6 mt-4 sm:mt-0">
+                <a href="/privacy-policy"
+                    class="hover:text-slate-600 dark:hover:text-zinc-300 transition-colors">Privacy</a>
+                <a href="/terms-of-service"
+                    class="hover:text-slate-600 dark:hover:text-zinc-300 transition-colors">Terms</a>
+                <a href="/site-map" class="hover:text-slate-600 dark:hover:text-zinc-300 transition-colors">Sitemap</a>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Interactive Navigation Helpers -->
+    <script>
+        function toggleMenuDropdown(event) {
+            event.stopPropagation();
+            const dropdown = document.getElementById('menu-dropdown');
+            dropdown.classList.toggle('hidden');
+        }
+
+        // Close menu dropdown if user clicks outside of the element
+        window.addEventListener('click', function (event) {
+            const dropdown = document.getElementById('menu-dropdown');
+            const trigger = document.getElementById('menu-trigger');
+            if (dropdown && !dropdown.classList.contains('hidden')) {
+                if (!trigger.contains(event.target) && !dropdown.contains(event.target)) {
+                    dropdown.classList.add('hidden');
+                }
+            }
+        });
+
+        // Theme Toggle Controller Logic
+        const themeToggleBtn = document.getElementById('theme-toggle');
+        const sunIcon = document.getElementById('theme-toggle-sun');
+        const moonIcon = document.getElementById('theme-toggle-moon');
+
+        // Check local storage or system preference to apply correct dark mode on initial load
+        if (localStorage.getItem('color-theme') === 'dark' || (!('color-theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+            document.documentElement.classList.add('dark');
+            sunIcon.classList.remove('hidden');
+            moonIcon.classList.add('hidden');
+        } else {
+            document.documentElement.classList.remove('dark');
+            moonIcon.classList.remove('hidden');
+            sunIcon.classList.add('hidden');
+        }
+
+        // Click handler to toggle mode smoothly
+        themeToggleBtn.addEventListener('click', () => {
+            if (document.documentElement.classList.contains('dark')) {
+                document.documentElement.classList.remove('dark');
+                localStorage.setItem('color-theme', 'light');
+                sunIcon.classList.add('hidden');
+                moonIcon.classList.remove('hidden');
+            } else {
+                document.documentElement.classList.add('dark');
+                localStorage.setItem('color-theme', 'dark');
+                moonIcon.classList.add('hidden');
+                sunIcon.classList.remove('hidden');
+            }
+        });
+    </script>
+</body>
+
+</html>

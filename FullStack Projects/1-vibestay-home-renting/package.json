@@ -1,0 +1,23 @@
+{
+  "name": "vibestay",
+  "version": "1.0.0",
+  "description": "This is the clone of Airbnb where I have added some features and I will be adding more features later as my knowledge and skills grows.",
+  "license": "ISC",
+  "author": "Arix Ratgaiya (Echo-Nexus)",
+  "type": "commonjs",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "nodemon app.js"
+  },
+  "devDependencies": {
+    "nodemon": "^3.1.14"
+  },
+  "dependencies": {
+    "body-parser": "^2.2.2",
+    "ejs": "^6.0.1",
+    "express": "^5.2.1",
+    "mongodb": "^7.2.0",
+    "mysql2": "^3.22.4"
+  }
+}
