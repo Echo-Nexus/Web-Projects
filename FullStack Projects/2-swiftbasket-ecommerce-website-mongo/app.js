@@ -64,7 +64,7 @@ app.use((req, res, next) => {
 app.get("/", getHome);
 app.use("/auth", authRouter);
 app.use("/admin", isAuth, allowRoles("Admin"), adminRouter);
-app.use("/store", isAuth, allowRoles("Guest"), storeRouter);
+app.use("/store", isAuth, allowRoles("Guest", "Admin"), storeRouter);
 app.use("/user", userRouter);
 
 app.use(pageNotFound);

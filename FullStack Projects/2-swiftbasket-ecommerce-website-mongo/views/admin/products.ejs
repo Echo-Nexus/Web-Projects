@@ -43,7 +43,7 @@
                 <%= product.badge %>
               </div>
 
-                <img src="<%= product.image %>" alt="Retro Eyewear" onclick="window.location.href='/products/details/<%= product.id %>'"
+                <img src="<%= product.image %>" alt="Retro Eyewear" onclick="window.location.href='/store/products/details/<%= product.id %>'"
                   class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700 ease-out" />
                 <div
                   class="absolute bottom-4 left-4 bg-black/60 dark:bg-black/40 backdrop-blur-md px-3 py-1.5 rounded-xl text-[10px] font-black uppercase tracking-widest text-white border border-white/10">
@@ -54,7 +54,7 @@
               <div>
                 <div class="flex items-start justify-between gap-2 mb-2">
                   <h2
-                    class="text-base sm:text-lg font-extrabold text-gray-900 dark:text-white hover:text-[#FF385C] transition-colors duration-200 line-clamp-1" onclick="window.location.href='/products/details/<%= product.id %>'">
+                    class="text-base sm:text-lg font-extrabold text-gray-900 dark:text-white hover:text-[#FF385C] transition-colors duration-200 line-clamp-1" onclick="window.location.href='/store/products/details/<%= product.id %>'">
                     <%= product.title %>
                   </h2>
                   <div
