@@ -1,9 +1,11 @@
+require("dotenv").config();
+
 // Core Module
 const path = require("path");
 
 // External Module
 const express = require("express");
-const DB_PATH = "mongodb+srv://kc336115_db_user:PasserBy@fullstack-projects.xpzrnlf.mongodb.net/swiftbasket?appName=FullStack-Projects";
+const DB_PATH = process.env.MONGODB_URI;
 const{ default: mongoose } = require("mongoose");
 const session = require("express-session");
 const MongoDBStore = require("connect-mongodb-session")(session);
@@ -19,7 +21,7 @@ const { authRouter } = require("./routers/authRouter");
 const { userRouter } = require("./routers/userRouter");
 const {pageNotFound} = require("./controllers/errController");
 const { getHome } = require("./controllers/indexController");
-const attchUser = require("./middleware//attatchUser");
+const attchUser = require("./middleware/attatchUser");
 const isAuth = require("./middleware/isAuth");
 const allowRoles = require("./middleware/role");
 
@@ -49,10 +51,15 @@ const store = new MongoDBStore({
 
 app.use(
   session({
-    secret: "secret",
+    secret: process.env.SESSION_SECRET,
     resave: false,
-    saveUninitialized: true,
-    store
+    saveUninitialized: false,
+    store,
+    cookie: {
+      httpOnly: true,
+      secure: process.env.NODE_ENV === "production",
+      sameSite: "lax",
+    },
   }),
 );
 app.use(cookieParser());
@@ -69,7 +76,7 @@ app.use("/user", userRouter);
 app.use(pageNotFound);
 
 // It is the main server
-const PORT = 3001;
+const PORT = process.env.PORT || 3000;
 mongoose.connect(DB_PATH).then(() => {
   console.log("Connected to MongoDB");
   app.listen(PORT, () => {
