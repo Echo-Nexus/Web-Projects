@@ -94,7 +94,7 @@ exports.postLogin = async (req, res, next) => {
 
 exports.postLogout = (req, res, next) => {
   req.session.destroy(() => {
-    res.redirect("/auth/login");
+    res.redirect("/");
   });
 };
 
@@ -140,4 +140,12 @@ exports.postSignup = (req, res, next) => {
         isLoggedIn: req.isLoggedIn,
       });
     });
+};
+
+exports.getNotAuthorized = (req, res, next) => {
+  res.render("auth/notAuthorized", {
+    isLoggedIn: req.isLoggedIn,
+    errors: [],
+    oldInput: {},
+  });
 };

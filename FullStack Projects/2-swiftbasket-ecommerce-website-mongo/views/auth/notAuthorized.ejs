@@ -1,0 +1,327 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Swift Basket - Access Denied</title>
+    <link rel="icon" href="https://images.unsplash.com/vector-1780599883133-df4851a972f2?q=80&w=880&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" type="image/svg+xml" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700;800&display=swap"
+      rel="stylesheet"
+    />
+
+    <style>
+      :root {
+        /* Swift Basket Brand Colors */
+        --primary-gradient: linear-gradient(135deg, #0ea5e9 0%, #22c55e 100%);
+        --accent-gradient: linear-gradient(135deg, #ef4444 0%, #f97316 100%);
+        --primary: #0ea5e9;
+        --danger: #ef4444;
+        --text-dark: #0f172a;
+        --text-muted: #64748b;
+        --bg-color: #f8fafc;
+      }
+
+      @media (prefers-color-scheme: dark) {
+        :root {
+          --text-dark: #f1f5f9;
+          --text-muted: #94a3b8;
+          --bg-color: #0b1220;
+        }
+      }
+
+      .dark {
+        --text-dark: #f1f5f9;
+        --text-muted: #94a3b8;
+        --bg-color: #0b1220;
+      }
+
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+
+      body {
+        font-family: "Plus Jakarta Sans", sans-serif;
+        background: var(--bg-color);
+        color: var(--text-dark);
+        height: 100vh;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        overflow: hidden;
+        position: relative;
+      }
+
+      /* Background glow */
+      body::before,
+      body::after {
+        content: "";
+        position: absolute;
+        border-radius: 50%;
+        filter: blur(90px);
+        z-index: -1;
+      }
+
+      body::before {
+        width: 320px;
+        height: 320px;
+        background: rgba(239, 68, 68, 0.12);
+        top: 10%;
+        left: 10%;
+      }
+
+      body::after {
+        width: 420px;
+        height: 420px;
+        background: rgba(14, 165, 233, 0.12);
+        bottom: 5%;
+        right: 5%;
+      }
+
+      .container {
+        text-align: center;
+        padding: 24px;
+        max-width: 580px;
+        animation: fadeIn 0.8s ease;
+      }
+
+      @keyframes fadeIn {
+        from {
+          opacity: 0;
+          transform: translateY(20px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+
+      /* Logo */
+      .brand-logo {
+        display: inline-flex;
+        align-items: center;
+        gap: 10px;
+        margin-bottom: 2rem;
+        text-decoration: none;
+        color: var(--primary);
+        user-select: none;
+      }
+
+      .brand-logo svg {
+        width: 34px;
+        height: 34px;
+      }
+
+      .brand-name {
+        font-size: 1.4rem;
+        font-weight: 800;
+        letter-spacing: -0.04em;
+        color: var(--text-dark);
+      }
+
+      /* 403 / Error Icon */
+      .error-code {
+        font-size: 9rem;
+        font-weight: 800;
+        line-height: 1;
+        margin-bottom: 1rem;
+        background: var(--accent-gradient);
+        background-clip: text;
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        animation: float 4s ease-in-out infinite;
+      }
+
+      @keyframes float {
+        0%,
+        100% {
+          transform: translateY(0);
+        }
+        50% {
+          transform: translateY(-14px);
+        }
+      }
+
+      h1 {
+        font-size: 2.2rem;
+        font-weight: 800;
+        margin-bottom: 1rem;
+        letter-spacing: -0.02em;
+      }
+
+      p {
+        color: var(--text-muted);
+        font-size: 1.05rem;
+        line-height: 1.6;
+        margin-bottom: 2.5rem;
+      }
+
+      /* Button Group */
+      .btn-group {
+        display: flex;
+        gap: 16px;
+        justify-content: center;
+        flex-wrap: wrap;
+      }
+
+      /* Buttons */
+      .btn {
+        display: inline-flex;
+        align-items: center;
+        gap: 10px;
+        padding: 15px 34px;
+        border-radius: 14px;
+        font-weight: 700;
+        text-decoration: none;
+        transition: 0.3s ease;
+      }
+
+      .btn-primary {
+        background: var(--primary);
+        color: white;
+        box-shadow: 0 10px 25px rgba(14, 165, 233, 0.25);
+      }
+
+      .btn-primary:hover {
+        transform: translateY(-2px) scale(1.03);
+        background: #0284c7;
+        box-shadow: 0 20px 40px rgba(14, 165, 233, 0.35);
+      }
+
+      .btn-secondary {
+        background: transparent;
+        color: var(--text-dark);
+        border: 2px solid var(--text-muted);
+        opacity: 0.85;
+      }
+
+      .btn-secondary:hover {
+        transform: translateY(-2px) scale(1.03);
+        opacity: 1;
+        background: rgba(148, 163, 184, 0.1);
+      }
+
+      /* Mobile */
+      @media (max-width: 480px) {
+        .error-code {
+          font-size: 6.5rem;
+        }
+        h1 {
+          font-size: 1.7rem;
+        }
+        p {
+          font-size: 0.95rem;
+        }
+        .btn-group {
+          flex-direction: column;
+          gap: 12px;
+        }
+        .btn {
+          width: 100%;
+          justify-content: center;
+        }
+      }
+    </style>
+  </head>
+
+  <body>
+    <div class="container">
+      <!-- SWIFT BASKET LOGO -->
+      <a href="/" class="brand-logo">
+        <svg viewBox="0 0 100 100" fill="none">
+          <!-- Cart -->
+          <path
+            d="M20 25 H30 L38 65 H75"
+            stroke="currentColor"
+            stroke-width="10"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+          />
+
+          <!-- Wheels -->
+          <circle cx="45" cy="75" r="6" fill="currentColor" />
+          <circle cx="68" cy="75" r="6" fill="currentColor" />
+
+          <!-- Growth arrow -->
+          <path
+            d="M55 15 L55 45 M45 25 L55 15 L65 25"
+            stroke="currentColor"
+            stroke-width="8"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+          />
+        </svg>
+
+        <span class="brand-name">Swift Basket</span>
+      </a>
+
+      <!-- 403 -->
+      <div class="error-code">403</div>
+
+      <h1>Unauthorized Access</h1>
+
+      <p>
+        Your Account type is not authorized to access this page or do this operation.
+      </p>
+
+      <!-- Button Group -->
+      <div class="btn-group">
+        <!-- Switch Account / Sign Out Action -->
+        <a href="/auth/login" class="btn btn-primary">
+          <svg
+            width="20"
+            height="20"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2.5"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+          >
+            <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4" />
+            <polyline points="16 17 21 12 16 7" />
+            <line x1="21" y1="12" x2="9" y2="12" />
+          </svg>
+          Switch Account
+        </a>
+
+        <!-- Return to Admin Dashboard -->
+        <a href="/" class="btn btn-secondary">
+          <svg
+            width="20"
+            height="20"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2.5"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+          >
+            <rect x="3" y="3" width="7" height="9" />
+            <rect x="14" y="3" width="7" height="5" />
+            <rect x="14" y="12" width="7" height="9" />
+            <rect x="3" y="16" width="7" height="5" />
+          </svg>
+          Go Home
+        </a>
+      </div>
+    </div>
+
+    <!-- Dark mode sync -->
+    <script>
+      if (
+        localStorage.getItem("color-theme") === "dark" ||
+        (!("color-theme" in localStorage) &&
+          window.matchMedia("(prefers-color-scheme: dark)").matches)
+      ) {
+        document.documentElement.classList.add("dark");
+      } else {
+        document.documentElement.classList.remove("dark");
+      }
+    </script>
+  </body>
+</html>

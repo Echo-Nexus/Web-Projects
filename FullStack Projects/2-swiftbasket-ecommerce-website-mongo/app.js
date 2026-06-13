@@ -7,6 +7,8 @@ const DB_PATH = "mongodb+srv://kc336115_db_user:PasserBy@fullstack-projects.xpzr
 const{ default: mongoose } = require("mongoose");
 const session = require("express-session");
 const MongoDBStore = require("connect-mongodb-session")(session);
+const cookieParser = require("cookie-parser");
+
 
 
 // Custom Module
@@ -18,6 +20,8 @@ const { userRouter } = require("./routers/userRouter");
 const {pageNotFound} = require("./controllers/errController");
 const { getHome } = require("./controllers/indexController");
 const attchUser = require("./middleware//attatchUser");
+const isAuth = require("./middleware/isAuth");
+const allowRoles = require("./middleware/role");
 
 
 const app = express();
@@ -51,29 +55,17 @@ app.use(
     store
   }),
 );
-
-// User Account Type Validator
+app.use(cookieParser());
 app.use(attchUser);
-
+app.use((req, res, next) => {
+  req.isLoggedIn = req.session.isLoggedIn || false;
+  next();
+});
 app.get("/", getHome);
-
-// This is for Auth Router
-
 app.use("/auth", authRouter);
-
-// This is for Admin Router
-
-app.use("/admin", adminRouter);
-
-// This is for Store Router
-
-app.use("/store", storeRouter);
-
-// This is for User Router
-
+app.use("/admin", isAuth, allowRoles("Admin"), adminRouter);
+app.use("/store", isAuth, allowRoles("Guest"), storeRouter);
 app.use("/user", userRouter);
-
-// Routing for 404 Error
 
 app.use(pageNotFound);
 

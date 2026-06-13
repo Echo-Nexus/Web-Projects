@@ -8,7 +8,6 @@ module.exports = async (req, res, next) => {
 
     const user = await User.findById(req.session.userId);
     req.user = user;
-
     next();
   } catch (err) {
     next(err);
