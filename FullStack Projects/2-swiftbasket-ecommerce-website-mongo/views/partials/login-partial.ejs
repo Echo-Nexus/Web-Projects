@@ -1,0 +1,441 @@
+
+<main
+  class="w-full min-h-screen py-12 px-4 sm:px-6 lg:px-8 flex items-center justify-center relative overflow-hidden bg-gray-50 text-[#222222] dark:bg-gray-950 dark:text-white transition-colors duration-500 font-['Nunito_Sans',_sans-serif]"
+>
+  <!-- Dynamic CDN Loading to preserve EJS partial self-containment inside your preview -->
+  <link
+    href="https://fonts.googleapis.com/css2?family=Nunito+Sans:wght@400;600;700;800;900&display=swap"
+    rel="stylesheet"
+  />
+  <script src="https://unpkg.com/lucide@latest"></script>
+
+  <style>
+    @keyframes float-slow {
+      0%,
+      100% {
+        transform: translateY(0px) rotate(0deg);
+      }
+
+      50% {
+        transform: translateY(-12px) rotate(2deg);
+      }
+    }
+
+    @keyframes float-medium {
+      0%,
+      100% {
+        transform: translateY(0px) rotate(0deg);
+      }
+
+      50% {
+        transform: translateY(-8px) rotate(-2deg);
+      }
+    }
+
+    @keyframes float-fast {
+      0%,
+      100% {
+        transform: translateY(0px);
+      }
+
+      50% {
+        transform: translateY(-5px);
+      }
+    }
+
+    @keyframes pulse-ring {
+      0% {
+        transform: scale(0.96);
+        opacity: 0.4;
+      }
+
+      50% {
+        transform: scale(1.04);
+        opacity: 0.7;
+      }
+
+      100% {
+        transform: scale(0.96);
+        opacity: 0.4;
+      }
+    }
+
+    @keyframes draw-path {
+      to {
+        stroke-dashoffset: 0;
+      }
+    }
+
+    .animate-float-slow {
+      animation: float-slow 7s ease-in-out infinite;
+    }
+
+    .animate-float-medium {
+      animation: float-medium 5.5s ease-in-out infinite;
+    }
+
+    .animate-float-fast {
+      animation: float-fast 4s ease-in-out infinite;
+    }
+
+    .animate-pulse-ring {
+      animation: pulse-ring 5s ease-in-out infinite;
+    }
+
+    .svg-line-draw {
+      stroke-dasharray: 120;
+      stroke-dashoffset: 120;
+      animation: draw-path 2.4s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+    }
+  </style>
+
+  <!-- Ambient Glow Background Orbs inheriting responsive parent transitions -->
+  <div
+    class="absolute top-0 left-0 w-72 h-72 sm:w-96 sm:h-96 rounded-full bg-rose-400/10 dark:bg-brand-500/5 blur-[120px] pointer-events-none select-none transition-all duration-500"
+  ></div>
+  <div
+    class="absolute bottom-0 right-0 w-72 h-72 sm:w-96 sm:h-96 rounded-full bg-sky-400/10 dark:bg-sky-500/5 blur-[120px] pointer-events-none select-none transition-all duration-500"
+  ></div>
+
+  <!-- Main Card Grid Structure -->
+  <div
+    class="w-full max-w-6xl bg-white/75 dark:bg-gray-900/40 border border-gray-200/60 dark:border-gray-800/60 backdrop-blur-2xl rounded-[32px] overflow-hidden shadow-2xl dark:shadow-black/40 p-6 sm:p-10 lg:p-14 transition-all duration-500 relative z-10"
+  >
+    <div class="grid lg:grid-cols-12 gap-12 lg:gap-16 items-center">
+      <!-- Left Side Column: Premium Animated Security/Key Vector Graphic -->
+      <div
+        class="lg:col-span-5 hidden lg:flex flex-col items-center justify-center text-center space-y-8 select-none"
+      >
+        <div
+          class="relative w-full max-w-sm aspect-square flex items-center justify-center"
+        >
+          <!-- Pulsing Ambient Radial Shadow Ring -->
+          <div
+            class="absolute inset-4 bg-gradient-to-tr from-[#FF385C]/10 to-indigo-500/10 rounded-full animate-pulse-ring blur-xl"
+          ></div>
+
+          <!-- Custom Vector SVG representing Access and Security -->
+          <svg
+            class="w-full h-full relative z-10"
+            viewBox="0 0 400 400"
+            fill="none"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <!-- Shield Portal -->
+            <g class="animate-float-slow">
+              <circle
+                cx="200"
+                cy="200"
+                r="105"
+                fill="url(#grad1)"
+                opacity="0.12"
+              />
+              <path
+                class="svg-line-draw"
+                d="M200 80 L290 115 V205 C290 265 200 315 200 315 C200 315 110 265 110 205 V115 L200 80 Z"
+                stroke="#FF385C"
+                stroke-width="5"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              />
+            </g>
+
+            <!-- Locked Secure Shackle & Center Core -->
+            <g class="animate-float-medium">
+              <!-- Lock Loop -->
+              <path
+                d="M160 180 V145 C160 120 178 100 200 100 C222 100 240 120 240 145 V180"
+                stroke="#818CF8"
+                stroke-width="4"
+                stroke-linecap="round"
+              />
+              <!-- Lock Body -->
+              <rect
+                x="150"
+                y="170"
+                width="100"
+                height="75"
+                rx="14"
+                fill="url(#grad2)"
+                stroke="#818CF8"
+                stroke-width="4"
+              />
+              <!-- Keyhole Detail -->
+              <circle cx="200" cy="200" r="10" fill="#312E81" />
+              <path d="M196 208 L204 208 L207 225 L193 225 Z" fill="#312E81" />
+            </g>
+
+            <!-- Interactive Sparkles -->
+            <g class="animate-float-fast">
+              <circle
+                cx="310"
+                cy="150"
+                r="5"
+                fill="#60A5FA"
+                class="animate-ping"
+              />
+              <path
+                d="M90 120 L94 128 L102 130 L96 136 L98 144 L90 139 L82 144 L84 136 L78 130 L86 128 Z"
+                fill="#FBBF24"
+              />
+              <circle cx="110" cy="250" r="4" fill="#34D399" />
+              <circle cx="280" cy="260" r="6" fill="#FBBF24" />
+            </g>
+
+            <defs>
+              <linearGradient
+                id="grad1"
+                x1="100"
+                y1="100"
+                x2="300"
+                y2="300"
+                gradientUnits="userSpaceOnUse"
+              >
+                <stop offset="0%" stop-color="#FF385C" />
+                <stop offset="100%" stop-color="#818CF8" />
+              </linearGradient>
+              <linearGradient
+                id="grad2"
+                x1="150"
+                y1="170"
+                x2="250"
+                y2="245"
+                gradientUnits="userSpaceOnUse"
+              >
+                <stop offset="0%" stop-color="#818CF8" />
+                <stop offset="100%" stop-color="#4F46E5" />
+              </linearGradient>
+            </defs>
+          </svg>
+        </div>
+
+        <div class="space-y-3 max-w-xs">
+          <h2
+            class="text-2xl font-black tracking-tight text-gray-900 dark:text-white"
+          >
+            Secure Store Entry
+          </h2>
+          <p class="text-sm text-gray-500 dark:text-zinc-400 leading-relaxed">
+            Gain immediate access to your merchant inventory controls, real-time
+            client transaction sheets, and instant catalog adjustments.
+          </p>
+        </div>
+      </div>
+
+      <!-- Right Side Column: Modern Form Interface -->
+      <div class="lg:col-span-7 w-full flex flex-col justify-center">
+        <div class="max-w-md w-full mx-auto space-y-8">
+          <div class="text-left">
+            <h1
+              class="text-3xl sm:text-4xl font-black text-gray-900 dark:text-white tracking-tight"
+            >
+              Welcome Back
+            </h1>
+            <p class="text-sm text-gray-500 dark:text-zinc-400 mt-2">
+              Access your merchant portal. New to SwiftBasket?
+              <a
+                href="/signup"
+                class="text-[#FF385C] hover:underline font-bold transition"
+                >Create Account</a
+              >
+            </p>
+          </div>
+
+          <!-- Main Input Stream Form -->
+          <form id="loginForm" class="space-y-5">
+            <!-- Input: Email -->
+            <div class="group">
+              <label
+                class="block text-xs font-bold uppercase tracking-wider text-gray-500 dark:text-zinc-400 mb-2 group-focus-within:text-[#FF385C] transition-colors"
+              >
+                Email Address
+              </label>
+              <div class="relative">
+                <span
+                  class="absolute left-4 top-3.5 text-gray-400 group-focus-within:text-[#FF385C] transition-colors"
+                >
+                  <i data-lucide="mail" class="w-5 h-5"></i>
+                </span>
+                <input
+                  type="email"
+                  required
+                  id="emailAddr"
+                  placeholder="you@example.com"
+                  class="w-full pl-12 pr-4 py-3.5 rounded-2xl border bg-gray-50/50 text-gray-900 border-gray-200/80 dark:bg-gray-800/40 dark:text-white dark:border-zinc-800/80 focus:ring-2 focus:ring-[#FF385C] focus:bg-white dark:focus:bg-gray-900 focus:outline-none transition-all duration-300"
+                />
+              </div>
+            </div>
+
+            <!-- Input: Password -->
+            <div class="group">
+              <div class="flex items-center justify-between mb-2">
+                <label
+                  class="block text-xs font-bold uppercase tracking-wider text-gray-500 dark:text-zinc-400 group-focus-within:text-[#FF385C] transition-colors"
+                >
+                  Password
+                </label>
+                <a
+                  href="/forgot-password"
+                  class="text-xs text-[#FF385C] hover:underline font-bold transition"
+                  >Forgot Password?</a
+                >
+              </div>
+              <div class="relative">
+                <span
+                  class="absolute left-4 top-3.5 text-gray-400 group-focus-within:text-[#FF385C] transition-colors"
+                >
+                  <i data-lucide="lock" class="w-5 h-5"></i>
+                </span>
+                <input
+                  type="password"
+                  required
+                  id="pwd"
+                  placeholder="••••••••••••"
+                  class="w-full pl-12 pr-12 py-3.5 rounded-2xl border bg-gray-50/50 text-gray-900 border-gray-200/80 dark:bg-gray-800/40 dark:text-white dark:border-zinc-800/80 focus:ring-2 focus:ring-[#FF385C] focus:bg-white dark:focus:bg-gray-900 focus:outline-none transition-all duration-300"
+                />
+                <!-- Visibility toggling button -->
+                <button
+                  type="button"
+                  id="pwdToggle"
+                  class="absolute right-4 top-3.5 text-gray-400 hover:text-gray-600 dark:hover:text-gray-200 transition"
+                >
+                  <i data-lucide="eye" class="w-5 h-5"></i>
+                </button>
+              </div>
+            </div>
+
+            <!-- Checkbox Option: Remember Session -->
+            <div class="flex items-center justify-between pt-1">
+              <div class="flex items-start gap-3">
+                <div class="relative flex items-center h-5">
+                  <input
+                    type="checkbox"
+                    id="rememberMe"
+                    class="w-5 h-5 rounded-lg border-gray-300 text-[#FF385C] focus:ring-[#FF385C] dark:bg-gray-800/50 dark:border-zinc-800 cursor-pointer transition"
+                  />
+                </div>
+                <label
+                  for="rememberMe"
+                  class="text-xs sm:text-sm text-gray-500 dark:text-zinc-400 select-none cursor-pointer"
+                >
+                  Remember me on this device
+                </label>
+              </div>
+            </div>
+
+            <!-- Submit CTA Submit button -->
+            <div class="pt-2">
+              <button
+                type="submit"
+                id="submitBtn"
+                class="w-full bg-[#FF385C] hover:bg-[#e01e43] text-white font-bold py-4 px-6 rounded-2xl transition-all duration-200 active:scale-[0.98] shadow-lg shadow-rose-500/20 hover:shadow-rose-500/35 flex items-center justify-center gap-2"
+              >
+                <i data-lucide="log-in" class="w-5 h-5"></i>
+                <span>Sign In to Account</span>
+              </button>
+            </div>
+          </form>
+
+          <!-- Success Confirmation Pop-Up -->
+          <div
+            id="successPanel"
+            class="hidden p-4 rounded-2xl bg-emerald-50 border border-emerald-200 dark:bg-emerald-500/10 dark:border-emerald-500/20 flex gap-3.5 items-center transition-all duration-300 animate-bounce"
+          >
+            <span
+              class="w-10 h-10 rounded-full bg-emerald-100 dark:bg-emerald-500/20 text-emerald-600 dark:text-emerald-400 flex items-center justify-center flex-shrink-0"
+            >
+              <i data-lucide="shield-check" class="w-6 h-6"></i>
+            </span>
+            <div>
+              <h4
+                class="font-bold text-emerald-800 dark:text-emerald-400 text-sm"
+              >
+                Welcome back!
+              </h4>
+              <p class="text-xs text-emerald-600/80 dark:text-emerald-400/80">
+                Identity verified. Loading your merchant dashboard setups...
+              </p>
+            </div>
+          </div>
+
+          <!-- Third Party Platforms (Social authentication pathways) -->
+          <div
+            class="space-y-4 pt-4 border-t border-gray-100 dark:border-zinc-800/80"
+          >
+            <p
+              class="text-center text-xs font-bold uppercase tracking-wider text-gray-400 dark:text-zinc-500"
+            >
+              Or access with
+            </p>
+
+            <div class="grid grid-cols-2 gap-4">
+              <button
+                type="button"
+                class="flex items-center justify-center gap-2 py-3 px-4 rounded-xl border border-gray-200 dark:border-zinc-800 bg-white/50 dark:bg-zinc-900/40 hover:bg-gray-50 dark:hover:bg-zinc-800/60 transition active:scale-95 text-xs sm:text-sm font-bold"
+              >
+                <svg class="w-4 h-4" viewBox="0 0 24 24" fill="currentColor">
+                  <path
+                    d="M12.24 10.285V13.4h6.887c-.275 1.565-1.88 4.604-6.887 4.604-4.33 0-7.866-3.577-7.866-8s3.536-8 7.866-8c2.46 0 4.105 1.025 5.047 1.926l2.427-2.334C17.955 2.192 15.34 1 12.24 1 6.033 1 12.24s5.033 11.24 11.24 11.24c6.478 0 10.793-4.537 10.793-10.986 0-.743-.08-1.3-.176-1.859H12.24z"
+                  />
+                </svg>
+                Google
+              </button>
+              <button
+                type="button"
+                class="flex items-center justify-center gap-2 py-3 px-4 rounded-xl border border-gray-200 dark:border-zinc-800 bg-white/50 dark:bg-zinc-900/40 hover:bg-gray-50 dark:hover:bg-zinc-800/60 transition active:scale-95 text-xs sm:text-sm font-bold"
+              >
+                <svg class="w-4 h-4" viewBox="0 0 24 24" fill="currentColor">
+                  <path
+                    d="M22 12c0-5.523-4.477-10-10-10S2 6.477 2 12c0 4.991 3.657 9.128 8.438 9.878v-6.987h-2.54V12h2.54V9.797c0-2.506 1.492-3.89 3.777-3.89 1.094 0 2.238.195 2.238.195v2.46h-1.26c-1.243 0-1.63.771-1.63 1.562V12h2.773l-.443 2.89h-2.33v6.988C18.343 21.128 22 16.991 22 12z"
+                  />
+                </svg>
+                Facebook
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Dynamic Javascript Block nested safely inside <main> to execute upon loading inside your EJS template -->
+  <script>
+(function () {
+  // Initialize Lucide Icons
+  if (typeof lucide !== "undefined") {
+    lucide.createIcons();
+  }
+
+  // Password Visibility Toggle
+  const passwordInput = document.getElementById("pwd");
+  const pwdToggle = document.getElementById("pwdToggle");
+
+  if (passwordInput && pwdToggle) {
+    pwdToggle.addEventListener("click", () => {
+      const isVisible = passwordInput.type === "text";
+
+      passwordInput.type = isVisible ? "password" : "text";
+
+      pwdToggle.innerHTML = isVisible
+        ? `<i data-lucide="eye" class="w-5 h-5"></i>`
+        : `<i data-lucide="eye-off" class="w-5 h-5"></i>`;
+
+      if (typeof lucide !== "undefined") {
+        lucide.createIcons();
+      }
+    });
+  }
+
+  // Login Form
+  const loginForm = document.getElementById("loginForm");
+
+  if (loginForm) {
+    loginForm.addEventListener("submit", () => {
+      console.log("Submitting login form...");
+      // No e.preventDefault()
+      // Browser will send POST request normally
+    });
+  }
+})();
+</script>
+</main>

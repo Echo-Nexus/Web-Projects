@@ -1,0 +1,63 @@
+{
+  "fullName": "Arix Ratgaiya",
+  "username": "arix_ratgaiya",
+  "email": "kc336115@gmail.com",
+  "contactNumber": "+977-9769917126",
+  "gender": "Male",
+  "dob": "2007-10-31",
+  "country": "Nepal",
+  "state": "Sudurpaschim Province",
+  "city": "Dhangadhi",
+  "address": "Ward 2, Baiyabehandi, Dhangadhi",
+  
+  "bio": "Full-stack developer passionate about building scalable web applications using Node.js, React, and modern web technologies. I enjoy solving complex problems, contributing to open-source projects, and learning new tools every day.",
+  
+  "profilePic": "https://www.dropbox.com/scl/fi/8494k9sb99x5tyr4gxbqe/IMG_202605261733.JPG?rlkey=s973u0cenuvu4q697f9pe6v38&st=he4b7pg7&raw=1",
+  "coverPhoto": "https://images.unsplash.com/photo-1503264116251-35a269479413?q=80&w=1600&auto=format&fit=crop",
+  
+  "hobbies": [
+    "Coding",
+    "Gaming",
+    "Reading Tech Blogs",
+    "Football",
+    "Photography",
+    "Traveling",
+    "Watching Sci-Fi Movies"
+  ],
+
+  "skills": [
+    "JavaScript",
+    "Node.js",
+    "Express.js",
+    "React",
+    "MongoDB",
+    "Tailwind CSS",
+    "REST APIs"
+  ],
+
+  "education": {
+    "degree": "Bachelor in Computer Science",
+    "university": "MIT",
+    "status": "Pursuing"
+  },
+
+  "socialStats": {
+    "followers": 1240,
+    "following": 310,
+    "projects": 18,
+    "contributions": 87
+  },
+
+  "links": {
+    "github": "https://github.com/Echo-Nexus",
+    "linkedin": "https://linkedin.com/in/aarav-sharma",
+    "website": "https://vxsystem.netlify.app",
+    "twitter": "https://twitter.com/aarav_dev"
+  },
+
+  "accountMeta": {
+    "createdAt": "2023-06-12",
+    "lastLogin": "2026-06-05",
+    "status": "active"
+  }
+}

@@ -1,0 +1,449 @@
+<%- include("../partials/header") %>
+<main class="w-full min-h-screen py-12 px-4 sm:px-6 lg:px-8 relative overflow-hidden bg-gray-50 text-[#222222] dark:bg-gray-950 dark:text-zinc-200 transition-colors duration-500 font-['Nunito_Sans',_sans-serif]">
+  
+  <!-- Embedding Google Font Link dynamically inside the module to preserve self-containment -->
+  <link href="https://fonts.googleapis.com/css2?family=Nunito+Sans:wght@400;600;700;800;900&display=swap" rel="stylesheet" />
+
+  <style>
+    /* Premium smooth toggle accordion animations */
+    .faq-answer {
+      max-height: 0;
+      overflow: hidden;
+      transition: max-height 0.35s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.35s ease;
+      opacity: 0;
+    }
+    .faq-item.active .faq-answer {
+      max-height: 300px; /* Adjust dynamically or set safe buffer */
+      opacity: 1;
+    }
+    .faq-item.active .faq-chevron {
+      transform: rotate(180deg);
+      color: #FF385C;
+    }
+    .faq-item {
+      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+    .faq-item.active {
+      border-color: rgba(255, 56, 92, 0.3);
+      background-color: rgba(255, 56, 92, 0.02);
+    }
+    .dark .faq-item.active {
+      background-color: rgba(255, 56, 92, 0.04);
+    }
+  </style>
+
+  <!-- Ambient Glow Background Orbs positioned absolutely inside parent container -->
+  <div class="absolute top-10 left-10 w-72 h-72 sm:w-96 sm:h-96 rounded-full bg-rose-400/10 dark:bg-brand-500/5 blur-[120px] pointer-events-none select-none transition-all duration-500"></div>
+  <div class="absolute bottom-10 right-10 w-72 h-72 sm:w-96 sm:h-96 rounded-full bg-sky-400/10 dark:bg-sky-500/5 blur-[120px] pointer-events-none select-none transition-all duration-500"></div>
+
+  <!-- Main Responsive Wrapper Container -->
+  <div class="max-w-7xl mx-auto relative z-10 space-y-12">
+    
+    <!-- Hero Banner & Interactive Dynamic FAQ Search -->
+    <div class="text-center max-w-3xl mx-auto space-y-6 pt-4">
+      <span class="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-full text-xs font-black uppercase tracking-wider bg-rose-50 text-[#FF385C] dark:bg-[#FF385C]/10 dark:text-[#FF385C]">
+        <i data-lucide="life-buoy" class="w-4 h-4"></i> Help Desk &amp; Concierge
+      </span>
+      <h1 class="text-4xl sm:text-5xl font-black tracking-tight text-gray-900 dark:text-white">
+        How can we help you today?
+      </h1>
+      <p class="text-sm sm:text-base text-gray-500 dark:text-zinc-400 leading-relaxed">
+        Search our active knowledge base, check your transaction queries, open official assistance tickets, or contact live system operators.
+      </p>
+      
+      <!-- Live FAQ Keyword Search Bar -->
+      <div class="max-w-xl mx-auto relative pt-2 group">
+        <span class="absolute left-4 top-5.5 text-gray-400 group-focus-within:text-[#FF385C] transition-colors">
+          <i data-lucide="search" class="w-5 h-5"></i>
+        </span>
+        <input 
+          type="text" 
+          id="faqSearchInput" 
+          placeholder="Search support FAQs (e.g., refund, merchant, shipping)..."
+          class="w-full pl-12 pr-4 py-3.5 rounded-2xl border text-sm bg-white dark:bg-gray-900/40 text-gray-900 border-gray-200/80 dark:text-white dark:border-zinc-800/80 focus:ring-2 focus:ring-[#FF385C] focus:bg-white dark:focus:bg-gray-950 focus:outline-none transition-all duration-300 shadow-lg shadow-gray-100/50 dark:shadow-none"
+        />
+        <div id="searchFeedback" class="text-xs text-zinc-400 dark:text-zinc-500 text-left mt-2 px-1 hidden font-semibold"></div>
+      </div>
+    </div>
+
+    <!-- Quick Assistance Channels Cards Grid -->
+    <div class="grid sm:grid-cols-2 lg:grid-cols-4 gap-6">
+      
+      <!-- Card 1: Live Chat -->
+      <div class="bg-white/70 dark:bg-gray-900/40 border border-gray-200/60 dark:border-gray-800/60 backdrop-blur-xl rounded-3xl p-6 shadow-xl dark:shadow-black/20 hover:border-sky-500/30 transition-all duration-300 group">
+        <div class="w-12 h-12 rounded-2xl bg-sky-50 dark:bg-sky-500/10 text-sky-500 flex items-center justify-center mb-4 group-hover:scale-110 transition-transform">
+          <i data-lucide="message-square" class="w-6 h-6"></i>
+        </div>
+        <div class="flex items-center gap-2 mb-1">
+          <h3 class="font-extrabold text-base text-gray-900 dark:text-white">Live Chat Support</h3>
+          <span class="inline-block w-2.5 h-2.5 rounded-full bg-emerald-500 animate-pulse" title="Agents Online"></span>
+        </div>
+        <p class="text-xs text-gray-500 dark:text-zinc-400 leading-relaxed mb-4">
+          Chat with our customer happiness representatives. Average response time under 3 minutes.
+        </p>
+        <button onclick="triggerLiveChat()" class="text-xs font-bold text-sky-500 hover:text-sky-600 dark:hover:text-sky-400 flex items-center gap-1.5 transition">
+          Initiate Session <i data-lucide="arrow-right" class="w-3.5 h-3.5"></i>
+        </button>
+      </div>
+
+      <!-- Card 2: Open Ticket -->
+      <a href="#ticketFormSection" class="bg-white/70 dark:bg-gray-900/40 border border-gray-200/60 dark:border-gray-800/60 backdrop-blur-xl rounded-3xl p-6 shadow-xl dark:shadow-black/20 hover:border-[#FF385C]/30 transition-all duration-300 group block">
+        <div class="w-12 h-12 rounded-2xl bg-rose-50 dark:bg-rose-500/10 text-[#FF385C] flex items-center justify-center mb-4 group-hover:scale-110 transition-transform">
+          <i data-lucide="ticket" class="w-6 h-6"></i>
+        </div>
+        <h3 class="font-extrabold text-base text-gray-900 dark:text-white mb-1">Submit Assistance Ticket</h3>
+        <p class="text-xs text-gray-500 dark:text-zinc-400 leading-relaxed mb-4">
+          Open a formalized support tracking log. Complete assistance for complex system actions.
+        </p>
+        <span class="text-xs font-bold text-[#FF385C] hover:text-[#e01e43] flex items-center gap-1.5 transition">
+          Open Ticket Form <i data-lucide="arrow-down" class="w-3.5 h-3.5"></i>
+        </span>
+      </a>
+
+      <!-- Card 3: Hotline Support -->
+      <div class="bg-white/70 dark:bg-gray-900/40 border border-gray-200/60 dark:border-gray-800/60 backdrop-blur-xl rounded-3xl p-6 shadow-xl dark:shadow-black/20 hover:border-purple-500/30 transition-all duration-300 group">
+        <div class="w-12 h-12 rounded-2xl bg-purple-50 dark:bg-purple-500/10 text-purple-500 flex items-center justify-center mb-4 group-hover:scale-110 transition-transform">
+          <i data-lucide="phone-call" class="w-6 h-6"></i>
+        </div>
+        <h3 class="font-extrabold text-base text-gray-900 dark:text-white mb-1">Interactive Call center</h3>
+        <p class="text-xs text-gray-500 dark:text-zinc-400 leading-relaxed mb-4">
+          Access high-touch phone assistance. Available Mon–Fri, 9:00 AM – 6:00 PM PST.
+        </p>
+        <a href="tel:+18005557943" class="text-xs font-bold text-purple-500 hover:text-purple-600 dark:hover:text-purple-400 flex items-center gap-1.5 transition">
+          Call +1 (800) 555-SWIFT <i data-lucide="phone" class="w-3.5 h-3.5"></i>
+        </a>
+      </div>
+
+      <!-- Card 4: Merchant Help -->
+      <div class="bg-white/70 dark:bg-gray-900/40 border border-gray-200/60 dark:border-gray-800/60 backdrop-blur-xl rounded-3xl p-6 shadow-xl dark:shadow-black/20 hover:border-amber-500/30 transition-all duration-300 group">
+        <div class="w-12 h-12 rounded-2xl bg-amber-50 dark:bg-amber-500/10 text-amber-500 flex items-center justify-center mb-4 group-hover:scale-110 transition-transform">
+          <i data-lucide="store" class="w-6 h-6"></i>
+        </div>
+        <h3 class="font-extrabold text-base text-gray-900 dark:text-white mb-1">Merchant Hub Guidelines</h3>
+        <p class="text-xs text-gray-500 dark:text-zinc-400 leading-relaxed mb-4">
+          Specialized assistance for catalog listings, automated checkouts, and payouts.
+        </p>
+        <a href="/admin/products" class="text-xs font-bold text-amber-500 hover:text-amber-600 dark:hover:text-amber-400 flex items-center gap-1.5 transition">
+          Merchant Dashboard <i data-lucide="arrow-right" class="w-3.5 h-3.5"></i>
+        </a>
+      </div>
+
+    </div>
+
+    <!-- Layout Split: Left FAQs Accordion (7 columns) | Right Ticket Form (5 columns) -->
+    <div class="grid lg:grid-cols-12 gap-8 items-start pt-4">
+      
+      <!-- Left: Interactive FAQ Accordion -->
+      <div class="lg:col-span-7 space-y-6">
+        <div class="flex items-center gap-3">
+          <span class="w-10 h-10 rounded-2xl bg-rose-50 dark:bg-rose-500/10 text-[#FF385C] flex items-center justify-center shadow-sm">
+            <i data-lucide="help-circle" class="w-5 h-5"></i>
+          </span>
+          <h2 class="text-xl sm:text-2xl font-black text-gray-900 dark:text-white">Frequently Asked Questions</h2>
+        </div>
+
+        <!-- FAQ List Container -->
+        <div class="space-y-4" id="faqAccordionContainer">
+          
+          <!-- FAQ 1 -->
+          <div class="faq-item bg-white/70 dark:bg-gray-900/30 border border-gray-200/60 dark:border-gray-800/60 backdrop-blur-md rounded-2xl p-5 cursor-pointer hover:shadow-md">
+            <div class="flex justify-between items-center gap-4 select-none">
+              <span class="font-extrabold text-sm sm:text-base text-gray-900 dark:text-white">How do I track my order delivery?</span>
+              <span class="faq-chevron text-gray-400 transition-transform duration-300">
+                <i data-lucide="chevron-down" class="w-5 h-5"></i>
+              </span>
+            </div>
+            <div class="faq-answer">
+              <p class="text-xs sm:text-sm text-gray-500 dark:text-zinc-400 pt-3 leading-relaxed border-t border-gray-100 dark:border-zinc-800 mt-3">
+                Once your payment checkout terminal clears, you will receive a confirmation email with a unique tracking ID and URL. You can also view active shipments by visiting the <a href="/orders" class="text-[#FF385C] font-semibold hover:underline">My Orders</a> dashboard page.
+              </p>
+            </div>
+          </div>
+
+          <!-- FAQ 2 -->
+          <div class="faq-item bg-white/70 dark:bg-gray-900/30 border border-gray-200/60 dark:border-gray-800/60 backdrop-blur-md rounded-2xl p-5 cursor-pointer hover:shadow-md">
+            <div class="flex justify-between items-center gap-4 select-none">
+              <span class="font-extrabold text-sm sm:text-base text-gray-900 dark:text-white">What is the checkout refund policy?</span>
+              <span class="faq-chevron text-gray-400 transition-transform duration-300">
+                <i data-lucide="chevron-down" class="w-5 h-5"></i>
+              </span>
+            </div>
+            <div class="faq-answer">
+              <p class="text-xs sm:text-sm text-gray-500 dark:text-zinc-400 pt-3 leading-relaxed border-t border-gray-100 dark:border-zinc-800 mt-3">
+                SwiftBasket offers a secure 14-day refund window on certified merchant transactions. Products must be returned unused and packed inside their original packaging. Please check our full <a href="/terms" class="text-[#FF385C] font-semibold hover:underline">Terms of Service</a> for specific legal constraints.
+              </p>
+            </div>
+          </div>
+
+          <!-- FAQ 3 -->
+          <div class="faq-item bg-white/70 dark:bg-gray-900/30 border border-gray-200/60 dark:border-gray-800/60 backdrop-blur-md rounded-2xl p-5 cursor-pointer hover:shadow-md">
+            <div class="flex justify-between items-center gap-4 select-none">
+              <span class="font-extrabold text-sm sm:text-base text-gray-900 dark:text-white">How do I become an authorized merchant?</span>
+              <span class="faq-chevron text-gray-400 transition-transform duration-300">
+                <i data-lucide="chevron-down" class="w-5 h-5"></i>
+              </span>
+            </div>
+            <div class="faq-answer">
+              <p class="text-xs sm:text-sm text-gray-500 dark:text-zinc-400 pt-3 leading-relaxed border-t border-gray-100 dark:border-zinc-800 mt-3">
+                Simply click on the user dropdown menu, click on **Become Admin** to configure your credentials, and submit your store metadata details. You will gain instant access to add and manage custom product catalogs.
+              </p>
+            </div>
+          </div>
+
+          <!-- FAQ 4 -->
+          <div class="faq-item bg-white/70 dark:bg-gray-900/30 border border-gray-200/60 dark:border-gray-800/60 backdrop-blur-md rounded-2xl p-5 cursor-pointer hover:shadow-md">
+            <div class="flex justify-between items-center gap-4 select-none">
+              <span class="font-extrabold text-sm sm:text-base text-gray-900 dark:text-white">Are local payment gateways securely managed?</span>
+              <span class="faq-chevron text-gray-400 transition-transform duration-300">
+                <i data-lucide="chevron-down" class="w-5 h-5"></i>
+              </span>
+            </div>
+            <div class="faq-answer">
+              <p class="text-xs sm:text-sm text-gray-500 dark:text-zinc-400 pt-3 leading-relaxed border-t border-gray-100 dark:border-zinc-800 mt-3">
+                Yes, absolutely. All payment pipelines are handled using top-tier cryptographic protocols. SwiftBasket does not store credit card integers directly on database models; instead, we deploy tokenized checkout relays. See our <a href="/privacy" class="text-[#FF385C] font-semibold hover:underline">Privacy Policy</a>.
+              </p>
+            </div>
+          </div>
+
+          <!-- FAQ 5 -->
+          <div class="faq-item bg-white/70 dark:bg-gray-900/30 border border-gray-200/60 dark:border-gray-800/60 backdrop-blur-md rounded-2xl p-5 cursor-pointer hover:shadow-md">
+            <div class="flex justify-between items-center gap-4 select-none">
+              <span class="font-extrabold text-sm sm:text-base text-gray-900 dark:text-white">How can I modify cookie preferences?</span>
+              <span class="faq-chevron text-gray-400 transition-transform duration-300">
+                <i data-lucide="chevron-down" class="w-5 h-5"></i>
+              </span>
+            </div>
+            <div class="faq-answer">
+              <p class="text-xs sm:text-sm text-gray-500 dark:text-zinc-400 pt-3 leading-relaxed border-t border-gray-100 dark:border-zinc-800 mt-3">
+                You can toggle active session tracking or change cookies inside your default browser settings. Disabling cookies may lock personal preferences such as cart memory and saved wishlist details.
+              </p>
+            </div>
+          </div>
+
+        </div>
+      </div>
+
+      <!-- Right: Assistance Ticket Form Card -->
+      <div id="ticketFormSection" class="lg:col-span-5">
+        <div class="bg-white/80 dark:bg-gray-900/40 border border-gray-200/60 dark:border-gray-800/60 backdrop-blur-2xl rounded-3xl p-6 sm:p-8 shadow-2xl dark:shadow-black/20 space-y-6">
+          <div class="text-left">
+            <h2 class="text-xl sm:text-2xl font-black text-gray-900 dark:text-white tracking-tight flex items-center gap-2">
+              <i data-lucide="mailbox" class="text-[#FF385C] w-6 h-6"></i> Submit Ticket
+            </h2>
+            <p class="text-xs text-gray-500 dark:text-zinc-400 mt-1">
+              File a digital request tracker. Response turnaround is typically 12–24 business hours.
+            </p>
+          </div>
+
+          <!-- Interactive Form Interface -->
+          <form id="supportTicketForm" class="space-y-4">
+            
+            <!-- Category Selector -->
+            <div>
+              <label class="block text-[11px] font-bold uppercase tracking-wider text-gray-500 dark:text-zinc-400 mb-1.5">
+                Issue Category
+              </label>
+              <select id="ticketCategory" required class="w-full px-4 py-3 rounded-xl border text-xs sm:text-sm bg-gray-50/50 text-gray-900 border-gray-200/85 dark:bg-gray-800/20 dark:text-white dark:border-zinc-800/80 focus:ring-2 focus:ring-[#FF385C] focus:bg-white dark:focus:bg-gray-950 focus:outline-none transition-all duration-300">
+                <option value="" disabled selected>Select catalog vector...</option>
+                <option value="Billing & Checkout">Billing & Payment Checkout</option>
+                <option value="Shipping & Logistics">Shipping & Logistics</option>
+                <option value="Merchant Account">Merchant Account Admin</option>
+                <option value="Technical Bug">Technical Platform Bug</option>
+                <option value="Other Assistance">Other General Questions</option>
+              </select>
+            </div>
+
+            <!-- Client Email -->
+            <div class="group">
+              <label class="block text-[11px] font-bold uppercase tracking-wider text-gray-500 dark:text-zinc-400 mb-1.5 group-focus-within:text-[#FF385C] transition-colors">
+                Email Address
+              </label>
+              <div class="relative">
+                <span class="absolute left-4 top-3.5 text-gray-400 group-focus-within:text-[#FF385C] transition-colors">
+                  <i data-lucide="mail" class="w-4.5 h-4.5"></i>
+                </span>
+                <input type="email" required id="ticketEmail" placeholder="you@example.com" class="w-full pl-11 pr-4 py-3 rounded-xl border text-xs sm:text-sm bg-gray-50/50 text-gray-900 border-gray-200/85 dark:bg-gray-800/20 dark:text-white dark:border-zinc-800/80 focus:ring-2 focus:ring-[#FF385C] focus:bg-white dark:focus:bg-gray-950 focus:outline-none transition-all duration-300" />
+              </div>
+            </div>
+
+            <!-- Subject Text -->
+            <div class="group">
+              <label class="block text-[11px] font-bold uppercase tracking-wider text-gray-500 dark:text-zinc-400 mb-1.5 group-focus-within:text-[#FF385C] transition-colors">
+                Topic Subject
+              </label>
+              <div class="relative">
+                <span class="absolute left-4 top-3.5 text-gray-400 group-focus-within:text-[#FF385C] transition-colors">
+                  <i data-lucide="info" class="w-4.5 h-4.5"></i>
+                </span>
+                <input type="text" required id="ticketSubject" placeholder="Brief descriptive summary..." class="w-full pl-11 pr-4 py-3 rounded-xl border text-xs sm:text-sm bg-gray-50/50 text-gray-900 border-gray-200/85 dark:bg-gray-800/20 dark:text-white dark:border-zinc-800/80 focus:ring-2 focus:ring-[#FF385C] focus:bg-white dark:focus:bg-gray-950 focus:outline-none transition-all duration-300" />
+              </div>
+            </div>
+
+            <!-- Complete Query Message Text -->
+            <div class="group">
+              <label class="block text-[11px] font-bold uppercase tracking-wider text-gray-500 dark:text-zinc-400 mb-1.5 group-focus-within:text-[#FF385C] transition-colors">
+                Explain Details
+              </label>
+              <textarea required id="ticketMessage" rows="4" placeholder="Be descriptive, write about transaction references, dates, actions..." class="w-full p-4 rounded-xl border text-xs sm:text-sm bg-gray-50/50 text-gray-900 border-gray-200/85 dark:bg-gray-800/20 dark:text-white dark:border-zinc-800/80 focus:ring-2 focus:ring-[#FF385C] focus:bg-white dark:focus:bg-gray-950 focus:outline-none transition-all duration-300"></textarea>
+            </div>
+
+            <!-- Submit Ticket CTA Button -->
+            <button type="submit" id="ticketSubmitBtn" class="w-full bg-[#FF385C] hover:bg-[#e01e43] text-white font-bold py-3.5 px-6 rounded-xl transition-all duration-200 active:scale-[0.98] shadow-lg shadow-rose-500/10 hover:shadow-rose-500/25 flex items-center justify-center gap-2 text-xs sm:text-sm">
+              <i data-lucide="send" class="w-4 h-4"></i>
+              <span>Dispatch Ticket Request</span>
+            </button>
+          </form>
+
+          <!-- Interactive Success Modal Inside Form Structure -->
+          <div id="ticketSuccessPanel" class="hidden p-4 rounded-2xl bg-emerald-50 border border-emerald-200 dark:bg-emerald-500/10 dark:border-emerald-500/20 flex gap-3 items-start transition-all duration-300 animate-bounce">
+            <span class="w-9 h-9 rounded-full bg-emerald-100 dark:bg-emerald-500/20 text-emerald-600 dark:text-emerald-400 flex items-center justify-center flex-shrink-0 mt-0.5">
+              <i data-lucide="check-circle-2" class="w-5.5 h-5.5"></i>
+            </span>
+            <div>
+              <h4 class="font-bold text-emerald-800 dark:text-emerald-400 text-xs sm:text-sm">Ticket Successfully Opened!</h4>
+              <p class="text-[11px] text-emerald-600/90 dark:text-emerald-400/85 mt-1 leading-relaxed">
+                Log token dispatched under reference **#SB-<span id="mockToken">8792</span>**. An operations specialist will reach you via email shortly.
+              </p>
+            </div>
+          </div>
+
+          <!-- Alert notification popup inside the container if Live Chat is invoked -->
+          <div id="liveChatMockBox" class="hidden p-4 rounded-2xl bg-sky-50 border border-sky-200 dark:bg-sky-500/10 dark:border-sky-500/20 flex gap-3 items-center transition-all duration-300">
+            <span class="w-8 h-8 rounded-full bg-sky-100 dark:bg-sky-500/20 text-sky-600 dark:text-sky-400 flex items-center justify-center flex-shrink-0">
+              <i data-lucide="headset" class="w-5 h-5"></i>
+            </span>
+            <div class="flex-grow">
+              <h4 class="font-bold text-sky-800 dark:text-sky-400 text-xs">Live Chat Initiating...</h4>
+              <p class="text-[10px] text-sky-600/90 dark:text-sky-400/80 leading-normal">Launching customer hub console. Please hold.</p>
+            </div>
+            <button onclick="dismissLiveChatBox()" class="text-sky-400 hover:text-sky-600 transition">
+              <i data-lucide="x" class="w-4 h-4"></i>
+            </button>
+          </div>
+
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- Embedded Modular EJS Javascript Scope -->
+  <script>
+    (function() {
+      // Initialize Lucide Icons inside the page context
+      if (typeof lucide !== 'undefined') {
+        lucide.createIcons();
+      }
+
+      // 1. FAQ Accordion Click Toggle Mechanic
+      const accordionItems = document.querySelectorAll('.faq-item');
+      
+      accordionItems.forEach(item => {
+        item.addEventListener('click', function() {
+          const isActive = this.classList.contains('active');
+          
+          // Collapse all active accordions first for clean layout state
+          accordionItems.forEach(faq => {
+            faq.classList.remove('active');
+          });
+
+          // Toggle current
+          if (!isActive) {
+            this.classList.add('active');
+          }
+        });
+      });
+
+      // 2. FAQ Dynamic Text Search Filter
+      const faqInput = document.getElementById('faqSearchInput');
+      const faqContainer = document.getElementById('faqAccordionContainer');
+      const faqSearchFeedback = document.getElementById('searchFeedback');
+
+      if (faqInput && faqContainer) {
+        faqInput.addEventListener('input', function() {
+          const query = faqInput.value.trim().toLowerCase();
+          const items = faqContainer.querySelectorAll('.faq-item');
+          let foundCount = 0;
+
+          if (!query) {
+            items.forEach(item => {
+              item.classList.remove('hidden');
+            });
+            faqSearchFeedback.classList.add('hidden');
+            return;
+          }
+
+          items.forEach(item => {
+            const questionText = item.querySelector('span:first-child').textContent.toLowerCase();
+            const answerText = item.querySelector('.faq-answer p').textContent.toLowerCase();
+
+            if (questionText.includes(query) || answerText.includes(query)) {
+              item.classList.remove('hidden');
+              foundCount++;
+            } else {
+              item.classList.add('hidden');
+            }
+          });
+
+          // Update dynamic search counters
+          faqSearchFeedback.classList.remove('hidden');
+          faqSearchFeedback.textContent = foundCount > 0 
+            ? `Found ${foundCount} matches in active FAQs.` 
+            : `No matching questions found for "${query}". Try another search term!`;
+        });
+      }
+
+      // 3. Support Ticket Mock Submissions
+      const ticketForm = document.getElementById('supportTicketForm');
+      const successPanel = document.getElementById('ticketSuccessPanel');
+      const mockTokenSpan = document.getElementById('mockToken');
+
+      if (ticketForm) {
+        ticketForm.addEventListener('submit', function(e) {
+          e.preventDefault();
+
+          // Generate mock reference ticket number
+          const randRef = Math.floor(1000 + Math.random() * 9000);
+          if (mockTokenSpan) {
+            mockTokenSpan.textContent = randRef;
+          }
+
+          if (successPanel) {
+            successPanel.classList.remove('hidden');
+          }
+          ticketForm.classList.add('pointer-events-none', 'opacity-40');
+
+          // Reset the form state gracefully after standard delay
+          setTimeout(() => {
+            ticketForm.reset();
+            ticketForm.classList.remove('pointer-events-none', 'opacity-40');
+            if (successPanel) {
+              successPanel.classList.add('hidden');
+            }
+          }, 6000);
+        });
+      }
+
+    })();
+
+    // 4. Global Action Handlers outside scoped container for inline onclick functions
+    function triggerLiveChat() {
+      const box = document.getElementById('liveChatMockBox');
+      if (box) {
+        box.classList.remove('hidden');
+        box.classList.add('animate-pulse');
+        setTimeout(() => {
+          box.classList.remove('animate-pulse');
+        }, 2000);
+      }
+    }
+
+    function dismissLiveChatBox() {
+      const box = document.getElementById('liveChatMockBox');
+      if (box) {
+        box.classList.add('hidden');
+      }
+    }
+  </script>
+</main>
+<%- include("../partials/footer") %>

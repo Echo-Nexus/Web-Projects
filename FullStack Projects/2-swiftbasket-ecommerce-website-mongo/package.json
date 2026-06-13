@@ -1,0 +1,27 @@
+{
+  "name": "sparkystore",
+  "version": "1.0.0",
+  "description": "In this website, I have built a comprehensive features.",
+  "license": "ISC",
+  "author": "Arix Ratgaiya (Echo-Nexus)",
+  "type": "commonjs",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "nodemon app.js"
+  },
+  "dependencies": {
+    "bcryptjs": "^3.0.3",
+    "connect-mongodb-session": "^5.0.0",
+    "ejs": "^6.0.1",
+    "express": "^5.2.1",
+    "express-session": "^1.19.0",
+    "express-validator": "^7.3.2",
+    "mongodb": "^7.3.0",
+    "mongoose": "^9.7.0",
+    "uuid": "^14.0.0"
+  },
+  "devDependencies": {
+    "nodemon": "^3.1.14"
+  }
+}

@@ -1,0 +1,433 @@
+<main class="min-h-screen bg-slate-50 dark:bg-slate-950 py-12 px-4 sm:px-6 lg:px-8 font-sans antialiased transition-colors duration-300">
+  <!-- FontAwesome for Brand and Enterprise Icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+
+  <div class="max-w-7xl mx-auto">
+    <!-- Form Header Title Area -->
+    <div class="mb-10 flex flex-col md:flex-row md:items-center justify-between gap-4">
+      <div>
+        <span class="text-xs font-bold text-indigo-600 dark:text-indigo-400 uppercase tracking-widest">Workspace</span>
+        <h1 class="text-3xl font-extrabold text-slate-900 dark:text-white tracking-tight mt-1">Create Professional Profile</h1>
+        <p class="text-slate-500 dark:text-slate-400 mt-1">Setup your public digital identity, skills matrix, and social footprint.</p>
+      </div>
+      <div class="flex items-center gap-3">
+        <button type="button" onclick="resetForm()" class="px-4 py-2 text-sm font-semibold text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white transition">
+          <i class="fas fa-undo mr-1.5"></i> Clear Inputs
+        </button>
+      </div>
+    </div>
+
+    <!-- Main Dynamic Multi-Column Grid Layout -->
+    <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
+      
+      <!-- LEFT COLUMN: Live Preview Card (Sticky on Desktop) -->
+      <div class="lg:col-span-4 lg:sticky lg:top-8 space-y-6">
+        <div class="bg-white dark:bg-slate-900 border border-slate-200/80 dark:border-slate-800/80 rounded-3xl shadow-xl overflow-hidden transition-all duration-300">
+          
+          <!-- Banner Container -->
+          <div class="relative h-28 w-full bg-slate-100 dark:bg-slate-800 overflow-hidden">
+            <img id="preview-cover" src="https://images.unsplash.com/photo-1503264116251-35a269479413?q=80&w=1600&auto=format&fit=crop" alt="Cover" class="w-full h-full object-cover opacity-80 transition-all duration-300">
+            <div class="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent"></div>
+          </div>
+          
+          <!-- Preview Identity Section -->
+          <div class="px-6 pb-6 relative">
+            <div class="flex gap-4 -mt-10 items-end mb-4">
+              <div class="w-20 h-20 rounded-2xl ring-4 ring-white dark:ring-slate-900 shadow-lg overflow-hidden bg-slate-200 dark:bg-slate-800 flex-shrink-0">
+                <img id="preview-avatar" src="https://randomuser.me/api/portraits/men/32.jpg" alt="Avatar" class="w-full h-full object-cover">
+              </div>
+              <div class="min-w-0 flex-1">
+                <h4 id="preview-name" class="font-bold text-slate-900 dark:text-white text-base truncate">Aarav Sharma</h4>
+                <p id="preview-username" class="text-xs text-indigo-600 dark:text-indigo-400 font-semibold truncate">@aarav_dev</p>
+              </div>
+            </div>
+            
+            <!-- Biography Snippet -->
+            <p id="preview-bio" class="text-slate-500 dark:text-slate-400 text-xs line-clamp-3 mb-4 italic">"Full-stack developer passionate about building scalable web applications..."</p>
+            
+            <!-- Contact details line preview -->
+            <div class="border-t border-slate-100 dark:border-slate-800/60 pt-4 space-y-2">
+              <div class="flex items-center gap-2 text-xs text-slate-600 dark:text-slate-400">
+                <i class="fas fa-envelope w-4 text-center text-indigo-500"></i>
+                <span id="preview-email" class="truncate">aarav.sharma@example.com</span>
+              </div>
+              <div class="flex items-center gap-2 text-xs text-slate-600 dark:text-slate-400">
+                <i class="fas fa-map-marker-alt w-4 text-center text-indigo-500"></i>
+                <span id="preview-location">Nepalgunj, Nepal</span>
+              </div>
+            </div>
+
+            <!-- Dynamic Education Line preview -->
+            <div class="mt-4 pt-3 border-t border-slate-100 dark:border-slate-800/60 flex items-center gap-2 text-xs text-slate-600 dark:text-slate-400">
+              <i class="fas fa-graduation-cap text-indigo-500"></i>
+              <span id="preview-education" class="truncate">Bachelor in Computer Science</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- RIGHT COLUMN: Input Forms (8 Columns) -->
+      <form id="profileCreationForm" class="lg:col-span-8 space-y-8" action="/profile/create" method="POST">
+        
+        <!-- SECTION 1: Personal Identity & Media Asset Management -->
+        <div class="bg-white dark:bg-slate-900 border border-slate-200/80 dark:border-slate-800/80 rounded-3xl p-6 sm:p-8 shadow-sm space-y-6">
+          <div class="border-b border-slate-100 dark:border-slate-800/60 pb-4">
+            <h3 class="text-lg font-bold text-slate-900 dark:text-white flex items-center gap-2">
+              <i class="fas fa-user-circle text-indigo-500"></i> Personal Identity
+            </h3>
+            <p class="text-xs text-slate-400 dark:text-slate-500 mt-1">Configure your primary account details and custom picture links.</p>
+          </div>
+
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div class="space-y-2">
+              <label class="block text-xs font-bold text-slate-400 dark:text-slate-500 uppercase tracking-wider">Full Name</label>
+              <input type="text" id="input-fullName" name="fullName" placeholder="Aarav Sharma" oninput="updatePreview('name', this.value, 'Aarav Sharma')" class="w-full px-4 py-3 rounded-xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-950 text-slate-900 dark:text-white focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-500 transition shadow-sm outline-none" required>
+            </div>
+            
+            <div class="space-y-2">
+              <label class="block text-xs font-bold text-slate-400 dark:text-slate-500 uppercase tracking-wider">Username</label>
+              <div class="relative">
+                <span class="absolute inset-y-0 left-0 pl-4 flex items-center text-slate-400 dark:text-slate-500 font-semibold">@</span>
+                <input type="text" id="input-username" name="username" placeholder="aarav_dev" oninput="updatePreview('username', this.value, 'aarav_dev', '@')" class="w-full pl-8 pr-4 py-3 rounded-xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-950 text-slate-900 dark:text-white focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-500 transition shadow-sm outline-none" required>
+              </div>
+            </div>
+
+            <div class="space-y-2 md:col-span-2">
+              <label class="block text-xs font-bold text-slate-400 dark:text-slate-500 uppercase tracking-wider">Biography</label>
+              <textarea id="input-bio" name="bio" rows="3" placeholder="Full-stack developer passionate about building scalable web applications using Node.js, React, and modern web technologies..." oninput="updatePreview('bio', this.value, 'Full-stack developer passionate about building scalable web applications...')" class="w-full px-4 py-3 rounded-xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-950 text-slate-900 dark:text-white focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-500 transition shadow-sm outline-none resize-none" required></textarea>
+            </div>
+
+            <div class="space-y-2">
+              <label class="block text-xs font-bold text-slate-400 dark:text-slate-500 uppercase tracking-wider">Profile Picture URL</label>
+              <input type="url" id="input-profilePic" name="profilePic" placeholder="https://randomuser.me/api/portraits/men/32.jpg" oninput="updateImagePreview('avatar', this.value, 'https://randomuser.me/api/portraits/men/32.jpg')" class="w-full px-4 py-3 rounded-xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-950 text-slate-900 dark:text-white focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-500 transition shadow-sm outline-none" required>
+            </div>
+
+            <div class="space-y-2">
+              <label class="block text-xs font-bold text-slate-400 dark:text-slate-500 uppercase tracking-wider">Cover Photo URL</label>
+              <input type="url" id="input-coverPhoto" name="coverPhoto" placeholder="https://images.unsplash.com/photo-1503264116251-35a269479413?q=80&w=1600&auto=format&fit=crop" oninput="updateImagePreview('cover', this.value, 'https://images.unsplash.com/photo-1503264116251-35a269479413?q=80&w=1600&auto=format&fit=crop')" class="w-full px-4 py-3 rounded-xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-950 text-slate-900 dark:text-white focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-500 transition shadow-sm outline-none" required>
+            </div>
+          </div>
+        </div>
+
+        <!-- SECTION 2: Contact, Location & Map Attributes -->
+        <div class="bg-white dark:bg-slate-900 border border-slate-200/80 dark:border-slate-800/80 rounded-3xl p-6 sm:p-8 shadow-sm space-y-6">
+          <div class="border-b border-slate-100 dark:border-slate-800/60 pb-4">
+            <h3 class="text-lg font-bold text-slate-900 dark:text-white flex items-center gap-2">
+              <i class="fas fa-map-marked-alt text-indigo-500"></i> Contact & Geography
+            </h3>
+            <p class="text-xs text-slate-400 dark:text-slate-500 mt-1">Configure your location mapping details and contact channels.</p>
+          </div>
+
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div class="space-y-2">
+              <label class="block text-xs font-bold text-slate-400 dark:text-slate-500 uppercase tracking-wider">Email Address</label>
+              <input type="email" id="input-email" name="email" placeholder="aarav.sharma@example.com" oninput="updatePreview('email', this.value, 'aarav.sharma@example.com')" class="w-full px-4 py-3 rounded-xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-950 text-slate-900 dark:text-white focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-500 transition shadow-sm outline-none" required>
+            </div>
+
+            <div class="space-y-2">
+              <label class="block text-xs font-bold text-slate-400 dark:text-slate-500 uppercase tracking-wider">Contact Number</label>
+              <input type="text" name="contactNumber" placeholder="+977-9801234567" class="w-full px-4 py-3 rounded-xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-950 text-slate-900 dark:text-white focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-500 transition shadow-sm outline-none" required>
+            </div>
+
+            <div class="space-y-2">
+              <label class="block text-xs font-bold text-slate-400 dark:text-slate-500 uppercase tracking-wider">Country</label>
+              <input type="text" id="countryInput" name="country" placeholder="Nepal" oninput="updateLocationPreview()" class="w-full px-4 py-3 rounded-xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-950 text-slate-900 dark:text-white focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-500 transition shadow-sm outline-none" required>
+            </div>
+
+            <div class="space-y-2">
+              <label class="block text-xs font-bold text-slate-400 dark:text-slate-500 uppercase tracking-wider">State / Province</label>
+              <input type="text" name="state" placeholder="Lumbini Province" class="w-full px-4 py-3 rounded-xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-950 text-slate-900 dark:text-white focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-500 transition shadow-sm outline-none" required>
+            </div>
+
+            <div class="space-y-2">
+              <label class="block text-xs font-bold text-slate-400 dark:text-slate-500 uppercase tracking-wider">City</label>
+              <input type="text" id="cityInput" name="city" placeholder="Nepalgunj" oninput="updateLocationPreview()" class="w-full px-4 py-3 rounded-xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-950 text-slate-900 dark:text-white focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-500 transition shadow-sm outline-none" required>
+            </div>
+
+            <div class="space-y-2">
+              <label class="block text-xs font-bold text-slate-400 dark:text-slate-500 uppercase tracking-wider">Full Address</label>
+              <input type="text" name="address" placeholder="Ward 5, Nepalgunj, Banke" class="w-full px-4 py-3 rounded-xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-950 text-slate-900 dark:text-white focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-500 transition shadow-sm outline-none" required>
+            </div>
+          </div>
+        </div>
+
+        <!-- SECTION 3: Academic Qualifications & Demographics -->
+        <div class="bg-white dark:bg-slate-900 border border-slate-200/80 dark:border-slate-800/80 rounded-3xl p-6 sm:p-8 shadow-sm space-y-6">
+          <div class="border-b border-slate-100 dark:border-slate-800/60 pb-4">
+            <h3 class="text-lg font-bold text-slate-900 dark:text-white flex items-center gap-2">
+              <i class="fas fa-graduation-cap text-indigo-500"></i> Education & Demographics
+            </h3>
+            <p class="text-xs text-slate-400 dark:text-slate-500 mt-1">Configure your personal demographics and latest academic records.</p>
+          </div>
+
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div class="space-y-2">
+              <label class="block text-xs font-bold text-slate-400 dark:text-slate-500 uppercase tracking-wider">Gender</label>
+              <select name="gender" class="w-full px-4 py-3 rounded-xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-950 text-slate-900 dark:text-white focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-500 transition shadow-sm outline-none cursor-pointer">
+                <option value="Male" selected>Male</option>
+                <option value="Female">Female</option>
+                <option value="Other">Other</option>
+              </select>
+            </div>
+
+            <div class="space-y-2">
+              <label class="block text-xs font-bold text-slate-400 dark:text-slate-500 uppercase tracking-wider">Date of Birth</label>
+              <input type="date" name="dob" class="w-full px-4 py-3 rounded-xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-950 text-slate-900 dark:text-white focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-500 transition shadow-sm outline-none" required>
+            </div>
+
+            <div class="space-y-2">
+              <label class="block text-xs font-bold text-slate-400 dark:text-slate-500 uppercase tracking-wider">Degree</label>
+              <input type="text" id="input-degree" name="education[degree]" placeholder="Bachelor in Computer Science" oninput="updatePreview('education', this.value, 'Bachelor in Computer Science')" class="w-full px-4 py-3 rounded-xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-950 text-slate-900 dark:text-white focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-500 transition shadow-sm outline-none" required>
+            </div>
+
+            <div class="space-y-2">
+              <label class="block text-xs font-bold text-slate-400 dark:text-slate-500 uppercase tracking-wider">University / Board</label>
+              <input type="text" name="education[university]" placeholder="Tribhuvan University" class="w-full px-4 py-3 rounded-xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-950 text-slate-900 dark:text-white focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-500 transition shadow-sm outline-none" required>
+            </div>
+
+            <div class="space-y-2 md:col-span-2">
+              <label class="block text-xs font-bold text-slate-400 dark:text-slate-500 uppercase tracking-wider">Enrollment Status</label>
+              <select name="education[status]" class="w-full px-4 py-3 rounded-xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-950 text-slate-900 dark:text-white focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-500 transition shadow-sm outline-none cursor-pointer">
+                <option value="Pursuing" selected>Pursuing</option>
+                <option value="Completed">Completed</option>
+                <option value="Dropped">Dropped</option>
+              </select>
+            </div>
+          </div>
+        </div>
+
+        <!-- SECTION 4: Hobbies & Professional Skills Grid Builder -->
+        <div class="bg-white dark:bg-slate-900 border border-slate-200/80 dark:border-slate-800/80 rounded-3xl p-6 sm:p-8 shadow-sm space-y-6">
+          <div class="border-b border-slate-100 dark:border-slate-800/60 pb-4">
+            <h3 class="text-lg font-bold text-slate-900 dark:text-white flex items-center gap-2">
+              <i class="fas fa-layer-group text-indigo-500"></i> Skills & Interests
+            </h3>
+            <p class="text-xs text-slate-400 dark:text-slate-500 mt-1">Interactively append or remove technical stack items and hobby chips.</p>
+          </div>
+
+          <!-- Dynamic Skills Container -->
+          <div class="space-y-3">
+            <label class="block text-xs font-bold text-slate-400 dark:text-slate-500 uppercase tracking-wider">Technical Skills</label>
+            <div class="flex gap-2">
+              <input type="text" id="skill-input" placeholder="e.g. JavaScript, React, Node.js" class="flex-1 px-4 py-3 rounded-xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-950 text-slate-900 dark:text-white focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-500 outline-none transition shadow-sm text-sm">
+              <button type="button" onclick="addChip('skill')" class="px-5 bg-indigo-600 hover:bg-indigo-700 text-white font-bold text-sm rounded-xl transition">Add</button>
+            </div>
+            <!-- Dynamic Serialized Chip Array Placement Area -->
+            <div id="skills-chips" class="flex flex-wrap gap-2 pt-2">
+              <!-- Preset default visual example chips for onboarding user context -->
+              <div class="chip-item inline-flex items-center gap-1.5 px-3 py-1.5 bg-indigo-50/50 dark:bg-indigo-950/30 text-indigo-700 dark:text-indigo-400 text-xs font-bold rounded-lg border border-indigo-100/40 dark:border-indigo-900/30">
+                <input type="hidden" name="skills[]" value="JavaScript">
+                <span>JavaScript</span>
+                <button type="button" onclick="this.parentElement.remove()" class="text-indigo-500 hover:text-indigo-700 focus:outline-none">&times;</button>
+              </div>
+              <div class="chip-item inline-flex items-center gap-1.5 px-3 py-1.5 bg-indigo-50/50 dark:bg-indigo-950/30 text-indigo-700 dark:text-indigo-400 text-xs font-bold rounded-lg border border-indigo-100/40 dark:border-indigo-900/30">
+                <input type="hidden" name="skills[]" value="Node.js">
+                <span>Node.js</span>
+                <button type="button" onclick="this.parentElement.remove()" class="text-indigo-500 hover:text-indigo-700 focus:outline-none">&times;</button>
+              </div>
+            </div>
+          </div>
+
+          <!-- Dynamic Hobbies Container -->
+          <div class="space-y-3">
+            <label class="block text-xs font-bold text-slate-400 dark:text-slate-500 uppercase tracking-wider">Hobbies & Interests</label>
+            <div class="flex gap-2">
+              <input type="text" id="hobby-input" placeholder="e.g. Coding, Gaming, Photography" class="flex-1 px-4 py-3 rounded-xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-950 text-slate-900 dark:text-white focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-500 outline-none transition shadow-sm text-sm">
+              <button type="button" onclick="addChip('hobby')" class="px-5 bg-indigo-600 hover:bg-indigo-700 text-white font-bold text-sm rounded-xl transition">Add</button>
+            </div>
+            <div id="hobbies-chips" class="flex flex-wrap gap-2 pt-2">
+              <!-- Preset default visual example chips -->
+              <div class="chip-item inline-flex items-center gap-1.5 px-3 py-1.5 bg-slate-50 dark:bg-slate-800/40 border border-slate-200/60 dark:border-slate-800/80 text-slate-700 dark:text-slate-300 text-xs font-semibold rounded-lg">
+                <input type="hidden" name="hobbies[]" value="Coding">
+                <span>Coding</span>
+                <button type="button" onclick="this.parentElement.remove()" class="text-slate-400 hover:text-slate-600 dark:hover:text-slate-200 focus:outline-none">&times;</button>
+              </div>
+              <div class="chip-item inline-flex items-center gap-1.5 px-3 py-1.5 bg-slate-50 dark:bg-slate-800/40 border border-slate-200/60 dark:border-slate-800/80 text-slate-700 dark:text-slate-300 text-xs font-semibold rounded-lg">
+                <input type="hidden" name="hobbies[]" value="Gaming">
+                <span>Gaming</span>
+                <button type="button" onclick="this.parentElement.remove()" class="text-slate-400 hover:text-slate-600 dark:hover:text-slate-200 focus:outline-none">&times;</button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- SECTION 5: Social Integrations & Platform Links -->
+        <div class="bg-white dark:bg-slate-900 border border-slate-200/80 dark:border-slate-800/80 rounded-3xl p-6 sm:p-8 shadow-sm space-y-6">
+          <div class="border-b border-slate-100 dark:border-slate-800/60 pb-4">
+            <h3 class="text-lg font-bold text-slate-900 dark:text-white flex items-center gap-2">
+              <i class="fas fa-share-alt text-indigo-500"></i> Social Profiles
+            </h3>
+            <p class="text-xs text-slate-400 dark:text-slate-500 mt-1">Bind external endpoints for public matching.</p>
+          </div>
+
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div class="space-y-2">
+              <label class="block text-xs font-bold text-slate-400 dark:text-slate-500 uppercase tracking-wider">GitHub URL</label>
+              <div class="relative">
+                <span class="absolute inset-y-0 left-0 pl-4 flex items-center text-slate-400 dark:text-slate-500"><i class="fab fa-github"></i></span>
+                <input type="url" name="links[github]" placeholder="https://github.com/aarav-dev" class="w-full pl-10 pr-4 py-3 rounded-xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-950 text-slate-900 dark:text-white focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-500 transition shadow-sm outline-none">
+              </div>
+            </div>
+
+            <div class="space-y-2">
+              <label class="block text-xs font-bold text-slate-400 dark:text-slate-500 uppercase tracking-wider">LinkedIn URL</label>
+              <div class="relative">
+                <span class="absolute inset-y-0 left-0 pl-4 flex items-center text-slate-400 dark:text-slate-500"><i class="fab fa-linkedin-in"></i></span>
+                <input type="url" name="links[linkedin]" placeholder="https://linkedin.com/in/aarav-sharma" class="w-full pl-10 pr-4 py-3 rounded-xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-950 text-slate-900 dark:text-white focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-500 transition shadow-sm outline-none">
+              </div>
+            </div>
+
+            <div class="space-y-2">
+              <label class="block text-xs font-bold text-slate-400 dark:text-slate-500 uppercase tracking-wider">Personal Website URL</label>
+              <div class="relative">
+                <span class="absolute inset-y-0 left-0 pl-4 flex items-center text-slate-400 dark:text-slate-500"><i class="fas fa-globe"></i></span>
+                <input type="url" name="links[website]" placeholder="https://aarav.dev" class="w-full pl-10 pr-4 py-3 rounded-xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-950 text-slate-900 dark:text-white focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-500 transition shadow-sm outline-none">
+              </div>
+            </div>
+
+            <div class="space-y-2">
+              <label class="block text-xs font-bold text-slate-400 dark:text-slate-500 uppercase tracking-wider">Twitter (X) URL</label>
+              <div class="relative">
+                <span class="absolute inset-y-0 left-0 pl-4 flex items-center text-slate-400 dark:text-slate-500"><i class="fa-brands fa-x-twitter"></i></span>
+                <input type="url" name="links[twitter]" placeholder="https://twitter.com/aarav_dev" class="w-full pl-10 pr-4 py-3 rounded-xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-950 text-slate-900 dark:text-white focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-500 transition shadow-sm outline-none">
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- ACTION CONTROLS FOOTER -->
+        <div class="px-8 py-5 bg-white dark:bg-slate-900 border border-slate-200/80 dark:border-slate-800/80 rounded-3xl flex flex-col sm:flex-row items-center justify-between gap-4 shadow-sm">
+          <span class="text-xs text-slate-400 dark:text-slate-500 flex items-center gap-2">
+            <i class="fas fa-shield-halved text-emerald-500"></i> Safe encryption & strict validation apply.
+          </span>
+          <div class="flex items-center gap-3 w-full sm:w-auto">
+            <button type="button" onclick="resetForm()" class="flex-1 sm:flex-none px-6 py-3 border border-slate-200 dark:border-slate-800 text-slate-700 dark:text-slate-300 font-bold rounded-2xl hover:bg-slate-50 dark:hover:bg-slate-800/40 transition">
+              Cancel
+            </button>
+            <button type="submit" class="flex-1 sm:flex-none px-8 py-3 bg-indigo-600 hover:bg-indigo-700 active:bg-indigo-800 dark:bg-indigo-500 dark:hover:bg-indigo-600 text-white font-bold rounded-2xl shadow-lg shadow-indigo-200 dark:shadow-none transition duration-200">
+              Create Profile
+            </button>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+</main>
+
+<script>
+  /**
+   * STREAMING_CHUNK: Setting up JS interaction scripts and live rendering functions
+   */
+
+  /**
+   * Helper function to live-update general text preview blocks
+   */
+  function updatePreview(id, value, fallback, prefix = '') {
+    const el = document.getElementById(`preview-${id}`);
+    if (el) {
+      el.textContent = value.trim() ? `${prefix}${value}` : `${prefix}${fallback}`;
+    }
+  }
+
+  /**
+   * Updates location preview line when Country or City updates
+   */
+  function updateLocationPreview() {
+    const country = document.getElementById('countryInput').value.trim();
+    const city = document.getElementById('cityInput').value.trim();
+    const el = document.getElementById('preview-location');
+    if (el) {
+      if (city && country) {
+        el.textContent = `${city}, ${country}`;
+      } else {
+        el.textContent = city || country || 'Nepalgunj, Nepal';
+      }
+    }
+  }
+
+  /**
+   * Updates preview image containers asynchronously
+   */
+  function updateImagePreview(id, url, fallback) {
+    const el = document.getElementById(`preview-${id}`);
+    if (el) {
+      el.src = url.trim() ? url : fallback;
+    }
+  }
+
+  /**
+   * Creates structural chips/tags for Skills & Hobbies dynamically
+   */
+  function addChip(type) {
+    const input = document.getElementById(`${type}-input`);
+    const container = document.getElementById(`${type}s-chips`);
+    const val = input.value.trim();
+
+    if (!val) return;
+
+    // Check if duplicate exists
+    const existing = Array.from(container.querySelectorAll('input')).map(i => i.value);
+    if (existing.includes(val)) {
+      input.value = '';
+      return;
+    }
+
+    const item = document.createElement('div');
+    if (type === 'skill') {
+      item.className = 'chip-item inline-flex items-center gap-1.5 px-3 py-1.5 bg-indigo-50/50 dark:bg-indigo-950/30 text-indigo-700 dark:text-indigo-400 text-xs font-bold rounded-lg border border-indigo-100/40 dark:border-indigo-900/30';
+      item.innerHTML = `
+        <input type="hidden" name="skills[]" value="${val}">
+        <span>${val}</span>
+        <button type="button" onclick="this.parentElement.remove()" class="text-indigo-500 hover:text-indigo-700 focus:outline-none">&times;</button>
+      `;
+    } else {
+      item.className = 'chip-item inline-flex items-center gap-1.5 px-3 py-1.5 bg-slate-50 dark:bg-slate-800/40 border border-slate-200/60 dark:border-slate-800/80 text-slate-700 dark:text-slate-300 text-xs font-semibold rounded-lg';
+      item.innerHTML = `
+        <input type="hidden" name="hobbies[]" value="${val}">
+        <span>${val}</span>
+        <button type="button" onclick="this.parentElement.remove()" class="text-slate-400 hover:text-slate-600 dark:hover:text-slate-200 focus:outline-none">&times;</button>
+      `;
+    }
+
+    container.appendChild(item);
+    input.value = '';
+  }
+
+  /**
+   * Standard form reset function reverting previews to default placeholders
+   */
+  function resetForm() {
+    document.getElementById('profileCreationForm').reset();
+    
+    // Reset individual text element previews to initial mocks
+    document.getElementById('preview-name').textContent = 'Aarav Sharma';
+    document.getElementById('preview-username').textContent = '@aarav_dev';
+    document.getElementById('preview-bio').textContent = '"Full-stack developer passionate about building scalable web applications..."';
+    document.getElementById('preview-email').textContent = 'aarav.sharma@example.com';
+    document.getElementById('preview-location').textContent = 'Nepalgunj, Nepal';
+    document.getElementById('preview-education').textContent = 'Bachelor in Computer Science';
+    
+    // Reset image previews
+    document.getElementById('preview-avatar').src = 'https://randomuser.me/api/portraits/men/32.jpg';
+    document.getElementById('preview-cover').src = 'https://images.unsplash.com/photo-1503264116251-35a269479413?q=80&w=1600&auto=format&fit=crop';
+    
+    // Clear chips
+    document.getElementById('skills-chips').innerHTML = '';
+    document.getElementById('hobbies-chips').innerHTML = '';
+  }
+
+  // Intercept keyboard event enter to add chips instead of default form submit
+  document.getElementById('skill-input').addEventListener('keydown', function(e) {
+    if (e.key === 'Enter') {
+      e.preventDefault();
+      addChip('skill');
+    }
+  });
+
+  document.getElementById('hobby-input').addEventListener('keydown', function(e) {
+    if (e.key === 'Enter') {
+      e.preventDefault();
+      addChip('hobby');
+    }
+  });
+</script>

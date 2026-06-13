@@ -1,0 +1,411 @@
+<%- include("../partials/header") %>
+<main class="w-full min-h-screen py-12 px-4 sm:px-6 lg:px-8 relative overflow-hidden bg-gray-50 text-[#222222] dark:bg-gray-950 dark:text-zinc-200 transition-colors duration-500 font-['Nunito_Sans',_sans-serif]">
+  
+  <!-- Embedding Google Font Link dynamically inside the module to preserve self-containment -->
+  <link href="https://fonts.googleapis.com/css2?family=Nunito+Sans:wght@400;600;700;800;900&display=swap" rel="stylesheet" />
+
+  <style>
+    /* Premium smooth scroll configuration for section hopping */
+    html {
+      scroll-behavior: smooth;
+    }
+    
+    /* Elegant section transitions */
+    .policy-card {
+      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+    .policy-card:hover {
+      border-color: rgba(255, 56, 92, 0.2);
+    }
+    
+    /* Line clamp utilities for search result matches */
+    .search-highlight {
+      background-color: rgba(255, 56, 92, 0.15);
+      border-bottom: 2px solid #FF385C;
+      color: inherit;
+      border-radius: 2px;
+      padding: 0 2px;
+    }
+  </style>
+
+  <!-- Ambient Glow Background Orbs positioned absolutely inside parent container -->
+  <div class="absolute top-10 left-10 w-72 h-72 sm:w-96 sm:h-96 rounded-full bg-rose-400/10 dark:bg-brand-500/5 blur-[120px] pointer-events-none select-none transition-all duration-500"></div>
+  <div class="absolute bottom-10 right-10 w-72 h-72 sm:w-96 sm:h-96 rounded-full bg-sky-400/10 dark:bg-sky-500/5 blur-[120px] pointer-events-none select-none transition-all duration-500"></div>
+
+  <!-- Main Responsive Wrapper Grid -->
+  <div class="max-w-7xl mx-auto relative z-10 space-y-12">
+    
+    <!-- Header Banner -->
+    <div class="text-center max-w-3xl mx-auto space-y-4 pt-4">
+      <span class="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-full text-xs font-black uppercase tracking-wider bg-rose-50 text-[#FF385C] dark:bg-[#FF385C]/10 dark:text-[#FF385C]">
+        <i data-lucide="shield-check" class="w-4 h-4"></i> Trust &amp; Safety
+      </span>
+      <h1 class="text-4xl sm:text-5xl font-black tracking-tight text-gray-900 dark:text-white">
+        Privacy Policy
+      </h1>
+      <p class="text-sm sm:text-base text-gray-500 dark:text-zinc-400 leading-relaxed">
+        Your trust is our most valuable asset. Learn more about how SwiftBasket securely handles, process, and safeguards your profile transactions.
+      </p>
+      <div class="inline-flex items-center gap-2 text-xs font-bold text-gray-400 dark:text-zinc-500 bg-white/60 dark:bg-zinc-900/60 border border-gray-100 dark:border-zinc-800 px-4 py-2 rounded-xl">
+        <i data-lucide="calendar" class="w-3.5 h-3.5 text-[#FF385C]"></i> Last Updated: June 5, 2026
+      </div>
+    </div>
+
+    <!-- Layout Grid -->
+    <div class="grid lg:grid-cols-12 gap-8 lg:gap-12 items-start">
+      
+      <!-- Left Column: Navigation Sidebar (4 cols) - Sticky -->
+      <aside class="lg:col-span-4 lg:sticky lg:top-24 space-y-6">
+        
+        <!-- Live Document Search Card -->
+        <div class="bg-white/75 dark:bg-gray-900/40 border border-gray-200/60 dark:border-gray-800/60 backdrop-blur-xl rounded-3xl p-6 shadow-xl dark:shadow-black/20">
+          <h3 class="text-xs font-black uppercase tracking-wider text-gray-400 dark:text-zinc-500 mb-3 flex items-center gap-1.5">
+            <i data-lucide="search" class="w-3.5 h-3.5"></i> Live Search Policy
+          </h3>
+          <div class="relative">
+            <span class="absolute left-3 top-3.5 text-gray-400">
+              <i data-lucide="search" class="w-4 h-4"></i>
+            </span>
+            <input 
+              type="text" 
+              id="policySearch" 
+              placeholder="Search keyword (e.g. cookies, secure)"
+              class="w-full pl-10 pr-4 py-3 rounded-xl border text-sm bg-gray-50/50 text-gray-900 border-gray-200/80 dark:bg-gray-800/20 dark:text-white dark:border-zinc-800/80 focus:ring-2 focus:ring-[#FF385C] focus:bg-white dark:focus:bg-gray-950 focus:outline-none transition-all duration-300"
+            />
+          </div>
+          <div id="searchResultsCount" class="text-[11px] text-gray-400 dark:text-zinc-500 mt-2.5 hidden font-semibold">
+            Found 0 matches.
+          </div>
+        </div>
+
+        <!-- Table of Contents Sidebar Container -->
+        <div class="bg-white/75 dark:bg-gray-900/40 border border-gray-200/60 dark:border-gray-800/60 backdrop-blur-xl rounded-3xl p-6 shadow-xl dark:shadow-black/20">
+          <h3 class="text-xs font-black uppercase tracking-wider text-gray-400 dark:text-zinc-500 mb-4 flex items-center gap-1.5">
+            <i data-lucide="list-tree" class="w-3.5 h-3.5"></i> Table of Contents
+          </h3>
+          <nav id="toc-nav" class="space-y-1.5 max-h-[45vh] overflow-y-auto no-scrollbar">
+            <a href="#info-collection" class="toc-link block px-3 py-2.5 rounded-xl text-xs font-bold text-gray-500 dark:text-zinc-400 hover:bg-rose-50/50 dark:hover:bg-rose-500/10 hover:text-[#FF385C] dark:hover:text-[#FF385C] transition border-l-4 border-transparent pl-3 active-toc">1. Information We Collect</a>
+            <a href="#info-usage" class="toc-link block px-3 py-2.5 rounded-xl text-xs font-bold text-gray-500 dark:text-zinc-400 hover:bg-rose-50/50 dark:hover:bg-rose-500/10 hover:text-[#FF385C] dark:hover:text-[#FF385C] transition border-l-4 border-transparent pl-3">2. How We Use Data</a>
+            <a href="#info-sharing" class="toc-link block px-3 py-2.5 rounded-xl text-xs font-bold text-gray-500 dark:text-zinc-400 hover:bg-rose-50/50 dark:hover:bg-rose-500/10 hover:text-[#FF385C] dark:hover:text-[#FF385C] transition border-l-4 border-transparent pl-3">3. Sharing & Disclosures</a>
+            <a href="#cookies" class="toc-link block px-3 py-2.5 rounded-xl text-xs font-bold text-gray-500 dark:text-zinc-400 hover:bg-rose-50/50 dark:hover:bg-rose-500/10 hover:text-[#FF385C] dark:hover:text-[#FF385C] transition border-l-4 border-transparent pl-3">4. Cookies & Tracking</a>
+            <a href="#data-security" class="toc-link block px-3 py-2.5 rounded-xl text-xs font-bold text-gray-500 dark:text-zinc-400 hover:bg-rose-50/50 dark:hover:bg-rose-500/10 hover:text-[#FF385C] dark:hover:text-[#FF385C] transition border-l-4 border-transparent pl-3">5. Data Storage & Security</a>
+            <a href="#your-rights" class="toc-link block px-3 py-2.5 rounded-xl text-xs font-bold text-gray-500 dark:text-zinc-400 hover:bg-rose-50/50 dark:hover:bg-rose-500/10 hover:text-[#FF385C] dark:hover:text-[#FF385C] transition border-l-4 border-transparent pl-3">6. Your Legal Rights</a>
+            <a href="#policy-changes" class="toc-link block px-3 py-2.5 rounded-xl text-xs font-bold text-gray-500 dark:text-zinc-400 hover:bg-rose-50/50 dark:hover:bg-rose-500/10 hover:text-[#FF385C] dark:hover:text-[#FF385C] transition border-l-4 border-transparent pl-3">7. Policy Adjustments</a>
+            <a href="#contact-us" class="toc-link block px-3 py-2.5 rounded-xl text-xs font-bold text-gray-500 dark:text-zinc-400 hover:bg-rose-50/50 dark:hover:bg-rose-500/10 hover:text-[#FF385C] dark:hover:text-[#FF385C] transition border-l-4 border-transparent pl-3">8. Get in Touch</a>
+          </nav>
+        </div>
+
+      </aside>
+
+      <!-- Right Column: Policy Content Pane (8 cols) -->
+      <section id="privacy-content" class="lg:col-span-8 space-y-6 relative">
+        
+        <!-- Scrolling reading progress bar -->
+        <div class="sticky top-16 z-30 w-full h-1 bg-gray-200 dark:bg-zinc-800 rounded-full overflow-hidden mb-6">
+          <div id="readingProgress" class="h-full bg-[#FF385C] w-0 transition-all duration-100 rounded-full"></div>
+        </div>
+
+        <div class="space-y-8">
+          
+          <!-- Section 1 -->
+          <div id="info-collection" class="policy-card bg-white/75 dark:bg-gray-900/40 border border-gray-200/60 dark:border-gray-800/60 backdrop-blur-xl rounded-[32px] p-6 sm:p-10 shadow-xl dark:shadow-black/10 content-section">
+            <div class="flex items-center gap-3 mb-4">
+              <span class="w-10 h-10 rounded-2xl bg-rose-50 dark:bg-rose-500/10 text-[#FF385C] flex items-center justify-center">
+                <i data-lucide="database" class="w-5 h-5"></i>
+              </span>
+              <h2 class="text-xl sm:text-2xl font-black text-gray-900 dark:text-white">1. Information We Collect</h2>
+            </div>
+            <div class="space-y-4 text-sm sm:text-base text-gray-600 dark:text-zinc-300 leading-relaxed">
+              <p>
+                We collect personal information that you provide voluntarily when using SwiftBasket. This includes account details like your name, email, billing address, profile avatar preferences, and business data if configured as an administrator.
+              </p>
+              <p class="font-semibold text-gray-900 dark:text-white">Types of collected parameters:</p>
+              <ul class="list-disc pl-5 space-y-2 text-sm text-gray-500 dark:text-zinc-400">
+                <li><strong class="text-gray-800 dark:text-zinc-300">Transaction details:</strong> Invoice references, purchases, wishlist items, and overall total basket counts.</li>
+                <li><strong class="text-gray-800 dark:text-zinc-300">Device parameters:</strong> Operating systems, browser agents, local IP addresses, and cookie preferences.</li>
+                <li><strong class="text-gray-800 dark:text-zinc-300">Authentication credentials:</strong> Secure, cryptographically salt-hashed password keys.</li>
+              </ul>
+            </div>
+          </div>
+
+          <!-- Section 2 -->
+          <div id="info-usage" class="policy-card bg-white/75 dark:bg-gray-900/40 border border-gray-200/60 dark:border-gray-800/60 backdrop-blur-xl rounded-[32px] p-6 sm:p-10 shadow-xl dark:shadow-black/10 content-section">
+            <div class="flex items-center gap-3 mb-4">
+              <span class="w-10 h-10 rounded-2xl bg-sky-50 dark:bg-sky-500/10 text-sky-500 flex items-center justify-center">
+                <i data-lucide="settings-2" class="w-5 h-5"></i>
+              </span>
+              <h2 class="text-xl sm:text-2xl font-black text-gray-900 dark:text-white">2. How We Use Data</h2>
+            </div>
+            <div class="space-y-4 text-sm sm:text-base text-gray-600 dark:text-zinc-300 leading-relaxed">
+              <p>
+                We harness your analytical details to build, test, and offer customized client platforms. This allows for targeted dispatch checkouts, product recommendations, and faster loading instances.
+              </p>
+              <p>
+                Our core usage vectors encompass:
+              </p>
+              <div class="grid sm:grid-cols-2 gap-4 text-xs sm:text-sm text-gray-500 dark:text-zinc-400">
+                <div class="p-4 rounded-2xl bg-gray-50/50 dark:bg-zinc-800/40 border border-gray-100 dark:border-zinc-800">
+                  <span class="font-extrabold text-gray-900 dark:text-white block mb-1">Process checkout</span>
+                  Fulfilling shopping carts, wishlist adjustments, and tracking deliveries.
+                </div>
+                <div class="p-4 rounded-2xl bg-gray-50/50 dark:bg-zinc-800/40 border border-gray-100 dark:border-zinc-800">
+                  <span class="font-extrabold text-gray-900 dark:text-white block mb-1">Analytical audit</span>
+                  Assessing browser speed, user patterns, and optimizing server pipelines.
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Section 3 -->
+          <div id="info-sharing" class="policy-card bg-white/75 dark:bg-gray-900/40 border border-gray-200/60 dark:border-gray-800/60 backdrop-blur-xl rounded-[32px] p-6 sm:p-10 shadow-xl dark:shadow-black/10 content-section">
+            <div class="flex items-center gap-3 mb-4">
+              <span class="w-10 h-10 rounded-2xl bg-purple-50 dark:bg-purple-500/10 text-purple-500 flex items-center justify-center">
+                <i data-lucide="share-2" class="w-5 h-5"></i>
+              </span>
+              <h2 class="text-xl sm:text-2xl font-black text-gray-900 dark:text-white">3. Sharing & Disclosures</h2>
+            </div>
+            <div class="space-y-4 text-sm sm:text-base text-gray-600 dark:text-zinc-300 leading-relaxed">
+              <p>
+                We do not sell, barter, or monetize your transactional profiles with third parties. Sharing strictly occurs with accredited, security-vetted operators required to execute basic business flows (such as processing payment terminals, or delivering mail bundles).
+              </p>
+              <p>
+                We may disclose information under judicial mandates when required by federal law, state security requirements, or transactional fraud preventions.
+              </p>
+            </div>
+          </div>
+
+          <!-- Section 4 -->
+          <div id="cookies" class="policy-card bg-white/75 dark:bg-gray-900/40 border border-gray-200/60 dark:border-gray-800/60 backdrop-blur-xl rounded-[32px] p-6 sm:p-10 shadow-xl dark:shadow-black/10 content-section">
+            <div class="flex items-center gap-3 mb-4">
+              <span class="w-10 h-10 rounded-2xl bg-orange-50 dark:bg-orange-500/10 text-orange-500 flex items-center justify-center">
+                <i data-lucide="cookie" class="w-5 h-5"></i>
+              </span>
+              <h2 class="text-xl sm:text-2xl font-black text-gray-900 dark:text-white">4. Cookies & Tracking</h2>
+            </div>
+            <div class="space-y-4 text-sm sm:text-base text-gray-600 dark:text-zinc-300 leading-relaxed">
+              <p>
+                SwiftBasket uses standard localized cookies to memorize your selected display preferences, active items inside your cart, and wishlist selections. They also manage theme persistent variables (light/dark parameters).
+              </p>
+              <p>
+                You may disable automatic cookie tracking within your local browser settings. However, doing so may disrupt core session storage features, rendering custom user accounts, wishlists, and carts inactive.
+              </p>
+            </div>
+          </div>
+
+          <!-- Section 5 -->
+          <div id="data-security" class="policy-card bg-white/75 dark:bg-gray-900/40 border border-gray-200/60 dark:border-gray-800/60 backdrop-blur-xl rounded-[32px] p-6 sm:p-10 shadow-xl dark:shadow-black/10 content-section">
+            <div class="flex items-center gap-3 mb-4">
+              <span class="w-10 h-10 rounded-2xl bg-emerald-50 dark:bg-emerald-500/10 text-emerald-500 flex items-center justify-center">
+                <i data-lucide="lock" class="w-5 h-5"></i>
+              </span>
+              <h2 class="text-xl sm:text-2xl font-black text-gray-900 dark:text-white">5. Data Storage & Security</h2>
+            </div>
+            <div class="space-y-4 text-sm sm:text-base text-gray-600 dark:text-zinc-300 leading-relaxed">
+              <p>
+                All account profiles, transactions, and inventories are housed within encrypted databases. We deploy secure socket layer encryption (SSL/TLS) for data streams, combined with secure hashing techniques for credential indexes.
+              </p>
+              <p>
+                While we utilize high-caliber defensive barriers to secure transactions, no digital channel or transport pipeline is 100% impenetrable. We encourage our merchants to apply strong password guidelines.
+              </p>
+            </div>
+          </div>
+
+          <!-- Section 6 -->
+          <div id="your-rights" class="policy-card bg-white/75 dark:bg-gray-900/40 border border-gray-200/60 dark:border-gray-800/60 backdrop-blur-xl rounded-[32px] p-6 sm:p-10 shadow-xl dark:shadow-black/10 content-section">
+            <div class="flex items-center gap-3 mb-4">
+              <span class="w-10 h-10 rounded-2xl bg-indigo-50 dark:bg-indigo-500/10 text-indigo-500 flex items-center justify-center">
+                <i data-lucide="scale" class="w-5 h-5"></i>
+              </span>
+              <h2 class="text-xl sm:text-2xl font-black text-gray-900 dark:text-white">6. Your Legal Rights</h2>
+            </div>
+            <div class="space-y-4 text-sm sm:text-base text-gray-600 dark:text-zinc-300 leading-relaxed">
+              <p>
+                Depending on your location, you may possess specific statutory parameters over your transactions. This includes your right to demand direct visibility over accumulated records, alter details, or completely terminate your profile data.
+              </p>
+              <p>
+                To request data portability or profile deletions, please forward an official request bundle directly to our Trust Support operations.
+              </p>
+            </div>
+          </div>
+
+          <!-- Section 7 -->
+          <div id="policy-changes" class="policy-card bg-white/75 dark:bg-gray-900/40 border border-gray-200/60 dark:border-gray-800/60 backdrop-blur-xl rounded-[32px] p-6 sm:p-10 shadow-xl dark:shadow-black/10 content-section">
+            <div class="flex items-center gap-3 mb-4">
+              <span class="w-10 h-10 rounded-2xl bg-amber-50 dark:bg-amber-500/10 text-amber-500 flex items-center justify-center">
+                <i data-lucide="refresh-cw" class="w-5 h-5"></i>
+              </span>
+              <h2 class="text-xl sm:text-2xl font-black text-gray-900 dark:text-white">7. Policy Adjustments</h2>
+            </div>
+            <div class="space-y-4 text-sm sm:text-base text-gray-600 dark:text-zinc-300 leading-relaxed">
+              <p>
+                We reserve the right to modify these guidelines as we deploy newer merchant portals, update database models, or respond to regulatory shifts.
+              </p>
+              <p>
+                We will alert you to major updates via on-page notifications or email releases, highlighting what parameters have shifted and why.
+              </p>
+            </div>
+          </div>
+
+          <!-- Section 8 -->
+          <div id="contact-us" class="policy-card bg-white/75 dark:bg-gray-900/40 border border-gray-200/60 dark:border-gray-800/60 backdrop-blur-xl rounded-[32px] p-6 sm:p-10 shadow-xl dark:shadow-black/10 content-section">
+            <div class="flex items-center gap-3 mb-4">
+              <span class="w-10 h-10 rounded-2xl bg-rose-50 dark:bg-rose-500/10 text-[#FF385C] flex items-center justify-center">
+                <i data-lucide="mail" class="w-5 h-5"></i>
+              </span>
+              <h2 class="text-xl sm:text-2xl font-black text-gray-900 dark:text-white">8. Get in Touch</h2>
+            </div>
+            <div class="space-y-4 text-sm sm:text-base text-gray-600 dark:text-zinc-300 leading-relaxed">
+              <p>
+                Have questions or feedback regarding our privacy controls, payment processing terminals, or cookies configurations? Please reach out to our team:
+              </p>
+              <div class="p-4 rounded-2xl bg-gray-50/50 dark:bg-zinc-800/40 border border-gray-100 dark:border-zinc-800 space-y-3">
+                <div class="flex items-center gap-3 text-xs sm:text-sm font-semibold">
+                  <i data-lucide="mail" class="w-4.5 h-4.5 text-[#FF385C]"></i>
+                  <span>support@swiftbasket.com</span>
+                </div>
+                <div class="flex items-center gap-3 text-xs sm:text-sm font-semibold">
+                  <i data-lucide="map-pin" class="w-4.5 h-4.5 text-[#FF385C]"></i>
+                  <span>Suite 400, Commerce Tower, San Francisco, CA</span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </section>
+
+    </div>
+  </div>
+
+  <!-- Embedded Modular EJS Javascript Scope -->
+  <script>
+    (function() {
+      // Initialize Lucide Icons inside partial main context
+      if (typeof lucide !== 'undefined') {
+        lucide.createIcons();
+      }
+
+      // 1. Live Text Search Filter and Highlight Engine
+      const searchInput = document.getElementById('policySearch');
+      const textContainer = document.getElementById('privacy-content');
+      const resultsCount = document.getElementById('searchResultsCount');
+
+      if (searchInput && textContainer) {
+        searchInput.addEventListener('input', function() {
+          const query = searchInput.value.trim().toLowerCase();
+          
+          // Clear previous highlights
+          removeHighlights(textContainer);
+
+          if (!query) {
+            resultsCount.classList.add('hidden');
+            return;
+          }
+
+          let matchCount = highlightText(textContainer, query);
+          
+          resultsCount.classList.remove('hidden');
+          resultsCount.textContent = `Found ${matchCount} match(es) for "${searchInput.value}".`;
+        });
+      }
+
+      function highlightText(element, query) {
+        let count = 0;
+        const walker = document.createTreeWalker(element, NodeFilter.SHOW_TEXT, null, false);
+        const nodesToReplace = [];
+
+        while (walker.nextNode()) {
+          const node = walker.currentNode;
+          if (node.parentNode.nodeName === 'SCRIPT' || node.parentNode.nodeName === 'STYLE') continue;
+          
+          const text = node.nodeValue;
+          const index = text.toLowerCase().indexOf(query);
+          
+          if (index !== -1) {
+            nodesToReplace.push(node);
+          }
+        }
+
+        nodesToReplace.forEach(node => {
+          const text = node.nodeValue;
+          const regex = new RegExp(`(${escapeRegExp(query)})`, 'gi');
+          const span = document.createElement('span');
+          span.innerHTML = text.replace(regex, '<span class="search-highlight">$1</span>');
+          
+          // Count exact instances matching inside inner span matches
+          const matchesInNode = span.querySelectorAll('.search-highlight').length;
+          count += matchesInNode;
+          
+          node.parentNode.replaceChild(span, node);
+          // Unwrap span helper to avoid breaking layout structures
+          while (span.firstChild) {
+            span.parentNode.insertBefore(span.firstChild, span);
+          }
+          span.parentNode.removeChild(span);
+        });
+
+        return count;
+      }
+
+      function removeHighlights(element) {
+        const highlights = element.querySelectorAll('.search-highlight');
+        highlights.forEach(highlight => {
+          const textNode = document.createTextNode(highlight.textContent);
+          highlight.parentNode.replaceChild(textNode, highlight);
+        });
+        element.normalize(); // Merges adjacent text nodes
+      }
+
+      function escapeRegExp(string) {
+        return string.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+      }
+
+      // 2. Sticky Table Of Contents Active Highlighting & Section Scroll Observer
+      const sections = document.querySelectorAll('.content-section');
+      const tocLinks = document.querySelectorAll('.toc-link');
+
+      const observerOptions = {
+        root: null,
+        rootMargin: '-20% 0px -60% 0px', // High-fidelity window capture zone
+        threshold: 0
+      };
+
+      const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting) {
+            const activeId = entry.target.getAttribute('id');
+            updateActiveTOC(activeId);
+          }
+        });
+      }, observerOptions);
+
+      sections.forEach(section => observer.observe(section));
+
+      function updateActiveTOC(activeId) {
+        tocLinks.forEach(link => {
+          const href = link.getAttribute('href').substring(1);
+          if (href === activeId) {
+            link.classList.add('active-toc', 'border-[#FF385C]', 'text-[#FF385C]', 'bg-rose-50/50', 'dark:bg-rose-500/10');
+            link.classList.remove('text-gray-500', 'dark:text-zinc-400');
+          } else {
+            link.classList.remove('active-toc', 'border-[#FF385C]', 'text-[#FF385C]', 'bg-rose-50/50', 'dark:bg-rose-500/10');
+            link.classList.add('text-gray-500', 'dark:text-zinc-400');
+          }
+        });
+      }
+
+      // 3. Dynamic Reading Progress Bar Updater
+      window.addEventListener('scroll', () => {
+        const docHeight = document.documentElement.scrollHeight - window.innerHeight;
+        const scrolled = (window.scrollY / docHeight) * 100;
+        const progressIndicator = document.getElementById('readingProgress');
+        
+        if (progressIndicator) {
+          progressIndicator.style.width = `${scrolled}%`;
+        }
+      });
+
+    })();
+  </script>
+</main>
+<%- include("../partials/footer") %>

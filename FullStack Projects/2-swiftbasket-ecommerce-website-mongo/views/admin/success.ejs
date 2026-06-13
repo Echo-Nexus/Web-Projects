@@ -1,0 +1,83 @@
+<%- include("../partials/header") %>
+<main
+  class="min-h-screen w-full grid place-items-center p-4 sm:p-6 md:p-10 bg-gray-50 dark:bg-[#0C0C0E]"
+>
+  <div class="w-full max-w-lg relative z-10 animate-popIn">
+    <div
+      class="bg-white/90 dark:bg-gray-900/60 border border-gray-200/60 dark:border-gray-800/60 backdrop-blur-2xl rounded-[32px] p-8 sm:p-10 shadow-2xl dark:shadow-black/40 text-center transition-all duration-500"
+    >
+      <!-- ICON -->
+      <div
+        class="relative w-24 h-24 mx-auto mb-8 flex items-center justify-center"
+      >
+        <div
+          class="absolute inset-0 bg-emerald-500/10 dark:bg-emerald-500/20 rounded-full animate-ping"
+        ></div>
+
+        <div
+          class="absolute inset-2 bg-emerald-500/20 dark:bg-emerald-500/30 rounded-full"
+        ></div>
+
+        <div
+          class="absolute inset-4 bg-emerald-500 dark:bg-emerald-600 rounded-full flex items-center justify-center shadow-lg shadow-emerald-500/30"
+        >
+          <svg
+            class="w-8 h-8 text-white"
+            fill="none"
+            viewBox="0 0 24 24"
+            stroke="currentColor"
+            stroke-width="3.5"
+          >
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              d="M5 13l4 4L19 7"
+            />
+          </svg>
+        </div>
+      </div>
+
+      <!-- TITLE -->
+      <h1
+        class="text-3xl sm:text-4xl font-black text-gray-900 dark:text-white mb-4 tracking-tight"
+      >
+        Listing Published!
+      </h1>
+
+      <!-- DESCRIPTION -->
+      <p
+        class="text-gray-500 dark:text-gray-400 mb-8 max-w-sm mx-auto leading-relaxed text-base"
+      >
+        Congratulations! Your listing is now live and visible to users
+        worldwide.
+      </p>
+
+      <!-- BUTTONS -->
+      <div class="space-y-4">
+        <!-- FIXED BUTTON (VISIBLE IN LIGHT MODE) -->
+        <a
+          href="/admin/products"
+          class="group flex items-center justify-center gap-2.5 w-full bg-sky-600 hover:bg-sky-700 active:scale-[0.98] text-white font-bold py-4 px-6 rounded-2xl shadow-lg shadow-sky-600/20 hover:shadow-sky-600/30 transition-all duration-200"
+        >
+          <i
+            data-lucide="layout-grid"
+            class="w-5 h-5 transition-transform group-hover:rotate-3"
+          ></i>
+          View all listings
+        </a>
+
+        <a
+          href="/admin/add-products"
+          class="group flex items-center justify-center gap-2.5 w-full border border-gray-200 dark:border-gray-800 text-gray-800 dark:text-gray-200 bg-white dark:bg-transparent hover:bg-gray-50 dark:hover:bg-gray-800/40 active:scale-[0.98] font-bold py-4 px-6 rounded-2xl transition-all duration-200"
+        >
+          <i
+            data-lucide="plus-circle"
+            class="w-5 h-5 transition-transform group-hover:-translate-y-0.5"
+          ></i>
+          List another home
+        </a>
+      </div>
+    </div>
+  </div>
+</main>
+<%- include("../partials/footer") %>

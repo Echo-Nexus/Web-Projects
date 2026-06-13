@@ -1,0 +1,287 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>REGISTER</title>
+  <link rel="icon" href="https://images.unsplash.com/vector-1780599883133-df4851a972f2?q=80&w=880&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" type="image/svg+xml" />
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <!-- Google Fonts (Plus Jakarta Sans for premium modern look) -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght=300;400;500;600;700&display=swap"
+    rel="stylesheet" />
+  <!-- FontAwesome for eye-catching UI icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+  <style>
+    body {
+      font-family: "Plus Jakarta Sans", sans-serif;
+    }
+
+    /* Custom animated gradient background */
+    .animated-bg {
+      background: linear-gradient(-45deg, #0f172a, #1e1b4b, #311042, #0f172a);
+      background-size: 400% 400%;
+      animation: gradient 15s ease infinite;
+    }
+
+    @keyframes gradient {
+      0% {
+        background-position: 0% 50%;
+      }
+
+      50% {
+        background-position: 100% 50%;
+      }
+
+      100% {
+        background-position: 0% 50%;
+      }
+    }
+
+    /* Hide standard radio inputs for premium selectors */
+    .custom-radio:checked+label {
+      border-color: #6366f1;
+      background-color: rgba(99, 102, 241, 0.15);
+      box-shadow: 0 0 15px rgba(99, 102, 241, 0.25);
+    }
+  </style>
+</head>
+
+<body class="animated-bg min-h-screen flex items-center justify-center p-4 sm:p-6 md:p-10 overflow-x-hidden">
+  <!-- Decorative background blobs -->
+  <div
+    class="absolute top-1/4 left-1/4 -translate-x-1/2 -translate-y-1/2 w-72 h-72 sm:w-96 sm:h-96 bg-indigo-500 rounded-full mix-blend-screen filter blur-[80px] opacity-20 pointer-events-none">
+  </div>
+  <div
+    class="absolute bottom-1/4 right-1/4 translate-x-1/2 translate-y-1/2 w-72 h-72 sm:w-96 sm:h-96 bg-fuchsia-500 rounded-full mix-blend-screen filter blur-[80px] opacity-20 pointer-events-none">
+  </div>
+
+  <!-- Main Container - Sized larger to fit two columns cleanly on wider screens -->
+  <div
+    class="relative w-full max-w-2xl bg-slate-900/40 backdrop-blur-xl border border-white/10 rounded-2xl p-6 sm:p-10 shadow-2xl transition-all duration-300 hover:border-indigo-500/30">
+    <!-- Logo / Branding Area -->
+    <div class="text-center mb-8">
+      <div
+        class="inline-flex items-center justify-center w-14 h-14 rounded-xl bg-gradient-to-tr from-indigo-500 to-fuchsia-500 p-[1.5px] shadow-lg shadow-indigo-500/20 mb-4">
+        <div class="w-full h-full bg-slate-950 rounded-[10px] flex items-center justify-center">
+          <i
+            class="fa-solid fa-user-plus text-transparent bg-clip-text bg-gradient-to-r from-indigo-400 to-fuchsia-400 text-2xl"></i>
+        </div>
+      </div>
+      <h1 class="text-2xl sm:text-3xl font-bold text-white tracking-tight">
+        Create Your Account
+      </h1>
+      <p class="text-slate-400 text-sm mt-2">
+        Join our global community as a traveler or Admin
+      </p>
+    </div>
+
+    <!-- Notification Alerts (For Server-Side Rendering Support if needed) -->
+    <% if (errors && errors.length) { %>
+      <div class="mb-6 p-4 rounded-xl bg-red-500/10 border border-red-500/30 flex items-start gap-3">
+        <i class="fa-solid fa-circle-exclamation text-red-400 mt-0.5"></i>
+
+        <ul class="text-sm text-red-200 space-y-1">
+          <% errors.forEach(error=> { %>
+            <li>
+              <%= error %>
+            </li>
+            <% }) %>
+        </ul>
+      </div>
+      <% } %>
+
+        <!-- Registration Form -->
+        <form action="/auth/signup" method="POST" id="registrationForm" class="space-y-6">
+
+          <!-- Account Type Selectors (Guest / Admin) -->
+          <div>
+            <label class="block text-xs font-semibold text-slate-300 uppercase tracking-wider mb-3">
+              Register As
+            </label>
+            <div class="grid grid-cols-2 gap-4">
+              <!-- Guest Option -->
+              <div>
+                <input type="radio" name="accountType" id="typeGuest" value="Guest" class="hidden custom-radio" <% if
+                  (oldInput.accountType==="Guest" ) { %> checked <% } %> />
+                  <label for="typeGuest"
+                    class="flex flex-col items-center justify-center p-4 bg-slate-950/40 border border-slate-700/60 rounded-xl cursor-pointer text-slate-300 hover:border-slate-500 transition-all duration-200">
+                    <i class="fa-solid fa-person-hiking text-2xl mb-2 text-indigo-400"></i>
+                    <span class="font-semibold text-sm">Guest</span>
+                    <span class="text-xs text-slate-500 text-center mt-1">Book & Explore</span>
+                  </label>
+              </div>
+
+              <!-- Admin Option -->
+              <div>
+                <input type="radio" name="accountType" id="typeAdmin" value="Admin" class="hidden custom-radio" <% if
+                  (oldInput.accountType==="Admin" ) { %> checked <% } %>/>
+                  <label for="typeAdmin"
+                    class="flex flex-col items-center justify-center p-4 bg-slate-950/40 border border-slate-700/60 rounded-xl cursor-pointer text-slate-300 hover:border-slate-500 transition-all duration-200">
+                    <i class="fa-solid fa-house-chimney text-2xl mb-2 text-fuchsia-400"></i>
+                    <span class="font-semibold text-sm">Admin</span>
+                    <span class="text-xs text-slate-500 text-center mt-1">Rent & Earn</span>
+                  </label>
+              </div>
+            </div>
+          </div>
+
+          <!-- Name Fields (Responsive Grid) -->
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
+            <!-- First Name -->
+            <div>
+              <label for="firstName"
+                class="block text-xs font-semibold text-slate-300 uppercase tracking-wider mb-2">First Name</label>
+              <div class="relative">
+                <div class="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none text-slate-500">
+                  <i class="fa-regular fa-user text-lg"></i>
+                </div>
+                <input type="text" id="firstName" name="firstName" required placeholder="John"
+                  value="<%= oldInput.firstName ? oldInput.firstName : ''%>"
+                  class="w-full pl-11 pr-4 py-3 bg-slate-950/50 border border-slate-700/60 rounded-xl text-slate-200 placeholder-slate-500 outline-none transition-all duration-200 focus:border-indigo-500 focus:ring-2 focus:ring-indigo-500/20 focus:bg-slate-950" />
+              </div>
+            </div>
+
+            <!-- Second Name (Last Name) -->
+            <div>
+              <label for="secondName"
+                class="block text-xs font-semibold text-slate-300 uppercase tracking-wider mb-2">Second Name</label>
+              <div class="relative">
+                <div class="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none text-slate-500">
+                  <i class="fa-regular fa-user text-lg"></i>
+                </div>
+                <input type="text" id="secondName" name="lastName" placeholder="Doe"
+                  value="<%= oldInput.lastName ? oldInput.lastName : ''%>"
+                  class="w-full pl-11 pr-4 py-3 bg-slate-950/50 border border-slate-700/60 rounded-xl text-slate-200 placeholder-slate-500 outline-none transition-all duration-200 focus:border-indigo-500 focus:ring-2 focus:ring-indigo-500/20 focus:bg-slate-950" />
+              </div>
+            </div>
+          </div>
+
+          <!-- Email Field -->
+          <div>
+            <label for="email" class="block text-xs font-semibold text-slate-300 uppercase tracking-wider mb-2">Email
+              Address</label>
+            <div class="relative">
+              <div class="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none text-slate-500">
+                <i class="fa-regular fa-envelope text-lg"></i>
+              </div>
+              <input type="email" id="email" name="email" required placeholder="you@example.com"
+                value="<%= oldInput.email ? oldInput.email : ''%>"
+                class="w-full pl-11 pr-4 py-3 bg-slate-950/50 border border-slate-700/60 rounded-xl text-slate-200 placeholder-slate-500 outline-none transition-all duration-200 focus:border-indigo-500 focus:ring-2 focus:ring-indigo-500/20 focus:bg-slate-950" />
+            </div>
+          </div>
+
+          <!-- Password Fields (Responsive Grid) -->
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
+            <!-- Password Field -->
+            <div>
+              <label for="password"
+                class="block text-xs font-semibold text-slate-300 uppercase tracking-wider mb-2">Password</label>
+              <div class="relative">
+                <div class="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none text-slate-500">
+                  <i class="fa-solid fa-lock text-lg"></i>
+                </div>
+                <input type="password" id="password" name="password" required placeholder="••••••••"
+                  class="w-full pl-11 pr-11 py-3 bg-slate-950/50 border border-slate-700/60 rounded-xl text-slate-200 placeholder-slate-500 outline-none transition-all duration-200 focus:border-indigo-500 focus:ring-2 focus:ring-indigo-500/20 focus:bg-slate-950" />
+                <button type="button" id="togglePassword"
+                  class="absolute inset-y-0 right-0 pr-3.5 flex items-center text-slate-500 hover:text-slate-300 transition-colors"
+                  aria-label="Toggle password visibility">
+                  <i class="fa-regular fa-eye text-lg" id="eyeIcon"></i>
+                </button>
+              </div>
+            </div>
+
+            <!-- Confirm Password Field -->
+            <div>
+              <label for="confirmPassword"
+                class="block text-xs font-semibold text-slate-300 uppercase tracking-wider mb-2">Confirm
+                Password</label>
+              <div class="relative">
+                <div class="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none text-slate-500">
+                  <i class="fa-solid fa-lock-open text-lg"></i>
+                </div>
+                <input type="password" id="confirmPassword" name="confirmPassword" required placeholder="••••••••"
+                  class="w-full pl-11 pr-11 py-3 bg-slate-950/50 border border-slate-700/60 rounded-xl text-slate-200 placeholder-slate-500 outline-none transition-all duration-200 focus:border-indigo-500 focus:ring-2 focus:ring-indigo-500/20 focus:bg-slate-950" />
+                <button type="button" id="toggleConfirmPassword"
+                  class="absolute inset-y-0 right-0 pr-3.5 flex items-center text-slate-500 hover:text-slate-300 transition-colors"
+                  aria-label="Toggle confirm password visibility">
+                  <i class="fa-regular fa-eye text-lg" id="confirmEyeIcon"></i>
+                </button>
+              </div>
+            </div>
+          </div>
+
+          <!-- Terms and Conditions Checkbox -->
+          <div class="flex items-start gap-3 pt-2">
+            <div class="flex items-center h-5">
+              <input id="terms" type="checkbox" name="terms" value="accepted" required
+                class="w-4.5 h-4.5 rounded border-slate-700/60 text-indigo-500 focus:ring-indigo-500/20 focus:ring-offset-slate-900 bg-slate-950/50" />
+            </div>
+            <div class="text-sm">
+              <label for="terms" class="text-slate-400">
+                I agree to the
+                <a href="#" class="text-indigo-400 hover:text-indigo-300 hover:underline transition-colors">Terms of
+                  Service</a>
+                and
+                <a href="#" class="text-indigo-400 hover:text-indigo-300 hover:underline transition-colors">Privacy
+                  Policy</a>.
+              </label>
+            </div>
+          </div>
+
+          <!-- Submit Button -->
+          <button type="submit"
+            class="w-full relative group overflow-hidden rounded-xl p-[1px] focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 focus:ring-offset-slate-900 transition-all duration-300">
+            <span
+              class="absolute inset-0 bg-gradient-to-r from-indigo-500 via-purple-500 to-fuchsia-500 rounded-xl transition-all duration-300 group-hover:opacity-90"></span>
+            <span
+              class="relative block px-8 py-3.5 bg-slate-950/20 text-white font-semibold text-center rounded-[11px] transition-all duration-300 group-hover:bg-transparent">
+              Create Account
+            </span>
+          </button>
+        </form>
+
+        <!-- Footer Area -->
+        <div class="text-center mt-6">
+          <p class="text-slate-400 text-xs">
+            Already have an account?
+            <a href="/auth/login" class="text-indigo-400 hover:text-indigo-300 font-semibold transition-colors">Sign
+              In</a>
+          </p>
+        </div>
+  </div>
+
+  <!-- Interactive Logic (Toggle visibility) -->
+  <script>
+    // Password Toggle Helper
+    function setupPasswordToggle(toggleId, inputId, iconId) {
+      const toggleBtn = document.getElementById(toggleId);
+      const input = document.getElementById(inputId);
+      const icon = document.getElementById(iconId);
+
+      toggleBtn.addEventListener("click", () => {
+        const isHidden = input.type === "password";
+
+        input.type = isHidden ? "text" : "password";
+
+        icon.classList.toggle("fa-eye");
+        icon.classList.toggle("fa-eye-slash");
+        icon.classList.toggle("fa-regular");
+        icon.classList.toggle("fa-solid");
+      });
+    }
+
+    setupPasswordToggle("togglePassword", "password", "eyeIcon");
+
+    setupPasswordToggle(
+      "toggleConfirmPassword",
+      "confirmPassword",
+      "confirmEyeIcon",
+    );
+  </script>
+</body>
+
+</html>

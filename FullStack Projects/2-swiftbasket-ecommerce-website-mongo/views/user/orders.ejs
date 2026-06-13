@@ -1,0 +1,103 @@
+<%- include("../partials/header") %>
+
+<main class="w-full min-h-screen py-12 px-4 sm:px-6 lg:px-8 relative overflow-hidden bg-gray-50 text-[#222222] dark:bg-gray-950 dark:text-zinc-200 transition-colors duration-500 font-['Nunito_Sans',_sans-serif]">
+
+  <!-- Google Font & Icons -->
+  <link href="https://fonts.googleapis.com/css2?family=Nunito+Sans:wght@400;600;700;800;900&display=swap" rel="stylesheet" />
+  <script src="https://unpkg.com/lucide@latest"></script>
+
+  <style>
+    .order-item { transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1); }
+    .toast-active { animation: slideInUp 0.3s cubic-bezier(0.16, 1, 0.3, 1) forwards; }
+    @keyframes slideInUp { from { transform: translateY(100px); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
+  </style>
+
+  <!-- Ambient Background -->
+  <div class="absolute top-10 left-10 w-96 h-96 rounded-full bg-indigo-400/10 dark:bg-indigo-500/5 blur-[120px] pointer-events-none"></div>
+  <div class="absolute bottom-10 right-10 w-96 h-96 rounded-full bg-emerald-400/10 dark:bg-emerald-500/5 blur-[120px] pointer-events-none"></div>
+
+  <div class="max-w-7xl mx-auto relative z-10 space-y-8">
+    
+    <!-- Header -->
+    <div class="flex flex-col md:flex-row justify-between items-start md:items-center gap-6 pb-6 border-b border-gray-200/80 dark:border-zinc-800/80">
+      <div class="space-y-2 text-left">
+        <span class="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-full text-xs font-black uppercase tracking-wider bg-indigo-50 text-indigo-600 dark:bg-indigo-500/10 dark:text-indigo-400">
+          <i data-lucide="package" class="w-4 h-4"></i> Order History
+        </span>
+        <h1 class="text-3xl sm:text-4xl font-black tracking-tight text-gray-900 dark:text-white">My Orders</h1>
+      </div>
+      <div class="relative w-full md:w-64 group">
+        <span class="absolute left-3.5 top-3 text-gray-400"><i data-lucide="search" class="w-4 h-4"></i></span>
+        <input type="text" id="orderSearch" oninput="filterOrders()" placeholder="Search item title..." class="w-full pl-10 pr-4 py-2.5 rounded-xl border bg-white dark:bg-gray-900 border-gray-200 dark:border-zinc-800 focus:ring-2 focus:ring-indigo-500 outline-none transition-all">
+      </div>
+    </div>
+
+    <!-- Orders Feed -->
+    <div id="ordersContainer" class="space-y-4">
+      <!-- Injected by JS -->
+    </div>
+  </div>
+
+  <div id="toastContainer" class="fixed bottom-6 right-6 z-50 flex flex-col gap-3 pointer-events-none"></div>
+
+  <script>
+    (function() {
+      const ordersDb = [
+        { 
+          id: "77c1a060-8941-4354-96bb-74251ab419b7",
+          title: "Iphone 7 Plus",
+          category: "Electronics",
+          price: "999",
+          rating: "4.9",
+          reviews: "20000000",
+          badge: "Best Seller",
+          image: "https://images.unsplash.com/photo-1589492477829-5e65395b66cc?q=80&w=687&auto=format&fit=crop",
+          location: "California, USA",
+          description: "Most Sold Phone in the world",
+          status: 'Delivered'
+        }
+      ];
+
+      function renderOrders(filter = '') {
+        const container = document.getElementById('ordersContainer');
+        const filtered = ordersDb.filter(o => o.title.toLowerCase().includes(filter.toLowerCase()));
+        
+        container.innerHTML = filtered.map(order => `
+          <div class="bg-white/70 dark:bg-gray-900/30 border border-gray-200/60 dark:border-gray-800/60 backdrop-blur-md rounded-2xl p-6 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+            <div class="flex gap-4">
+              <img src="${order.image}" alt="${order.title}" class="w-16 h-16 rounded-xl object-cover shadow-sm">
+              <div>
+                <p class="text-xs font-bold text-gray-400 uppercase tracking-widest">${order.category}</p>
+                <h3 class="font-black text-lg text-gray-900 dark:text-white">${order.title}</h3>
+                <p class="text-xs text-gray-500 mt-1">${order.location}</p>
+              </div>
+            </div>
+            <div class="flex items-center gap-6">
+              <span class="font-black text-gray-900 dark:text-white">$${order.price}</span>
+              <span class="px-3 py-1 rounded-lg text-[10px] font-black uppercase tracking-wider bg-emerald-50 text-emerald-600 dark:bg-emerald-500/10 dark:text-emerald-400">
+                ${order.status}
+              </span>
+              <button onclick="viewDetails('${order.id}')" class="p-2 hover:bg-gray-100 dark:hover:bg-zinc-800 rounded-lg transition-colors">
+                <i data-lucide="chevron-right" class="w-5 h-5 text-gray-400"></i>
+              </button>
+            </div>
+          </div>
+        `).join('');
+        lucide.createIcons();
+      }
+
+      window.filterOrders = () => renderOrders(document.getElementById('orderSearch').value);
+      window.viewDetails = (id) => {
+        const toast = document.createElement('div');
+        toast.className = "toast-active pointer-events-auto px-4 py-3 rounded-xl bg-white shadow-xl border border-gray-100 flex items-center gap-2";
+        toast.innerHTML = `<i data-lucide="info" class="w-4 h-4 text-indigo-500"></i><span class="text-xs font-bold">Viewing details for ID: ${id}</span>`;
+        document.getElementById('toastContainer').appendChild(toast);
+        setTimeout(() => toast.remove(), 3000);
+        lucide.createIcons();
+      };
+
+      window.addEventListener('DOMContentLoaded', () => { renderOrders(); });
+    })();
+  </script>
+</main>
+<%- include("../partials/footer") %>

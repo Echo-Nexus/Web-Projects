@@ -1,0 +1,624 @@
+<%- include("../partials/header") %>
+  <main
+    class="w-full min-h-screen py-12 px-4 sm:px-6 lg:px-8 relative overflow-hidden bg-gray-50 text-[#222222] dark:bg-gray-950 dark:text-zinc-200 transition-colors duration-500 font-['Nunito_Sans',_sans-serif]">
+
+    <!-- Embedding Google Font Link dynamically inside the module to preserve self-containment -->
+    <link href="https://fonts.googleapis.com/css2?family=Nunito+Sans:wght@400;600;700;800;900&display=swap"
+      rel="stylesheet" />
+    <!-- Script for Lucide Icons to execute within preview environments -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+
+    <style>
+      /* Custom UI Styling details */
+      .article-card {
+        transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+      }
+
+      .article-card:hover {
+        transform: translateY(-4px);
+      }
+
+      /* Wizard transitions */
+      .troubleshoot-step {
+        display: none;
+      }
+
+      .troubleshoot-step.active {
+        display: block;
+        animation: slideIn 0.4s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+      }
+
+      @keyframes slideIn {
+        from {
+          opacity: 0;
+          transform: translateX(10px);
+        }
+
+        to {
+          opacity: 1;
+          transform: translateX(0);
+        }
+      }
+    </style>
+
+    <!-- Ambient Glow Background Orbs positioned absolutely inside parent container -->
+    <div
+      class="absolute top-10 left-10 w-72 h-72 sm:w-96 sm:h-96 rounded-full bg-rose-400/10 dark:bg-brand-500/5 blur-[120px] pointer-events-none select-none transition-all duration-500">
+    </div>
+    <div
+      class="absolute bottom-10 right-10 w-72 h-72 sm:w-96 sm:h-96 rounded-full bg-sky-400/10 dark:bg-sky-500/5 blur-[120px] pointer-events-none select-none transition-all duration-500">
+    </div>
+
+    <!-- Main Responsive Wrapper Container -->
+    <div class="max-w-7xl mx-auto relative z-10 space-y-12">
+
+      <!-- Hero Banner & Interactive Knowledge Base Search -->
+      <div class="text-center max-w-3xl mx-auto space-y-6 pt-4">
+        <span
+          class="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-full text-xs font-black uppercase tracking-wider bg-rose-50 text-[#FF385C] dark:bg-[#FF385C]/10 dark:text-[#FF385C]">
+          <i data-lucide="help-circle" class="w-4 h-4"></i> Knowledge Resource Hub
+        </span>
+        <h1 class="text-4xl sm:text-5xl font-black tracking-tight text-gray-900 dark:text-white">
+          Welcome to the Help Center
+        </h1>
+        <p class="text-sm sm:text-base text-gray-500 dark:text-zinc-400 leading-relaxed">
+          Find instantaneous answers about your shopping orders, shipping tracking codes, active discount vouchers, and
+          merchant administrator account integrations.
+        </p>
+
+        <!-- Live Article Keyword Search Bar -->
+        <div class="max-w-xl mx-auto relative pt-2 group">
+          <span class="absolute left-4 top-5.5 text-gray-400 group-focus-within:text-[#FF385C] transition-colors">
+            <i data-lucide="search" class="w-5 h-5"></i>
+          </span>
+          <input type="text" id="kbSearchInput" placeholder="Search articles... (e.g. checkout, tax invoice, returns)"
+            class="w-full pl-12 pr-4 py-3.5 rounded-2xl border text-sm bg-white dark:bg-gray-900/40 text-gray-900 border-gray-200/80 dark:text-white dark:border-zinc-800/80 focus:ring-2 focus:ring-[#FF385C] focus:bg-white dark:focus:bg-gray-950 focus:outline-none transition-all duration-300 shadow-lg shadow-gray-100/50 dark:shadow-none" />
+          <div id="searchFeedback"
+            class="text-xs text-zinc-400 dark:text-zinc-500 text-left mt-2 px-1 hidden font-semibold"></div>
+        </div>
+      </div>
+
+      <!-- Grid System: Left Side Category Folders | Right Side Smart Troubleshooter -->
+      <div class="grid lg:grid-cols-12 gap-8 items-start">
+
+        <!-- Left: Interactive Categories (7 columns) -->
+        <div class="lg:col-span-7 space-y-6">
+          <div class="flex items-center gap-3">
+            <span
+              class="w-10 h-10 rounded-2xl bg-rose-50 dark:bg-rose-500/10 text-[#FF385C] flex items-center justify-center shadow-sm">
+              <i data-lucide="book-open" class="w-5 h-5"></i>
+            </span>
+            <h2 class="text-xl sm:text-2xl font-black text-gray-900 dark:text-white">Explore Help Topics</h2>
+          </div>
+
+          <div class="grid sm:grid-cols-2 gap-4" id="kbCategoryContainer">
+
+            <!-- Topic 1 -->
+            <div onclick="openKbCategory('shipping')"
+              class="article-card cursor-pointer bg-white/70 dark:bg-gray-900/30 border border-gray-200/60 dark:border-gray-800/60 backdrop-blur-md rounded-2xl p-5 hover:border-[#FF385C]/30 hover:shadow-lg">
+              <div class="flex items-center gap-3 mb-2 text-[#FF385C]">
+                <i data-lucide="truck" class="w-6 h-6"></i>
+                <h3 class="font-extrabold text-sm sm:text-base text-gray-900 dark:text-white">Shipping & Deliveries</h3>
+              </div>
+              <p class="text-xs text-gray-500 dark:text-zinc-400 leading-relaxed">
+                Track deliveries, carrier contacts, handling estimates, and logistics constraints.
+              </p>
+            </div>
+
+            <!-- Topic 2 -->
+            <div onclick="openKbCategory('billing')"
+              class="article-card cursor-pointer bg-white/70 dark:bg-gray-900/30 border border-gray-200/60 dark:border-gray-800/60 backdrop-blur-md rounded-2xl p-5 hover:border-[#FF385C]/30 hover:shadow-lg">
+              <div class="flex items-center gap-3 mb-2 text-[#FF385C]">
+                <i data-lucide="credit-card" class="w-6 h-6"></i>
+                <h3 class="font-extrabold text-sm sm:text-base text-gray-900 dark:text-white">Payments & Invoicing</h3>
+              </div>
+              <p class="text-xs text-gray-500 dark:text-zinc-400 leading-relaxed">
+                Payment gateway issues, card authorization declines, invoice exports, and taxes.
+              </p>
+            </div>
+
+            <!-- Topic 3 -->
+            <div onclick="openKbCategory('returns')"
+              class="article-card cursor-pointer bg-white/70 dark:bg-gray-900/30 border border-gray-200/60 dark:border-gray-800/60 backdrop-blur-md rounded-2xl p-5 hover:border-[#FF385C]/30 hover:shadow-lg">
+              <div class="flex items-center gap-3 mb-2 text-[#FF385C]">
+                <i data-lucide="archive-restore" class="w-6 h-6"></i>
+                <h3 class="font-extrabold text-sm sm:text-base text-gray-900 dark:text-white">Returns & Refunds</h3>
+              </div>
+              <p class="text-xs text-gray-500 dark:text-zinc-400 leading-relaxed">
+                Initiating dispute items, return packet packaging mandates, and refund timers.
+              </p>
+            </div>
+
+            <!-- Topic 4 -->
+            <div onclick="openKbCategory('accounts')"
+              class="article-card cursor-pointer bg-white/70 dark:bg-gray-900/30 border border-gray-200/60 dark:border-gray-800/60 backdrop-blur-md rounded-2xl p-5 hover:border-[#FF385C]/30 hover:shadow-lg">
+              <div class="flex items-center gap-3 mb-2 text-[#FF385C]">
+                <i data-lucide="shield-alert" class="w-6 h-6"></i>
+                <h3 class="font-extrabold text-sm sm:text-base text-gray-900 dark:text-white">Account & Security</h3>
+              </div>
+              <p class="text-xs text-gray-500 dark:text-zinc-400 leading-relaxed">
+                Two-factor logins, forgotten passwords, password key changes, and profile details.
+              </p>
+            </div>
+
+          </div>
+        </div>
+
+        <!-- Right: Troubleshooter Step-by-Step Widget (5 columns) -->
+        <div class="lg:col-span-5">
+          <div
+            class="bg-white/80 dark:bg-gray-900/40 border border-gray-200/60 dark:border-gray-800/60 backdrop-blur-2xl rounded-3xl p-6 sm:p-8 shadow-2xl dark:shadow-black/20 space-y-6">
+            <div class="text-left">
+              <h2
+                class="text-xl sm:text-2xl font-black text-gray-900 dark:text-white tracking-tight flex items-center gap-2">
+                <i data-lucide="sparkles" class="text-[#FF385C] w-6 h-6"></i> Smart Troubleshooter
+              </h2>
+              <p class="text-xs text-gray-500 dark:text-zinc-400 mt-1">
+                Select what is happening to instantly find the correct resolution or get dispatched directly to an
+                operator.
+              </p>
+            </div>
+
+            <!-- Troubleshooter Steps container -->
+            <div id="troubleshooterContainer">
+
+              <!-- Step 1: Initial Question -->
+              <div id="troubleStep1" class="troubleshoot-step active space-y-4">
+                <p class="text-xs font-bold uppercase tracking-wider text-gray-400 dark:text-zinc-500">Step 1: Choose
+                  the general issue domain</p>
+                <div class="space-y-2">
+                  <button onclick="advanceTroubleStep('shipping')"
+                    class="w-full text-left px-4 py-3 rounded-xl border border-gray-200 hover:border-[#FF385C]/40 dark:border-zinc-800 hover:bg-rose-500/5 text-xs sm:text-sm font-semibold flex items-center justify-between transition-all">
+                    <span>My delivery is delayed or missing</span>
+                    <i data-lucide="chevron-right" class="w-4 h-4"></i>
+                  </button>
+                  <button onclick="advanceTroubleStep('payment')"
+                    class="w-full text-left px-4 py-3 rounded-xl border border-gray-200 hover:border-[#FF385C]/40 dark:border-zinc-800 hover:bg-rose-500/5 text-xs sm:text-sm font-semibold flex items-center justify-between transition-all">
+                    <span>My payment was declined at checkout</span>
+                    <i data-lucide="chevron-right" class="w-4 h-4"></i>
+                  </button>
+                  <button onclick="advanceTroubleStep('account')"
+                    class="w-full text-left px-4 py-3 rounded-xl border border-gray-200 hover:border-[#FF385C]/40 dark:border-zinc-800 hover:bg-rose-500/5 text-xs sm:text-sm font-semibold flex items-center justify-between transition-all">
+                    <span>I cannot log into my seller dashboard</span>
+                    <i data-lucide="chevron-right" class="w-4 h-4"></i>
+                  </button>
+                </div>
+              </div>
+
+              <!-- Step 2a: Shipping Choices -->
+              <div id="troubleStepShipping" class="troubleshoot-step space-y-4">
+                <p class="text-xs font-bold uppercase tracking-wider text-gray-400 dark:text-zinc-500">Step 2: Narrow
+                  down delivery state</p>
+                <div class="space-y-2">
+                  <button onclick="resolveTroubleshooter('shipping_tracking')"
+                    class="w-full text-left px-4 py-3 rounded-xl border border-gray-200 hover:border-[#FF385C]/40 dark:border-zinc-800 hover:bg-rose-500/5 text-xs sm:text-sm font-semibold flex items-center justify-between transition-all">
+                    <span>The tracking ID does not exist</span>
+                    <i data-lucide="chevron-right" class="w-4 h-4"></i>
+                  </button>
+                  <button onclick="resolveTroubleshooter('shipping_late')"
+                    class="w-full text-left px-4 py-3 rounded-xl border border-gray-200 hover:border-[#FF385C]/40 dark:border-zinc-800 hover:bg-rose-500/5 text-xs sm:text-sm font-semibold flex items-center justify-between transition-all">
+                    <span>My delivery is 2+ days late</span>
+                    <i data-lucide="chevron-right" class="w-4 h-4"></i>
+                  </button>
+                </div>
+                <button onclick="resetTroubleshooter()"
+                  class="text-xs font-bold text-gray-400 hover:text-[#FF385C] flex items-center gap-1 transition mt-2">
+                  <i data-lucide="arrow-left" class="w-3.5 h-3.5"></i> Back to start
+                </button>
+              </div>
+
+              <!-- Step 2b: Payment Choices -->
+              <div id="troubleStepPayment" class="troubleshoot-step space-y-4">
+                <p class="text-xs font-bold uppercase tracking-wider text-gray-400 dark:text-zinc-500">Step 2: Define
+                  payment action</p>
+                <div class="space-y-2">
+                  <button onclick="resolveTroubleshooter('payment_declined')"
+                    class="w-full text-left px-4 py-3 rounded-xl border border-gray-200 hover:border-[#FF385C]/40 dark:border-zinc-800 hover:bg-rose-500/5 text-xs sm:text-sm font-semibold flex items-center justify-between transition-all">
+                    <span>Credit card was declined with code '05'</span>
+                    <i data-lucide="chevron-right" class="w-4 h-4"></i>
+                  </button>
+                  <button onclick="resolveTroubleshooter('payment_double')"
+                    class="w-full text-left px-4 py-3 rounded-xl border border-gray-200 hover:border-[#FF385C]/40 dark:border-zinc-800 hover:bg-rose-500/5 text-xs sm:text-sm font-semibold flex items-center justify-between transition-all">
+                    <span>I was charged twice on my statement</span>
+                    <i data-lucide="chevron-right" class="w-4 h-4"></i>
+                  </button>
+                </div>
+                <button onclick="resetTroubleshooter()"
+                  class="text-xs font-bold text-gray-400 hover:text-[#FF385C] flex items-center gap-1 transition mt-2">
+                  <i data-lucide="arrow-left" class="w-3.5 h-3.5"></i> Back to start
+                </button>
+              </div>
+
+              <!-- Step 2c: Account Choices -->
+              <div id="troubleStepAccount" class="troubleshoot-step space-y-4">
+                <p class="text-xs font-bold uppercase tracking-wider text-gray-400 dark:text-zinc-500">Step 2: Choose
+                  administrative issue</p>
+                <div class="space-y-2">
+                  <button onclick="resolveTroubleshooter('account_credentials')"
+                    class="w-full text-left px-4 py-3 rounded-xl border border-gray-200 hover:border-[#FF385C]/40 dark:border-zinc-800 hover:bg-rose-500/5 text-xs sm:text-sm font-semibold flex items-center justify-between transition-all">
+                    <span>My verification email has not arrived</span>
+                    <i data-lucide="chevron-right" class="w-4 h-4"></i>
+                  </button>
+                  <button onclick="resolveTroubleshooter('account_2fa')"
+                    class="w-full text-left px-4 py-3 rounded-xl border border-gray-200 hover:border-[#FF385C]/40 dark:border-zinc-800 hover:bg-rose-500/5 text-xs sm:text-sm font-semibold flex items-center justify-between transition-all">
+                    <span>My 2FA application authenticator code fails</span>
+                    <i data-lucide="chevron-right" class="w-4 h-4"></i>
+                  </button>
+                </div>
+                <button onclick="resetTroubleshooter()"
+                  class="text-xs font-bold text-gray-400 hover:text-[#FF385C] flex items-center gap-1 transition mt-2">
+                  <i data-lucide="arrow-left" class="w-3.5 h-3.5"></i> Back to start
+                </button>
+              </div>
+
+              <!-- Step 3: Resolution Box -->
+              <div id="troubleStepResolution" class="troubleshoot-step space-y-4">
+                <div class="p-4 rounded-2xl bg-rose-50/50 dark:bg-rose-500/5 border border-[#FF385C]/20">
+                  <h3 class="font-extrabold text-sm text-gray-900 dark:text-white mb-2 flex items-center gap-1.5">
+                    <i data-lucide="info" class="text-[#FF385C] w-4.5 h-4.5"></i> Instant Resolution Advice
+                  </h3>
+                  <p id="resolutionText" class="text-xs text-gray-600 dark:text-zinc-400 leading-relaxed">
+                    Loading troubleshooting logic parameters...
+                  </p>
+                </div>
+                <div class="flex flex-col sm:flex-row gap-2">
+                  <a href="/help-center/ticket"
+                    class="w-full text-center bg-[#FF385C] hover:bg-[#e01e43] text-white font-bold py-2.5 px-4 rounded-xl text-xs sm:text-sm transition duration-200">
+                    Submit Direct Ticket
+                  </a>
+                  <button onclick="resetTroubleshooter()"
+                    class="w-full bg-gray-100 hover:bg-gray-200 dark:bg-zinc-800 dark:hover:bg-zinc-700 text-gray-700 dark:text-zinc-200 font-bold py-2.5 px-4 rounded-xl text-xs sm:text-sm transition duration-200">
+                    Troubleshoot again
+                  </button>
+                </div>
+              </div>
+
+            </div>
+
+          </div>
+        </div>
+
+      </div>
+
+      <!-- Lower Section: Article List Section with Filter Categories -->
+      <div class="space-y-6 pt-4">
+        <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
+          <div class="flex items-center gap-3">
+            <span
+              class="w-10 h-10 rounded-2xl bg-rose-50 dark:bg-rose-500/10 text-[#FF385C] flex items-center justify-center shadow-sm">
+              <i data-lucide="help-circle" class="w-5 h-5"></i>
+            </span>
+            <h2 class="text-xl sm:text-2xl font-black text-gray-900 dark:text-white">Knowledge Articles</h2>
+          </div>
+          <div class="flex flex-wrap gap-1.5" id="articleFilters">
+            <button onclick="filterKbArticles('all')"
+              class="kb-filter-btn px-3 py-1.5 rounded-full text-xs font-bold bg-[#FF385C] text-white transition">All
+              Articles</button>
+            <button onclick="filterKbArticles('shipping')"
+              class="kb-filter-btn px-3 py-1.5 rounded-full text-xs font-bold bg-white dark:bg-zinc-900 text-gray-500 border border-gray-200 dark:border-zinc-800 hover:border-[#FF385C]/30 transition">Shipping</button>
+            <button onclick="filterKbArticles('billing')"
+              class="kb-filter-btn px-3 py-1.5 rounded-full text-xs font-bold bg-white dark:bg-zinc-900 text-gray-500 border border-gray-200 dark:border-zinc-800 hover:border-[#FF385C]/30 transition">Billing</button>
+            <button onclick="filterKbArticles('returns')"
+              class="kb-filter-btn px-3 py-1.5 rounded-full text-xs font-bold bg-white dark:bg-zinc-900 text-gray-500 border border-gray-200 dark:border-zinc-800 hover:border-[#FF385C]/30 transition">Returns</button>
+            <button onclick="filterKbArticles('accounts')"
+              class="kb-filter-btn px-3 py-1.5 rounded-full text-xs font-bold bg-white dark:bg-zinc-900 text-gray-500 border border-gray-200 dark:border-zinc-800 hover:border-[#FF385C]/30 transition">Accounts</button>
+          </div>
+        </div>
+
+        <!-- Articles list grid -->
+        <div class="grid sm:grid-cols-2 lg:grid-cols-3 gap-6" id="kbArticlesGrid">
+
+          <!-- Article 1 -->
+          <div data-cat="shipping"
+            class="kb-article-item bg-white/70 dark:bg-gray-900/30 border border-gray-200/60 dark:border-gray-800/60 rounded-2xl p-6 hover:shadow-md transition duration-300">
+            <div class="text-xs font-black uppercase text-[#FF385C] tracking-wider mb-2">Shipping &amp; Deliveries</div>
+            <h3 class="font-extrabold text-base text-gray-900 dark:text-white mb-2">How do I track my delivery?</h3>
+            <p class="text-xs text-gray-500 dark:text-zinc-400 leading-relaxed mb-4">
+              Learn step-by-step instructions on accessing carrier networks and locating local shipment nodes.
+            </p>
+            <button onclick="openKbArticleModal('track_delivery')"
+              class="text-xs font-bold text-[#FF385C] hover:underline flex items-center gap-1.5">
+              Read article <i data-lucide="arrow-right" class="w-3.5 h-3.5"></i>
+            </button>
+          </div>
+
+          <!-- Article 2 -->
+          <div data-cat="billing"
+            class="kb-article-item bg-white/70 dark:bg-gray-900/30 border border-gray-200/60 dark:border-gray-800/60 rounded-2xl p-6 hover:shadow-md transition duration-300">
+            <div class="text-xs font-black uppercase text-[#FF385C] tracking-wider mb-2">Billing &amp; Checkout</div>
+            <h3 class="font-extrabold text-base text-gray-900 dark:text-white mb-2">Refund policy and mechanics</h3>
+            <p class="text-xs text-gray-500 dark:text-zinc-400 leading-relaxed mb-4">
+              Full compliance layout on refund timelines, bank settlement routes, and item criteria.
+            </p>
+            <button onclick="openKbArticleModal('refund_policy')"
+              class="text-xs font-bold text-[#FF385C] hover:underline flex items-center gap-1.5">
+              Read article <i data-lucide="arrow-right" class="w-3.5 h-3.5"></i>
+            </button>
+          </div>
+
+          <!-- Article 3 -->
+          <div data-cat="accounts"
+            class="kb-article-item bg-white/70 dark:bg-gray-900/30 border border-gray-200/60 dark:border-gray-800/60 rounded-2xl p-6 hover:shadow-md transition duration-300">
+            <div class="text-xs font-black uppercase text-[#FF385C] tracking-wider mb-2">Account &amp; Security</div>
+            <h3 class="font-extrabold text-base text-gray-900 dark:text-white mb-2">Setting up authenticator 2FA</h3>
+            <p class="text-xs text-gray-500 dark:text-zinc-400 leading-relaxed mb-4">
+              Protect your merchant storefront by adding multi-factor login application loops.
+            </p>
+            <button onclick="openKbArticleModal('setup_2fa')"
+              class="text-xs font-bold text-[#FF385C] hover:underline flex items-center gap-1.5">
+              Read article <i data-lucide="arrow-right" class="w-3.5 h-3.5"></i>
+            </button>
+          </div>
+
+          <!-- Article 4 -->
+          <div data-cat="shipping"
+            class="kb-article-item bg-white/70 dark:bg-gray-900/30 border border-gray-200/60 dark:border-gray-800/60 rounded-2xl p-6 hover:shadow-md transition duration-300">
+            <div class="text-xs font-black uppercase text-[#FF385C] tracking-wider mb-2">Shipping &amp; Deliveries</div>
+            <h3 class="font-extrabold text-base text-gray-900 dark:text-white mb-2">International trade restrictions
+            </h3>
+            <p class="text-xs text-gray-500 dark:text-zinc-400 leading-relaxed mb-4">
+              Review countries and category segments supported by global merchant custom networks.
+            </p>
+            <button onclick="openKbArticleModal('intl_shipping')"
+              class="text-xs font-bold text-[#FF385C] hover:underline flex items-center gap-1.5">
+              Read article <i data-lucide="arrow-right" class="w-3.5 h-3.5"></i>
+            </button>
+          </div>
+
+          <!-- Article 5 -->
+          <div data-cat="returns"
+            class="kb-article-item bg-white/70 dark:bg-gray-900/30 border border-gray-200/60 dark:border-gray-800/60 rounded-2xl p-6 hover:shadow-md transition duration-300">
+            <div class="text-xs font-black uppercase text-[#FF385C] tracking-wider mb-2">Returns &amp; Disputes</div>
+            <h3 class="font-extrabold text-base text-gray-900 dark:text-white mb-2">How to file return tickets</h3>
+            <p class="text-xs text-gray-500 dark:text-zinc-400 leading-relaxed mb-4">
+              Step guidelines on packing items securely and obtaining carrier shipment receipts.
+            </p>
+            <button onclick="openKbArticleModal('file_return')"
+              class="text-xs font-bold text-[#FF385C] hover:underline flex items-center gap-1.5">
+              Read article <i data-lucide="arrow-right" class="w-3.5 h-3.5"></i>
+            </button>
+          </div>
+
+          <!-- Article 6 -->
+          <div data-cat="billing"
+            class="kb-article-item bg-white/70 dark:bg-gray-900/30 border border-gray-200/60 dark:border-gray-800/60 rounded-2xl p-6 hover:shadow-md transition duration-300">
+            <div class="text-xs font-black uppercase text-[#FF385C] tracking-wider mb-2">Billing &amp; Checkout</div>
+            <h3 class="font-extrabold text-base text-gray-900 dark:text-white mb-2">Adding custom tax coordinates</h3>
+            <p class="text-xs text-gray-500 dark:text-zinc-400 leading-relaxed mb-4">
+              How corporate organizations input custom VAT ID indexes inside account registers.
+            </p>
+            <button onclick="openKbArticleModal('tax_coordinates')"
+              class="text-xs font-bold text-[#FF385C] hover:underline flex items-center gap-1.5">
+              Read article <i data-lucide="arrow-right" class="w-3.5 h-3.5"></i>
+            </button>
+          </div>
+
+        </div>
+      </div>
+
+    </div>
+
+    <!-- Interactive Article Modal Component (Hidden by default) -->
+    <div id="articleModal"
+      class="hidden fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm transition-all duration-300">
+      <div
+        class="bg-white dark:bg-zinc-900 border border-gray-200 dark:border-zinc-850 rounded-[28px] max-w-2xl w-full p-6 sm:p-8 relative shadow-2xl space-y-4">
+        <button onclick="closeKbArticleModal()"
+          class="absolute right-4 top-4 text-zinc-400 hover:text-zinc-600 dark:hover:text-zinc-100 transition">
+          <i data-lucide="x" class="w-6 h-6"></i>
+        </button>
+        <div id="modalArticleContent" class="space-y-4 text-left">
+          <!-- Content injected via JavaScript -->
+          <h2 id="modalTitle" class="text-xl sm:text-2xl font-black text-gray-900 dark:text-white">Article Title</h2>
+          <div id="modalBody" class="text-xs sm:text-sm text-gray-600 dark:text-zinc-300 leading-relaxed space-y-3">
+            Loading article contents...
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Embedded Modular EJS Javascript Scope -->
+    <script>
+      (function () {
+        // Initialize Lucide Icons inside the page context
+        if (typeof lucide !== 'undefined') {
+          lucide.createIcons();
+        }
+
+        // Article database metadata
+        const articleDb = {
+          track_delivery: {
+            title: "How do I track my delivery?",
+            body: `
+            <p>Once your payment checkout clears, you will receive a confirmation email with a unique tracking ID and URL. You can also view active shipments by visiting the My Orders dashboard page.</p>
+            <p><strong>Steps to find your tracking numbers:</strong></p>
+            <ol class="list-decimal pl-5 space-y-1">
+              <li>Log in to your SwiftBasket credentials portal.</li>
+              <li>Toggle your profile details and select 'My Orders'.</li>
+              <li>Select your latest transaction and expand shipping details.</li>
+            </ol>
+            <p>For high-priority shipments, local postal dispatch numbers will also reflect in real-time updates.</p>
+          `
+          },
+          refund_policy: {
+            title: "Refund policy and mechanics",
+            body: `
+            <p>SwiftBasket provides a formal buyer protection window of 14 days on certified merchant purchases. Returns must be received undamaged and packed inside original material bundles.</p>
+            <p>Refunds are initiated back to the original source card. Processing typically completes within 5-7 bank settlement days. Note that customized catalog listings may have individual dispute rules.</p>
+          `
+          },
+          setup_2fa: {
+            title: "Setting up authenticator 2FA",
+            body: `
+            <p>You can safeguard your administrator portals using standard MFA. Open your profile page and navigate to 'Security Settings' to generate custom authenticator seeds.</p>
+            <p>Use Google Authenticator or Authy application cameras to capture the printed verification QR code. Store your fallback transaction recovery keys in an encrypted, local directory.</p>
+          `
+          },
+          intl_shipping: {
+            title: "International trade restrictions",
+            body: `
+            <p>We provide global marketplace fulfillment through unified shipping partnerships. Certain physical categories, such as lithium batteries or pressurized liquid volumes, are blocked from standard cargo air channels.</p>
+            <p>Check state tax duties and custom charges at checkout. SwiftBasket is not responsible for international package holds originating from erroneous compliance records.</p>
+          `
+          },
+          file_return: {
+            title: "How to file return tickets",
+            body: `
+            <p>To file a return, visit your order logs, select the damaged order line, and click 'Initiate Dispute Return'. Specify your reasoning cleanly (e.g., incorrect package size or operational product damage).</p>
+            <p>An automated return tracking shipping slip is instantly compiled. Paste the printed label onto your bundle and hand the package over to any certified postal center.</p>
+          `
+          },
+          tax_coordinates: {
+            title: "Adding custom tax coordinates",
+            body: `
+            <p>Commercial operators can update VAT credentials to export business invoices easily. Enter your tax records inside Account Settings directly under Billing options.</p>
+            <p>Verify that coordinates are formatted to international tax syntax standards to avoid checkout calculation failures.</p>
+          `
+          }
+        };
+
+        // 1. SMART TROUBLESHOOTER ACTIONS
+        window.advanceTroubleStep = function (domain) {
+          const activeStep = document.querySelector('.troubleshoot-step.active');
+          if (activeStep) activeStep.classList.remove('active');
+
+          if (domain === 'shipping') {
+            document.getElementById('troubleStepShipping').classList.add('active');
+          } else if (domain === 'payment') {
+            document.getElementById('troubleStepPayment').classList.add('active');
+          } else if (domain === 'account') {
+            document.getElementById('troubleStepAccount').classList.add('active');
+          }
+        };
+
+        window.resolveTroubleshooter = function (caseId) {
+          const activeStep = document.querySelector('.troubleshoot-step.active');
+          if (activeStep) activeStep.classList.remove('active');
+
+          const resBox = document.getElementById('troubleStepResolution');
+          const resText = document.getElementById('resolutionText');
+          resBox.classList.add('active');
+
+          // Resolution advice structures
+          const advice = {
+            shipping_tracking: "Logistics carrier systems typically require up to 24 hours from terminal handover to reflect tracking logs. We suggest checking your order details page tomorrow.",
+            shipping_late: "Heavy weather or carrier delays may occur. If your package is delayed past your delivery estimate, please dispatch a support ticket so our team can contact dispatch agents.",
+            payment_declined: "Payment Code '05' represents generic card decline rules. Please confirm you have input the matching card CVV, or contact your credit card provider directly.",
+            payment_double: "Our system operates on singular tokenized checkpoints, making double charges rare. Temporary holds usually release automatically. If duplicates settle, open an invoice ticket.",
+            account_credentials: "Double-check your spam fold or verify your email characters match. You can request a verification code dispatch from the account log entry form again.",
+            account_2fa: "Time synchronization errors are the leading cause of authenticator failures. Synchronize your phone clock settings under Device System Preferences and try typing the code again."
+          };
+
+          resText.innerHTML = advice[caseId] || "Please contact our customer help desk directly to solve this transaction issue.";
+        };
+
+        window.resetTroubleshooter = function () {
+          const activeStep = document.querySelector('.troubleshoot-step.active');
+          if (activeStep) activeStep.classList.remove('active');
+
+          document.getElementById('troubleStep1').classList.add('active');
+        };
+
+        // 2. KNOWLEDGE BASE ARTICLES SEARCH
+        const kbSearchInput = document.getElementById('kbSearchInput');
+        const kbArticlesGrid = document.getElementById('kbArticlesGrid');
+        const searchFeedback = document.getElementById('searchFeedback');
+
+        if (kbSearchInput && kbArticlesGrid) {
+          kbSearchInput.addEventListener('input', function () {
+            const query = kbSearchInput.value.trim().toLowerCase();
+            const articles = kbArticlesGrid.querySelectorAll('.kb-article-item');
+            let matchedCount = 0;
+
+            if (!query) {
+              articles.forEach(art => art.classList.remove('hidden'));
+              searchFeedback.classList.add('hidden');
+              return;
+            }
+
+            articles.forEach(art => {
+              const title = art.querySelector('h3').textContent.toLowerCase();
+              const category = art.querySelector('.text-xs').textContent.toLowerCase();
+              const text = art.querySelector('p').textContent.toLowerCase();
+
+              if (title.includes(query) || category.includes(query) || text.includes(query)) {
+                art.classList.remove('hidden');
+                matchedCount++;
+              } else {
+                art.classList.add('hidden');
+              }
+            });
+
+            searchFeedback.classList.remove('hidden');
+            searchFeedback.textContent = matchedCount > 0
+              ? `Found ${matchedCount} relevant articles.`
+              : `No matching articles found for "${query}". Try simple search terms!`;
+          });
+        }
+
+        // 3. KB ARTICLE LIST CATEGORY FILTERS
+        window.filterKbArticles = function (category) {
+          const articles = kbArticlesGrid.querySelectorAll('.kb-article-item');
+          const filterBtns = document.querySelectorAll('.kb-filter-btn');
+
+          // Toggle active button highlight
+          filterBtns.forEach(btn => {
+            btn.className = "kb-filter-btn px-3 py-1.5 rounded-full text-xs font-bold bg-white dark:bg-zinc-900 text-gray-500 border border-gray-200 dark:border-zinc-800 hover:border-[#FF385C]/30 transition";
+          });
+
+          const activeBtn = event.currentTarget;
+          if (activeBtn) {
+            activeBtn.className = "kb-filter-btn px-3 py-1.5 rounded-full text-xs font-bold bg-[#FF385C] text-white transition";
+          }
+
+          articles.forEach(art => {
+            const artCat = art.getAttribute('data-cat');
+            if (category === 'all' || artCat === category) {
+              art.classList.remove('hidden');
+            } else {
+              art.classList.add('hidden');
+            }
+          });
+        };
+
+        // 4. ARTICLE DETAIL PREVIEW MODAL
+        const articleModal = document.getElementById('articleModal');
+        const modalTitle = document.getElementById('modalTitle');
+        const modalBody = document.getElementById('modalBody');
+
+        window.openKbArticleModal = function (articleId) {
+          const metadata = articleDb[articleId];
+          if (metadata && articleModal) {
+            modalTitle.textContent = metadata.title;
+            modalBody.innerHTML = metadata.body;
+            articleModal.classList.remove('hidden');
+          }
+        };
+
+        window.closeKbArticleModal = function () {
+          if (articleModal) {
+            articleModal.classList.add('hidden');
+          }
+        };
+
+        // Close modal on escape keypress
+        window.addEventListener('keydown', function (e) {
+          if (e.key === 'Escape') {
+            closeKbArticleModal();
+          }
+        });
+
+        // Left Category clicks quick anchor to bottom filter
+        window.openKbCategory = function (category) {
+          const matchedBtn = Array.from(document.querySelectorAll('.kb-filter-btn')).find(btn => btn.textContent.toLowerCase().includes(category));
+          if (matchedBtn) {
+            matchedBtn.click();
+          }
+          // Smooth scroll view directly down to the catalog grid
+          kbArticlesGrid.scrollIntoView({ behavior: 'smooth' });
+        };
+
+      })();
+    </script>
+  </main>
+  <%- include("../partials/footer") %>

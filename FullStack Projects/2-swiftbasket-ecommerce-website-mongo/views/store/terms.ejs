@@ -1,0 +1,411 @@
+<%- include("../partials/header") %>
+<main class="w-full min-h-screen py-12 px-4 sm:px-6 lg:px-8 relative overflow-hidden bg-gray-50 text-[#222222] dark:bg-gray-950 dark:text-zinc-200 transition-colors duration-500 font-['Nunito_Sans',_sans-serif]">
+  
+  <!-- Embedding Google Font Link dynamically inside the module to preserve self-containment -->
+  <link href="https://fonts.googleapis.com/css2?family=Nunito+Sans:wght@400;600;700;800;900&display=swap" rel="stylesheet" />
+
+  <style>
+    /* Premium smooth scroll configuration for section hopping */
+    html {
+      scroll-behavior: smooth;
+    }
+    
+    /* Elegant section transitions */
+    .terms-card {
+      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+    .terms-card:hover {
+      border-color: rgba(255, 56, 92, 0.2);
+    }
+    
+    /* Search highlight styling matching SwiftBasket design system */
+    .search-highlight {
+      background-color: rgba(255, 56, 92, 0.15);
+      border-bottom: 2px solid #FF385C;
+      color: inherit;
+      border-radius: 2px;
+      padding: 0 2px;
+    }
+  </style>
+
+  <!-- Ambient Glow Background Orbs positioned absolutely inside parent container -->
+  <div class="absolute top-10 left-10 w-72 h-72 sm:w-96 sm:h-96 rounded-full bg-rose-400/10 dark:bg-brand-500/5 blur-[120px] pointer-events-none select-none transition-all duration-500"></div>
+  <div class="absolute bottom-10 right-10 w-72 h-72 sm:w-96 sm:h-96 rounded-full bg-sky-400/10 dark:bg-sky-500/5 blur-[120px] pointer-events-none select-none transition-all duration-500"></div>
+
+  <!-- Main Responsive Wrapper Grid -->
+  <div class="max-w-7xl mx-auto relative z-10 space-y-12">
+    
+    <!-- Header Banner -->
+    <div class="text-center max-w-3xl mx-auto space-y-4 pt-4">
+      <span class="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-full text-xs font-black uppercase tracking-wider bg-rose-50 text-[#FF385C] dark:bg-[#FF385C]/10 dark:text-[#FF385C]">
+        <i data-lucide="scale" class="w-4 h-4"></i> Legal &amp; Compliance
+      </span>
+      <h1 class="text-4xl sm:text-5xl font-black tracking-tight text-gray-900 dark:text-white">
+        Terms of Service
+      </h1>
+      <p class="text-sm sm:text-base text-gray-500 dark:text-zinc-400 leading-relaxed">
+        Please review the rules, terms, and guidelines governing your usage of the SwiftBasket marketplace platform, merchant services, and mobile networks.
+      </p>
+      <div class="inline-flex items-center gap-2 text-xs font-bold text-gray-400 dark:text-zinc-500 bg-white/60 dark:bg-zinc-900/60 border border-gray-100 dark:border-zinc-800 px-4 py-2 rounded-xl">
+        <i data-lucide="calendar" class="w-3.5 h-3.5 text-[#FF385C]"></i> Last Updated: June 5, 2026
+      </div>
+    </div>
+
+    <!-- Layout Grid -->
+    <div class="grid lg:grid-cols-12 gap-8 lg:gap-12 items-start">
+      
+      <!-- Left Column: Navigation Sidebar (4 cols) - Sticky -->
+      <aside class="lg:col-span-4 lg:sticky lg:top-24 space-y-6">
+        
+        <!-- Live Document Search Card -->
+        <div class="bg-white/75 dark:bg-gray-900/40 border border-gray-200/60 dark:border-gray-800/60 backdrop-blur-xl rounded-3xl p-6 shadow-xl dark:shadow-black/20">
+          <h3 class="text-xs font-black uppercase tracking-wider text-gray-400 dark:text-zinc-500 mb-3 flex items-center gap-1.5">
+            <i data-lucide="search" class="w-3.5 h-3.5"></i> Live Search Terms
+          </h3>
+          <div class="relative">
+            <span class="absolute left-3 top-3.5 text-gray-400">
+              <i data-lucide="search" class="w-4 h-4"></i>
+            </span>
+            <input 
+              type="text" 
+              id="termsSearch" 
+              placeholder="Search terms (e.g. account, payment)"
+              class="w-full pl-10 pr-4 py-3 rounded-xl border text-sm bg-gray-50/50 text-gray-900 border-gray-200/80 dark:bg-gray-800/20 dark:text-white dark:border-zinc-800/80 focus:ring-2 focus:ring-[#FF385C] focus:bg-white dark:focus:bg-gray-950 focus:outline-none transition-all duration-300"
+            />
+          </div>
+          <div id="searchResultsCount" class="text-[11px] text-gray-400 dark:text-zinc-500 mt-2.5 hidden font-semibold">
+            Found 0 matches.
+          </div>
+        </div>
+
+        <!-- Table of Contents Sidebar Container -->
+        <div class="bg-white/75 dark:bg-gray-900/40 border border-gray-200/60 dark:border-gray-800/60 backdrop-blur-xl rounded-3xl p-6 shadow-xl dark:shadow-black/20">
+          <h3 class="text-xs font-black uppercase tracking-wider text-gray-400 dark:text-zinc-500 mb-4 flex items-center gap-1.5">
+            <i data-lucide="list-tree" class="w-3.5 h-3.5"></i> Table of Contents
+          </h3>
+          <nav id="toc-nav" class="space-y-1.5 max-h-[45vh] overflow-y-auto no-scrollbar">
+            <a href="#acceptance-terms" class="toc-link block px-3 py-2.5 rounded-xl text-xs font-bold text-gray-500 dark:text-zinc-400 hover:bg-rose-50/50 dark:hover:bg-rose-500/10 hover:text-[#FF385C] dark:hover:text-[#FF385C] transition border-l-4 border-transparent pl-3 active-toc">1. Acceptance of Terms</a>
+            <a href="#user-accounts" class="toc-link block px-3 py-2.5 rounded-xl text-xs font-bold text-gray-500 dark:text-zinc-400 hover:bg-rose-50/50 dark:hover:bg-rose-500/10 hover:text-[#FF385C] dark:hover:text-[#FF385C] transition border-l-4 border-transparent pl-3">2. User Accounts &amp; Security</a>
+            <a href="#merchant-rules" class="toc-link block px-3 py-2.5 rounded-xl text-xs font-bold text-gray-500 dark:text-zinc-400 hover:bg-rose-50/50 dark:hover:bg-rose-500/10 hover:text-[#FF385C] dark:hover:text-[#FF385C] transition border-l-4 border-transparent pl-3">3. Merchant &amp; Listing Rules</a>
+            <a href="#intellectual-prop" class="toc-link block px-3 py-2.5 rounded-xl text-xs font-bold text-gray-500 dark:text-zinc-400 hover:bg-rose-50/50 dark:hover:bg-rose-500/10 hover:text-[#FF385C] dark:hover:text-[#FF385C] transition border-l-4 border-transparent pl-3">4. Intellectual Property</a>
+            <a href="#payment-billing" class="toc-link block px-3 py-2.5 rounded-xl text-xs font-bold text-gray-500 dark:text-zinc-400 hover:bg-rose-50/50 dark:hover:bg-rose-500/10 hover:text-[#FF385C] dark:hover:text-[#FF385C] transition border-l-4 border-transparent pl-3">5. Fees, Billing &amp; Refunds</a>
+            <a href="#liability-limitation" class="toc-link block px-3 py-2.5 rounded-xl text-xs font-bold text-gray-500 dark:text-zinc-400 hover:bg-rose-50/50 dark:hover:bg-rose-500/10 hover:text-[#FF385C] dark:hover:text-[#FF385C] transition border-l-4 border-transparent pl-3">6. Limitation of Liability</a>
+            <a href="#termination" class="toc-link block px-3 py-2.5 rounded-xl text-xs font-bold text-gray-500 dark:text-zinc-400 hover:bg-rose-50/50 dark:hover:bg-rose-500/10 hover:text-[#FF385C] dark:hover:text-[#FF385C] transition border-l-4 border-transparent pl-3">7. Account Termination</a>
+            <a href="#contact-legal" class="toc-link block px-3 py-2.5 rounded-xl text-xs font-bold text-gray-500 dark:text-zinc-400 hover:bg-rose-50/50 dark:hover:bg-rose-500/10 hover:text-[#FF385C] dark:hover:text-[#FF385C] transition border-l-4 border-transparent pl-3">8. Governing Law &amp; Support</a>
+          </nav>
+        </div>
+
+      </aside>
+
+      <!-- Right Column: Terms Content Pane (8 cols) -->
+      <section id="terms-content" class="lg:col-span-8 space-y-6 relative">
+        
+        <!-- Scrolling reading progress bar -->
+        <div class="sticky top-16 z-30 w-full h-1 bg-gray-200 dark:bg-zinc-800 rounded-full overflow-hidden mb-6">
+          <div id="readingProgress" class="h-full bg-[#FF385C] w-0 transition-all duration-100 rounded-full"></div>
+        </div>
+
+        <div class="space-y-8">
+          
+          <!-- Section 1 -->
+          <div id="acceptance-terms" class="terms-card bg-white/75 dark:bg-gray-900/40 border border-gray-200/60 dark:border-gray-800/60 backdrop-blur-xl rounded-[32px] p-6 sm:p-10 shadow-xl dark:shadow-black/10 content-section">
+            <div class="flex items-center gap-3 mb-4">
+              <span class="w-10 h-10 rounded-2xl bg-rose-50 dark:bg-rose-500/10 text-[#FF385C] flex items-center justify-center">
+                <i data-lucide="shield" class="w-5 h-5"></i>
+              </span>
+              <h2 class="text-xl sm:text-2xl font-black text-gray-900 dark:text-white">1. Acceptance of Terms</h2>
+            </div>
+            <div class="space-y-4 text-sm sm:text-base text-gray-600 dark:text-zinc-300 leading-relaxed">
+              <p>
+                By accessing, registration, browsing, or utilizing the SwiftBasket marketplace platform, you unequivocally acknowledge that you have read, understood, and consented to remain legally bound by these global terms of service.
+              </p>
+              <p>
+                If you do not accept these policies, you must immediately cease all interactions, close your associated customer or merchant accounts, and discontinue browsing SwiftBasket portals.
+              </p>
+            </div>
+          </div>
+
+          <!-- Section 2 -->
+          <div id="user-accounts" class="terms-card bg-white/75 dark:bg-gray-900/40 border border-gray-200/60 dark:border-gray-800/60 backdrop-blur-xl rounded-[32px] p-6 sm:p-10 shadow-xl dark:shadow-black/10 content-section">
+            <div class="flex items-center gap-3 mb-4">
+              <span class="w-10 h-10 rounded-2xl bg-sky-50 dark:bg-sky-500/10 text-sky-500 flex items-center justify-center">
+                <i data-lucide="user-check" class="w-5 h-5"></i>
+              </span>
+              <h2 class="text-xl sm:text-2xl font-black text-gray-900 dark:text-white">2. User Accounts &amp; Security</h2>
+            </div>
+            <div class="space-y-4 text-sm sm:text-base text-gray-600 dark:text-zinc-300 leading-relaxed">
+              <p>
+                Certain functions across SwiftBasket require profile configuration, such as storing favorite wishlists, checkout histories, or creating product inventory listings.
+              </p>
+              <p class="font-semibold text-gray-900 dark:text-white">Your obligations include:</p>
+              <ul class="list-disc pl-5 space-y-2 text-sm text-gray-500 dark:text-zinc-400">
+                <li><strong class="text-gray-800 dark:text-zinc-300">Accuracy:</strong> Providing up-to-date, accurate, and completely verifiable registration information.</li>
+                <li><strong class="text-gray-800 dark:text-zinc-300">Confidentiality:</strong> Safeguarding local password keys and credentials.</li>
+                <li><strong class="text-gray-800 dark:text-zinc-300">Activity:</strong> Assuming complete administrative responsibility for all activity initiated under your username.</li>
+              </ul>
+            </div>
+          </div>
+
+          <!-- Section 3 -->
+          <div id="merchant-rules" class="terms-card bg-white/75 dark:bg-gray-900/40 border border-gray-200/60 dark:border-gray-800/60 backdrop-blur-xl rounded-[32px] p-6 sm:p-10 shadow-xl dark:shadow-black/10 content-section">
+            <div class="flex items-center gap-3 mb-4">
+              <span class="w-10 h-10 rounded-2xl bg-purple-50 dark:bg-purple-500/10 text-purple-500 flex items-center justify-center">
+                <i data-lucide="shopping-bag" class="w-5 h-5"></i>
+              </span>
+              <h2 class="text-xl sm:text-2xl font-black text-gray-900 dark:text-white">3. Merchant &amp; Listing Rules</h2>
+            </div>
+            <div class="space-y-4 text-sm sm:text-base text-gray-600 dark:text-zinc-300 leading-relaxed">
+              <p>
+                SwiftBasket functions as both a curated shopping catalog and a collaborative merchant network. Users authorized to list products agree to configure parameters honestly.
+              </p>
+              <p>
+                Prohibited listing actions encompass:
+              </p>
+              <div class="grid sm:grid-cols-2 gap-4 text-xs sm:text-sm text-gray-500 dark:text-zinc-400">
+                <div class="p-4 rounded-2xl bg-gray-50/50 dark:bg-zinc-800/40 border border-gray-100 dark:border-zinc-800">
+                  <span class="font-extrabold text-gray-900 dark:text-white block mb-1">Misrepresentation</span>
+                  Posting inaccurate specifications, misleading pricing tiers, or using non-representative Unsplash graphics.
+                </div>
+                <div class="p-4 rounded-2xl bg-gray-50/50 dark:bg-zinc-800/40 border border-gray-100 dark:border-zinc-800">
+                  <span class="font-extrabold text-gray-900 dark:text-white block mb-1">Unauthorized items</span>
+                  Listing counterfeit, stolen, hazardous materials, or goods violating global trade restrictions.
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Section 4 -->
+          <div id="intellectual-prop" class="terms-card bg-white/75 dark:bg-gray-900/40 border border-gray-200/60 dark:border-gray-800/60 backdrop-blur-xl rounded-[32px] p-6 sm:p-10 shadow-xl dark:shadow-black/10 content-section">
+            <div class="flex items-center gap-3 mb-4">
+              <span class="w-10 h-10 rounded-2xl bg-orange-50 dark:bg-orange-500/10 text-orange-500 flex items-center justify-center">
+                <i data-lucide="copyright" class="w-5 h-5"></i>
+              </span>
+              <h2 class="text-xl sm:text-2xl font-black text-gray-900 dark:text-white">4. Intellectual Property</h2>
+            </div>
+            <div class="space-y-4 text-sm sm:text-base text-gray-600 dark:text-zinc-300 leading-relaxed">
+              <p>
+                The proprietary software, design code, logos, layouts, and ambient graphic structures executing across SwiftBasket are the exclusive property of SwiftBasket or its licensors.
+              </p>
+              <p>
+                You may not scrape, copy, modify, redistribute, or reverse-engineer any component of our portal structures without acquiring written legal consent from our executive board.
+              </p>
+            </div>
+          </div>
+
+          <!-- Section 5 -->
+          <div id="payment-billing" class="terms-card bg-white/75 dark:bg-gray-900/40 border border-gray-200/60 dark:border-gray-800/60 backdrop-blur-xl rounded-[32px] p-6 sm:p-10 shadow-xl dark:shadow-black/10 content-section">
+            <div class="flex items-center gap-3 mb-4">
+              <span class="w-10 h-10 rounded-2xl bg-emerald-50 dark:bg-emerald-500/10 text-emerald-500 flex items-center justify-center">
+                <i data-lucide="credit-card" class="w-5 h-5"></i>
+              </span>
+              <h2 class="text-xl sm:text-2xl font-black text-gray-900 dark:text-white">5. Fees, Billing &amp; Refunds</h2>
+            </div>
+            <div class="space-y-4 text-sm sm:text-base text-gray-600 dark:text-zinc-300 leading-relaxed">
+              <p>
+                When purchasing through SwiftBasket, you agree to complete parameters associated with checkout terminal payments. All prices are listed in local currencies and processed through security-vetted gateway terminals.
+              </p>
+              <p>
+                SwiftBasket reserves the right to adjust transactional service fees or update pricing tiers upon notice. Refund policies are managed individually or subjected to system arbitration on valid buyer protection disputes.
+              </p>
+            </div>
+          </div>
+
+          <!-- Section 6 -->
+          <div id="liability-limitation" class="terms-card bg-white/75 dark:bg-gray-900/40 border border-gray-200/60 dark:border-gray-800/60 backdrop-blur-xl rounded-[32px] p-6 sm:p-10 shadow-xl dark:shadow-black/10 content-section">
+            <div class="flex items-center gap-3 mb-4">
+              <span class="w-10 h-10 rounded-2xl bg-indigo-50 dark:bg-indigo-500/10 text-indigo-500 flex items-center justify-center">
+                <i data-lucide="alert-triangle" class="w-5 h-5"></i>
+              </span>
+              <h2 class="text-xl sm:text-2xl font-black text-gray-900 dark:text-white">6. Limitation of Liability</h2>
+            </div>
+            <div class="space-y-4 text-sm sm:text-base text-gray-600 dark:text-zinc-300 leading-relaxed">
+              <p>
+                SwiftBasket offers its services on an "As-Is" and "As-Available" baseline. We explicitly disclaim warranties of any scope, whether statutory, implicit, or transactional.
+              </p>
+              <p>
+                In no legal context or dispute pathway shall SwiftBasket be held liable for indirect, accidental, punitive, or consequential damages resulting from transaction interruptions, cart dropouts, or listing inaccuracies.
+              </p>
+            </div>
+          </div>
+
+          <!-- Section 7 -->
+          <div id="termination" class="terms-card bg-white/75 dark:bg-gray-900/40 border border-gray-200/60 dark:border-gray-800/60 backdrop-blur-xl rounded-[32px] p-6 sm:p-10 shadow-xl dark:shadow-black/10 content-section">
+            <div class="flex items-center gap-3 mb-4">
+              <span class="w-10 h-10 rounded-2xl bg-amber-50 dark:bg-amber-500/10 text-amber-500 flex items-center justify-center">
+                <i data-lucide="user-x" class="w-5 h-5"></i>
+              </span>
+              <h2 class="text-xl sm:text-2xl font-black text-gray-900 dark:text-white">7. Account Termination</h2>
+            </div>
+            <div class="space-y-4 text-sm sm:text-base text-gray-600 dark:text-zinc-300 leading-relaxed">
+              <p>
+                We reserve the unilateral authority to restrict, suspend, or permanently terminate user/merchant accounts without warnings or liabilities if behavior violates standard Terms of Service guidelines.
+              </p>
+              <p>
+                Upon suspension, all active inventory listings will instantly be deactivated, pending transactional disputes will be finalized via arbitration, and associated profiles will lock.
+              </p>
+            </div>
+          </div>
+
+          <!-- Section 8 -->
+          <div id="contact-legal" class="terms-card bg-white/75 dark:bg-gray-900/40 border border-gray-200/60 dark:border-gray-800/60 backdrop-blur-xl rounded-[32px] p-6 sm:p-10 shadow-xl dark:shadow-black/10 content-section">
+            <div class="flex items-center gap-3 mb-4">
+              <span class="w-10 h-10 rounded-2xl bg-rose-50 dark:bg-rose-500/10 text-[#FF385C] flex items-center justify-center">
+                <i data-lucide="help-circle" class="w-5 h-5"></i>
+              </span>
+              <h2 class="text-xl sm:text-2xl font-black text-gray-900 dark:text-white">8. Governing Law &amp; Support</h2>
+            </div>
+            <div class="space-y-4 text-sm sm:text-base text-gray-600 dark:text-zinc-300 leading-relaxed">
+              <p>
+                These terms are governed by federal regulations and relevant regional jurisdiction. For any legal inquiries, corporate guidelines, or transaction compliance audits, please reach out directly:
+              </p>
+              <div class="p-4 rounded-2xl bg-gray-50/50 dark:bg-zinc-800/40 border border-gray-100 dark:border-zinc-800 space-y-3">
+                <div class="flex items-center gap-3 text-xs sm:text-sm font-semibold">
+                  <i data-lucide="mail" class="w-4.5 h-4.5 text-[#FF385C]"></i>
+                  <span>legal@swiftbasket.com</span>
+                </div>
+                <div class="flex items-center gap-3 text-xs sm:text-sm font-semibold">
+                  <i data-lucide="map-pin" class="w-4.5 h-4.5 text-[#FF385C]"></i>
+                  <span>Suite 400, Commerce Tower, San Francisco, CA</span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </section>
+
+    </div>
+  </div>
+
+  <!-- Embedded Modular EJS Javascript Scope -->
+  <script>
+    (function() {
+      // Initialize Lucide Icons inside partial main context
+      if (typeof lucide !== 'undefined') {
+        lucide.createIcons();
+      }
+
+      // 1. Live Text Search Filter and Highlight Engine
+      const searchInput = document.getElementById('termsSearch');
+      const textContainer = document.getElementById('terms-content');
+      const resultsCount = document.getElementById('searchResultsCount');
+
+      if (searchInput && textContainer) {
+        searchInput.addEventListener('input', function() {
+          const query = searchInput.value.trim().toLowerCase();
+          
+          // Clear previous highlights
+          removeHighlights(textContainer);
+
+          if (!query) {
+            resultsCount.classList.add('hidden');
+            return;
+          }
+
+          let matchCount = highlightText(textContainer, query);
+          
+          resultsCount.classList.remove('hidden');
+          resultsCount.textContent = `Found ${matchCount} match(es) for "${searchInput.value}".`;
+        });
+      }
+
+      function highlightText(element, query) {
+        let count = 0;
+        const walker = document.createTreeWalker(element, NodeFilter.SHOW_TEXT, null, false);
+        const nodesToReplace = [];
+
+        while (walker.nextNode()) {
+          const node = walker.currentNode;
+          if (node.parentNode.nodeName === 'SCRIPT' || node.parentNode.nodeName === 'STYLE') continue;
+          
+          const text = node.nodeValue;
+          const index = text.toLowerCase().indexOf(query);
+          
+          if (index !== -1) {
+            nodesToReplace.push(node);
+          }
+        }
+
+        nodesToReplace.forEach(node => {
+          const text = node.nodeValue;
+          const regex = new RegExp(`(${escapeRegExp(query)})`, 'gi');
+          const span = document.createElement('span');
+          span.innerHTML = text.replace(regex, '<span class="search-highlight">$1</span>');
+          
+          // Count exact instances matching inside inner span matches
+          const matchesInNode = span.querySelectorAll('.search-highlight').length;
+          count += matchesInNode;
+          
+          node.parentNode.replaceChild(span, node);
+          // Unwrap span helper to avoid breaking layout structures
+          while (span.firstChild) {
+            span.parentNode.insertBefore(span.firstChild, span);
+          }
+          span.parentNode.removeChild(span);
+        });
+
+        return count;
+      }
+
+      function removeHighlights(element) {
+        const highlights = element.querySelectorAll('.search-highlight');
+        highlights.forEach(highlight => {
+          const textNode = document.createTextNode(highlight.textContent);
+          highlight.parentNode.replaceChild(textNode, highlight);
+        });
+        element.normalize(); // Merges adjacent text nodes
+      }
+
+      function escapeRegExp(string) {
+        return string.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+      }
+
+      // 2. Sticky Table Of Contents Active Highlighting & Section Scroll Observer
+      const sections = document.querySelectorAll('.content-section');
+      const tocLinks = document.querySelectorAll('.toc-link');
+
+      const observerOptions = {
+        root: null,
+        rootMargin: '-20% 0px -60% 0px', // High-fidelity window capture zone
+        threshold: 0
+      };
+
+      const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting) {
+            const activeId = entry.target.getAttribute('id');
+            updateActiveTOC(activeId);
+          }
+        });
+      }, observerOptions);
+
+      sections.forEach(section => observer.observe(section));
+
+      function updateActiveTOC(activeId) {
+        tocLinks.forEach(link => {
+          const href = link.getAttribute('href').substring(1);
+          if (href === activeId) {
+            link.classList.add('active-toc', 'border-[#FF385C]', 'text-[#FF385C]', 'bg-rose-50/50', 'dark:bg-rose-500/10');
+            link.classList.remove('text-gray-500', 'dark:text-zinc-400');
+          } else {
+            link.classList.remove('active-toc', 'border-[#FF385C]', 'text-[#FF385C]', 'bg-rose-50/50', 'dark:bg-rose-500/10');
+            link.classList.add('text-gray-500', 'dark:text-zinc-400');
+          }
+        });
+      }
+
+      // 3. Dynamic Reading Progress Bar Updater
+      window.addEventListener('scroll', () => {
+        const docHeight = document.documentElement.scrollHeight - window.innerHeight;
+        const scrolled = (window.scrollY / docHeight) * 100;
+        const progressIndicator = document.getElementById('readingProgress');
+        
+        if (progressIndicator) {
+          progressIndicator.style.width = `${scrolled}%`;
+        }
+      });
+
+    })();
+  </script>
+</main>
+<%- include("../partials/footer") %>
