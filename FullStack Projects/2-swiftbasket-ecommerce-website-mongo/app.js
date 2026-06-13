@@ -66,7 +66,6 @@ app.use("/auth", authRouter);
 app.use("/admin", isAuth, allowRoles("Admin"), adminRouter);
 app.use("/store", isAuth, allowRoles("Guest", "Admin"), storeRouter);
 app.use("/user", userRouter);
-
 app.use(pageNotFound);
 
 // It is the main server
