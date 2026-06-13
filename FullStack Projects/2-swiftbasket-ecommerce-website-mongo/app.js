@@ -44,6 +44,8 @@ app.use(express.static(path.join(rootDir, "public")));
 
 app.use(express.urlencoded({ extended: true }));
 
+app.enable('trust proxy');
+
 const store = new MongoDBStore({
   uri: DB_PATH,
   collection: "sessions",
