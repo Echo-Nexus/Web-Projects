@@ -388,7 +388,7 @@
                     Logout
                   </button>
                 </form>
-
+                </div>
               <% } %>
               <% if(!isLoggedIn) {%>
               <!-- AUTH -->
@@ -414,11 +414,11 @@
                 </a>
               </div>
 
-              <div
-                class="mx-3 border-t border-zinc-100 dark:border-zinc-800"
-              ></div>
               <% } %>
               <% if(isLoggedIn) {%>
+                <div
+                  class="mx-3 border-t border-zinc-100 dark:border-zinc-800"
+                ></div>
               <!-- FOOTER -->
               <div class="p-2">
                 <a
@@ -432,7 +432,7 @@
                 </a>
 
                 <a
-                  href="/help-center"
+                  href="/store/help-center"
                   class="flex items-center gap-3 rounded-xl px-3 py-2 text-sm hover:bg-zinc-100 dark:hover:bg-zinc-800 transition"
                 >
                   <span class="material-symbols-rounded text-lg text-zinc-500">
