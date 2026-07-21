@@ -15,7 +15,9 @@ import {
   PanelLeftOpen,
   Monitor,
   Maximize2,
-  Columns
+  Columns,
+  BookOpen,
+  X
 } from "lucide-react";
 import API from "../services/api";
 
@@ -33,19 +35,28 @@ function Viewer() {
   const [pageNumber, setPageNumber] = useState(1);
   const [scale, setScale] = useState(1.0);
   const [isFullscreen, setIsFullscreen] = useState(false);
-  const [isSidebarOpen, setIsSidebarOpen] = useState(true);
+  const [isSidebarOpen, setIsSidebarOpen] = useState(false);
 
-  // Layout View Modes: 'fit-page' | 'fit-width' | 'fit-height' | 'two-page'
+  // Layout View Modes: 'fit-page' | 'fit-width' | 'two-page' | 'flip'
   const [viewMode, setViewMode] = useState("fit-page");
+  const [isFlipping, setIsFlipping] = useState(false);
+  const [flipDirection, setFlipDirection] = useState("next");
 
   // Viewport Container Bounds
   const [viewportBounds, setViewportBounds] = useState({ width: 0, height: 0 });
+
+  // Touch Swipe Gesture State
+  const touchStartX = useRef(0);
+  const touchEndX = useRef(0);
 
   const mainContainerRef = useRef(null);
   const pageContainerRef = useRef(null);
 
   useEffect(() => {
     fetchPdf();
+    if (window.innerWidth >= 768) {
+      setIsSidebarOpen(true);
+    }
   }, [id]);
 
   async function fetchPdf() {
@@ -61,15 +72,29 @@ function Viewer() {
     setNumPages(numPages);
   }
 
-  // Observe Main Viewport dimensions dynamically
+  // Auto-fallback from two-page view on small viewports
+  useEffect(() => {
+    const handleResize = () => {
+      if (window.innerWidth < 640 && viewMode === "two-page") {
+        setViewMode("fit-page");
+      }
+    };
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
+  }, [viewMode]);
+
+  // Observe Main Viewport dimensions dynamically with defensive padding
   useEffect(() => {
     if (!pageContainerRef.current) return;
 
     const resizeObserver = new ResizeObserver((entries) => {
       for (let entry of entries) {
-        // Subtract padding offsets (32px padding all around)
-        const availableWidth = entry.contentRect.width - 32;
-        const availableHeight = entry.contentRect.height - 32;
+        const isMobile = window.innerWidth < 640;
+        const paddingX = isMobile ? 16 : 48;
+        const paddingY = isMobile ? 16 : 48;
+        
+        const availableWidth = entry.contentRect.width - paddingX;
+        const availableHeight = entry.contentRect.height - paddingY;
         
         setViewportBounds({
           width: Math.max(availableWidth, 200),
@@ -94,16 +119,64 @@ function Viewer() {
   // Keyboard navigation
   useEffect(() => {
     const handleKeyDown = (e) => {
-      const step = viewMode === "two-page" ? 2 : 1;
       if (e.key === "ArrowRight" || e.key === "PageDown") {
-        if (pageNumber < numPages) setPageNumber((p) => Math.min(p + step, numPages));
+        handleNextPage();
       } else if (e.key === "ArrowLeft" || e.key === "PageUp") {
-        if (pageNumber > 1) setPageNumber((p) => Math.max(p - step, 1));
+        handlePrevPage();
       }
     };
     window.addEventListener("keydown", handleKeyDown);
     return () => window.removeEventListener("keydown", handleKeyDown);
   }, [pageNumber, numPages, viewMode]);
+
+  const changePageWithAnimation = (newPage, direction) => {
+    if (viewMode === "flip") {
+      setFlipDirection(direction);
+      setIsFlipping(true);
+      setTimeout(() => {
+        setPageNumber(newPage);
+        setTimeout(() => setIsFlipping(false), 200);
+      }, 150);
+    } else {
+      setPageNumber(newPage);
+    }
+  };
+
+  const handleNextPage = () => {
+    const step = viewMode === "two-page" ? 2 : 1;
+    if (pageNumber < numPages) {
+      const target = Math.min(pageNumber + step, numPages);
+      changePageWithAnimation(target, "next");
+    }
+  };
+
+  const handlePrevPage = () => {
+    const step = viewMode === "two-page" ? 2 : 1;
+    if (pageNumber > 1) {
+      const target = Math.max(pageNumber - step, 1);
+      changePageWithAnimation(target, "prev");
+    }
+  };
+
+  // Touch Gesture Handling for Mobile Swipe Page Turn / Flip
+  const handleTouchStart = (e) => {
+    touchStartX.current = e.targetTouches[0].clientX;
+  };
+
+  const handleTouchMove = (e) => {
+    touchEndX.current = e.targetTouches[0].clientX;
+  };
+
+  const handleTouchEnd = () => {
+    const minSwipeDistance = 40;
+    const distance = touchStartX.current - touchEndX.current;
+
+    if (distance > minSwipeDistance) {
+      handleNextPage();
+    } else if (distance < -minSwipeDistance) {
+      handlePrevPage();
+    }
+  };
 
   const toggleFullscreen = async () => {
     if (!mainContainerRef.current) return;
@@ -122,7 +195,7 @@ function Viewer() {
 
   if (!pdf) {
     return (
-      <div className="flex items-center justify-center h-screen bg-slate-950 text-slate-100">
+      <div className="flex items-center justify-center h-screen bg-slate-950 text-slate-100 p-4">
         <div className="flex flex-col items-center gap-3 p-6 rounded-2xl bg-slate-900/60 border border-slate-800/80 backdrop-blur-md shadow-2xl">
           <Loader2 size={32} className="animate-spin text-blue-500" />
           <span className="text-sm font-medium text-slate-300">Loading document...</span>
@@ -131,23 +204,21 @@ function Viewer() {
     );
   }
 
-  // Calculate target page dimensions based on View Mode
+  // Prevent PDF elements from exceeding container dimensions
   const getRenderDimensions = () => {
     const { width, height } = viewportBounds;
     if (!width || !height) return {};
 
     switch (viewMode) {
       case "fit-page":
-        return { height: height * scale };
-
-      case "fit-height":
+      case "flip":
         return { height: height * scale };
 
       case "fit-width":
         return { width: width * scale };
 
       case "two-page":
-        return { width: (width / 2 - 16) * scale };
+        return { width: ((width / 2) - 12) * scale };
 
       default:
         return { height: height * scale };
@@ -163,14 +234,14 @@ function Viewer() {
         isFullscreen ? "w-screen h-screen z-50 fixed inset-0" : ""
       }`}
     >
-      {/* Dynamic Header Controls */}
-      <header className="flex items-center justify-between gap-3 px-4 py-2.5 bg-slate-900/90 border-b border-slate-800/80 backdrop-blur-md shrink-0 z-30 shadow-md">
+      {/* Header Controls */}
+      <header className="flex items-center justify-between gap-2 px-3 sm:px-4 py-2 bg-slate-900/90 border-b border-slate-800/80 backdrop-blur-md shrink-0 z-30 shadow-md">
         
-        {/* Left: Sidebar Toggle, Back Button & Title */}
-        <div className="flex items-center gap-2.5 min-w-0">
+        {/* Left Section */}
+        <div className="flex items-center gap-2 min-w-0">
           <button
             onClick={() => setIsSidebarOpen((prev) => !prev)}
-            className="p-2 rounded-xl bg-slate-800/60 hover:bg-slate-800 text-slate-300 hover:text-white transition-colors border border-slate-700/50"
+            className="p-2 rounded-xl bg-slate-800/60 hover:bg-slate-800 text-slate-300 hover:text-white transition-colors border border-slate-700/50 shrink-0"
             title={isSidebarOpen ? "Hide Thumbnails" : "Show Thumbnails"}
           >
             {isSidebarOpen ? <PanelLeftClose size={18} /> : <PanelLeftOpen size={18} />}
@@ -179,7 +250,7 @@ function Viewer() {
           {!isFullscreen && (
             <Link
               to="/"
-              className="flex items-center gap-1.5 text-slate-400 hover:text-slate-100 transition-colors py-1.5 px-2.5 rounded-xl hover:bg-slate-800/80 shrink-0"
+              className="flex items-center gap-1.5 text-slate-400 hover:text-slate-100 transition-colors p-2 sm:py-1.5 sm:px-2.5 rounded-xl hover:bg-slate-800/80 shrink-0"
               title="Return to library"
             >
               <ArrowLeft size={18} />
@@ -190,20 +261,20 @@ function Viewer() {
           <div className="h-4 w-px bg-slate-800 hidden sm:block" />
 
           <div className="flex items-center gap-2 min-w-0">
-            <div className="p-1.5 rounded-lg bg-blue-500/10 border border-blue-500/20 text-blue-400 shrink-0">
+            <div className="hidden xs:flex p-1.5 rounded-lg bg-blue-500/10 border border-blue-500/20 text-blue-400 shrink-0">
               <FileText size={16} />
             </div>
-            <h1 className="text-sm font-bold truncate text-slate-200" title={pdf.title}>
+            <h1 className="text-xs sm:text-sm font-bold truncate text-slate-200" title={pdf.title}>
               {pdf.title}
             </h1>
           </div>
         </div>
 
         {/* Center: Page Navigation */}
-        <div className="flex items-center gap-1.5 bg-slate-950/80 p-1 rounded-xl border border-slate-800/80">
+        <div className="hidden sm:flex items-center gap-1.5 bg-slate-950/80 p-1 rounded-xl border border-slate-800/80">
           <button
             disabled={pageNumber <= 1}
-            onClick={() => setPageNumber((p) => Math.max(p - (viewMode === "two-page" ? 2 : 1), 1))}
+            onClick={handlePrevPage}
             className="p-1.5 rounded-lg text-slate-400 hover:text-slate-100 hover:bg-slate-800 disabled:opacity-20 transition-colors"
             title="Previous Page"
           >
@@ -217,7 +288,7 @@ function Viewer() {
 
           <button
             disabled={pageNumber >= numPages}
-            onClick={() => setPageNumber((p) => Math.min(p + (viewMode === "two-page" ? 2 : 1), numPages))}
+            onClick={handleNextPage}
             className="p-1.5 rounded-lg text-slate-400 hover:text-slate-100 hover:bg-slate-800 disabled:opacity-20 transition-colors"
             title="Next Page"
           >
@@ -225,10 +296,10 @@ function Viewer() {
           </button>
         </div>
 
-        {/* Right: Predefined View Modes & Zoom */}
-        <div className="flex items-center gap-2">
+        {/* Right Section */}
+        <div className="flex items-center gap-1.5 sm:gap-2 shrink-0">
           
-          {/* Predefined Layout Selector */}
+          {/* View Modes */}
           <div className="flex items-center gap-0.5 bg-slate-950/80 p-1 rounded-xl border border-slate-800/80">
             <button
               onClick={() => { setViewMode("fit-page"); setScale(1.0); }}
@@ -237,10 +308,10 @@ function Viewer() {
                   ? "bg-blue-600 text-white shadow-sm" 
                   : "text-slate-400 hover:text-slate-100 hover:bg-slate-800"
               }`}
-              title="Fit Full Screen (Fits in 100vh)"
+              title="Fit Screen Mode"
             >
               <Monitor size={15} />
-              <span className="hidden md:inline">Fit Screen</span>
+              <span className="hidden lg:inline">Screen</span>
             </button>
 
             <button
@@ -250,28 +321,42 @@ function Viewer() {
                   ? "bg-blue-600 text-white shadow-sm" 
                   : "text-slate-400 hover:text-slate-100 hover:bg-slate-800"
               }`}
-              title="Fit Page Width"
+              title="Fit Width / Scrollable"
             >
               <Maximize2 size={15} />
-              <span className="hidden md:inline">Width</span>
+              <span className="hidden lg:inline">Width</span>
+            </button>
+
+            {/* Flip Mode */}
+            <button
+              onClick={() => { setViewMode("flip"); setScale(1.0); }}
+              className={`p-1.5 rounded-lg text-xs font-semibold transition-all flex items-center gap-1 ${
+                viewMode === "flip" 
+                  ? "bg-blue-600 text-white shadow-sm" 
+                  : "text-slate-400 hover:text-slate-100 hover:bg-slate-800"
+              }`}
+              title="Page Flip Mode"
+            >
+              <BookOpen size={15} />
+              <span className="hidden lg:inline">Flip</span>
             </button>
 
             <button
               onClick={() => { setViewMode("two-page"); setScale(1.0); }}
-              className={`p-1.5 rounded-lg text-xs font-semibold transition-all flex items-center gap-1 ${
+              className={`hidden sm:flex p-1.5 rounded-lg text-xs font-semibold transition-all items-center gap-1 ${
                 viewMode === "two-page" 
                   ? "bg-blue-600 text-white shadow-sm" 
                   : "text-slate-400 hover:text-slate-100 hover:bg-slate-800"
               }`}
-              title="2-Up Dual Page View"
+              title="2-Up Dual Page"
             >
               <Columns size={15} />
-              <span className="hidden md:inline">2-Up</span>
+              <span className="hidden lg:inline">2-Up</span>
             </button>
           </div>
 
-          {/* Zoom Buttons */}
-          <div className="flex items-center gap-1 bg-slate-950/80 p-1 rounded-xl border border-slate-800/80">
+          {/* Zoom Controls */}
+          <div className="hidden xs:flex items-center gap-1 bg-slate-950/80 p-1 rounded-xl border border-slate-800/80">
             <button
               onClick={() => setScale((s) => Math.max(s - 0.15, 0.5))}
               className="p-1.5 rounded-lg text-slate-400 hover:text-slate-100 hover:bg-slate-800 transition-colors"
@@ -282,8 +367,8 @@ function Viewer() {
 
             <button
               onClick={() => setScale(1.0)}
-              className="px-1.5 text-xs font-semibold text-slate-400 hover:text-slate-100 transition-colors min-w-[2.8rem] text-center"
-              title="Reset Zoom Scale"
+              className="px-1 text-xs font-semibold text-slate-400 hover:text-slate-100 transition-colors min-w-[2.5rem] text-center"
+              title="Reset Zoom"
             >
               {Math.round(scale * 100)}%
             </button>
@@ -307,26 +392,42 @@ function Viewer() {
         </div>
       </header>
 
-      {/* Main Workspace (Split View) */}
+      {/* Main Workspace Area */}
       <div className="flex flex-1 overflow-hidden relative">
         
-        {/* Sidebar Thumbnails */}
+        {/* Mobile Backdrop Overlay */}
+        {isSidebarOpen && (
+          <div 
+            onClick={() => setIsSidebarOpen(false)}
+            className="md:hidden fixed inset-0 bg-slate-950/80 backdrop-blur-sm z-30 transition-opacity"
+          />
+        )}
+
+        {/* Sidebar Drawer */}
         <aside 
-          className={`bg-slate-900/70 border-r border-slate-800/80 flex flex-col transition-all duration-300 z-20 shrink-0 ${
-            isSidebarOpen ? "w-60 opacity-100" : "w-0 opacity-0 pointer-events-none border-none"
+          className={`fixed md:relative inset-y-0 left-0 bg-slate-900/95 md:bg-slate-900/70 border-r border-slate-800/80 flex flex-col transition-all duration-300 z-40 shrink-0 ${
+            isSidebarOpen 
+              ? "w-64 sm:w-60 translate-x-0 opacity-100" 
+              : "-translate-x-full md:translate-x-0 md:w-0 opacity-0 pointer-events-none border-none"
           }`}
         >
-          <div className="px-4 py-2.5 border-b border-slate-800/80">
+          <div className="flex items-center justify-between px-4 py-3 border-b border-slate-800/80">
             <span className="text-xs font-bold uppercase tracking-wider text-slate-400">
               Pages ({numPages || 0})
             </span>
+            <button 
+              onClick={() => setIsSidebarOpen(false)}
+              className="md:hidden p-1 text-slate-400 hover:text-white rounded-lg"
+            >
+              <X size={18} />
+            </button>
           </div>
 
-          <div className="flex-1 overflow-y-auto p-3 space-y-3 scrollbar-thin scrollbar-thumb-slate-800">
+          <div className="flex-1 overflow-y-auto p-3 space-y-3 pb-24 sm:pb-8 scrollbar-thin scrollbar-thumb-slate-800">
             <Document
               file={pdf.pdfUrl}
               onLoadSuccess={onDocumentLoadSuccess}
-              loading={<div className="p-4 text-center text-xs text-slate-500">Loading sidebar...</div>}
+              loading={<div className="p-4 text-center text-xs text-slate-500">Loading thumbnails...</div>}
             >
               {Array.from(new Array(numPages || 0), (_, index) => {
                 const pageIdx = index + 1;
@@ -334,7 +435,10 @@ function Viewer() {
                 return (
                   <div
                     key={`thumb_${pageIdx}`}
-                    onClick={() => setPageNumber(pageIdx)}
+                    onClick={() => {
+                      changePageWithAnimation(pageIdx, pageIdx > pageNumber ? "next" : "prev");
+                      if (window.innerWidth < 768) setIsSidebarOpen(false);
+                    }}
                     className={`flex flex-col items-center gap-1.5 p-2 rounded-xl cursor-pointer transition-all duration-150 border ${
                       isActive 
                         ? "bg-blue-600/15 border-blue-500 shadow-md shadow-blue-500/5 ring-1 ring-blue-500/30" 
@@ -344,7 +448,7 @@ function Viewer() {
                     <div className="overflow-hidden rounded-md shadow-sm pointer-events-none">
                       <Page
                         pageNumber={pageIdx}
-                        width={160}
+                        width={140}
                         renderTextLayer={false}
                         renderAnnotationLayer={false}
                       />
@@ -359,16 +463,15 @@ function Viewer() {
           </div>
         </aside>
 
-        {/* Viewport Canvas */}
+        {/* Viewport Canvas (Strict Size Containment) */}
         <main 
-          ref={pageContainerRef} 
-          className={`flex-1 h-full w-full p-4 bg-slate-950/90 ${
-            viewMode === "fit-width" 
-              ? "overflow-y-auto flex justify-center items-start" 
-              : "overflow-hidden flex items-center justify-center"
-          }`}
+          ref={pageContainerRef}
+          onTouchStart={handleTouchStart}
+          onTouchMove={handleTouchMove}
+          onTouchEnd={handleTouchEnd}
+          className="flex-1 h-full w-full p-2 sm:p-4 bg-slate-950/90 overflow-y-auto overflow-x-hidden flex justify-center items-center"
         >
-          <div className="flex items-center justify-center gap-4 max-w-full">
+          <div className="flex items-center justify-center gap-3 sm:gap-4 max-w-full max-h-full my-auto">
             <Document
               file={pdf.pdfUrl}
               onLoadSuccess={onDocumentLoadSuccess}
@@ -378,34 +481,90 @@ function Viewer() {
                   <span className="text-xs font-medium">Rendering view...</span>
                 </div>
               }
-              className="flex items-center justify-center gap-4 max-w-full"
+              className="flex items-center justify-center gap-3 sm:gap-4 max-w-full max-h-full"
             >
-              {/* Primary View Page */}
-              <div className="shadow-2xl rounded-2xl border border-slate-800/80 bg-slate-900/40 overflow-hidden shrink-0 flex items-center justify-center">
+              {/* Primary Rendered Page */}
+              <div 
+                className={`max-w-full max-h-full shadow-2xl rounded-xl sm:rounded-2xl border border-slate-800/80 bg-slate-900/40 overflow-hidden shrink flex items-center justify-center transition-all duration-300 transform-gpu ${
+                  viewMode === "flip" ? "perspective-1000" : ""
+                } ${
+                  isFlipping 
+                    ? flipDirection === "next" 
+                      ? "-rotate-y-90 opacity-40 scale-95" 
+                      : "rotate-y-90 opacity-40 scale-95" 
+                    : "rotate-y-0 opacity-100 scale-100"
+                }`}
+              >
                 <Page
                   pageNumber={pageNumber}
                   {...renderProps}
                   renderTextLayer={true}
                   renderAnnotationLayer={true}
-                  className="rounded-xl overflow-hidden"
+                  className="rounded-lg sm:rounded-xl overflow-hidden max-w-[92vw] sm:max-w-full max-h-[80vh]"
                 />
               </div>
 
-              {/* Second Page (Rendered in 2-Up View) */}
+              {/* Second Page (Dual Page Mode) */}
               {viewMode === "two-page" && pageNumber + 1 <= (numPages || 0) && (
-                <div className="shadow-2xl rounded-2xl border border-slate-800/80 bg-slate-900/40 overflow-hidden shrink-0 flex items-center justify-center">
+                <div className="max-w-full max-h-full shadow-2xl rounded-xl sm:rounded-2xl border border-slate-800/80 bg-slate-900/40 overflow-hidden shrink flex items-center justify-center">
                   <Page
                     pageNumber={pageNumber + 1}
                     {...renderProps}
                     renderTextLayer={true}
                     renderAnnotationLayer={true}
-                    className="rounded-xl overflow-hidden"
+                    className="rounded-lg sm:rounded-xl overflow-hidden max-w-[45vw] max-h-[80vh]"
                   />
                 </div>
               )}
             </Document>
           </div>
         </main>
+      </div>
+
+      {/* Mobile Floating Bottom Controls */}
+      <div className="sm:hidden flex items-center justify-between px-4 py-2 bg-slate-900/95 border-t border-slate-800/80 backdrop-blur-md z-30 shrink-0">
+        <button
+          disabled={pageNumber <= 1}
+          onClick={handlePrevPage}
+          className="p-2 rounded-xl bg-slate-800/80 text-slate-300 disabled:opacity-20 transition-colors active:scale-95"
+        >
+          <ChevronLeft size={20} />
+        </button>
+
+        <div className="flex items-center gap-3">
+          <span className="text-xs font-semibold tracking-wide text-slate-300">
+            Page {pageNumber} of {numPages || "—"}
+          </span>
+
+          <div className="flex items-center gap-1 bg-slate-950/80 p-1 rounded-xl border border-slate-800/80">
+            <button
+              onClick={() => setScale((s) => Math.max(s - 0.2, 0.5))}
+              className="p-1 rounded-lg text-slate-400 hover:text-slate-100"
+            >
+              <ZoomOut size={16} />
+            </button>
+            <button
+              onClick={() => setScale(1.0)}
+              className="px-1 text-[11px] font-semibold text-slate-400"
+            >
+              {Math.round(scale * 100)}%
+            </button>
+            <button
+              onClick={() => setScale((s) => Math.min(s + 0.2, 2.0))}
+              className="p-1 rounded-lg text-slate-400 hover:text-slate-100"
+            >
+              <ZoomIn size={16} />
+            </button>
+          </div>
+        </div>
+
+        <button
+          disabled={pageNumber >= numPages}
+          onClick={handleNextPage}
+          className="p-2 rounded-xl bg-slate-800/80 text-slate-300 disabled:opacity-20 transition-colors active:scale-95"
+        >
+          <ChevronRight size={20} />
+        </button>
       </div>
     </div>
   );
