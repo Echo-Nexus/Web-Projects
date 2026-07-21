@@ -17,7 +17,7 @@ connectDB();
 
 app.use(
   cors({
-    origin: "https://digital-pdf-x.netlify.app/",
+    origin: "https://digital-pdf-x.netlify.app",
     credentials: true,
   })
 );
