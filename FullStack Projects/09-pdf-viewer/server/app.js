@@ -17,13 +17,16 @@ connectDB();
 
 app.use(
   cors({
-    origin: "http://localhost:5173",
-  }),
+    origin: "https://digital-pdf-x.netlify.app/",
+    credentials: true,
+  })
 );
 
 app.use(express.json());
 
 app.use(express.urlencoded({ extended: true }));
+
+app.enable('trust proxy');
 
 /* ----------------------------- Routes ----------------------------- */
 
